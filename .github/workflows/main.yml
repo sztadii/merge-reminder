@@ -1,9 +1,9 @@
 name: Main workflow
 
-on: push
+on: [push]
 
 jobs:
-  check-and-build:
+  build:
     runs-on: ubuntu-latest
 
     steps:
