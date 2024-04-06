@@ -1,6 +1,6 @@
 import * as z from 'zod'
 
-import { ResponseSchema } from './base'
+import { ResponseSchema, UpdateRequestSchema } from './base'
 
 export const UserRoleSchema = z.enum(['ADMIN', 'CLIENT'])
 export type UserRole = z.infer<typeof UserRoleSchema>
@@ -13,11 +13,16 @@ export const UserResponseSchema = ResponseSchema.extend({
 
 export const UsersListResponseSchema = z.array(UserResponseSchema)
 
-export const UserRequestSchema = UserResponseSchema.pick({
+export const UserCreateRequestSchema = UserResponseSchema.pick({
   login: true,
   role: true,
   email: true
 })
 
+export const UserUpdateRequestSchema = UpdateRequestSchema.merge(
+  UserCreateRequestSchema
+)
+
 export type UserResponse = z.infer<typeof UserResponseSchema>
-export type UserRequest = z.infer<typeof UserRequestSchema>
+export type UserCreateRequest = z.infer<typeof UserCreateRequestSchema>
+export type UserUpdateRequest = z.infer<typeof UserUpdateRequestSchema>

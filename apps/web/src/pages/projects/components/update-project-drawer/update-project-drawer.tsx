@@ -8,7 +8,7 @@ import { ProjectResponse } from 'src/schemas'
 import { showErrorToast } from 'src/toasts'
 import { trpc } from 'src/trpc'
 
-type CreateProjectDrawerProps = {
+type UpdateProjectDrawerProps = {
   project?: ProjectResponse
   isOpen: boolean
   onClose: () => void
@@ -18,7 +18,7 @@ export function UpdateProjectDrawer({
   project,
   isOpen,
   onClose
-}: CreateProjectDrawerProps) {
+}: UpdateProjectDrawerProps) {
   const queryClient = useQueryClient()
 
   const { mutateAsync: updateProjectMutation } =
@@ -33,6 +33,15 @@ export function UpdateProjectDrawer({
     setProjectName(project.name)
   }, [project])
 
+  const resetProjectName = () => {
+    setProjectName(undefined)
+  }
+
+  const handleOnClose = () => {
+    resetProjectName()
+    onClose()
+  }
+
   const updateProject = async () => {
     if (!projectName || !project) return
 
@@ -43,8 +52,7 @@ export function UpdateProjectDrawer({
         name: projectName
       })
       await queryClient.invalidateQueries(getQueryKey(trpc.projects.findAll))
-      setProjectName(undefined)
-      onClose()
+      handleOnClose()
     } catch {
       showErrorToast('Can not update project')
     } finally {
@@ -58,7 +66,7 @@ export function UpdateProjectDrawer({
   return (
     <Drawer
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleOnClose}
       header="Update project"
       body={
         <FormControl>
@@ -72,7 +80,7 @@ export function UpdateProjectDrawer({
       }
       footer={
         <>
-          <Button variant="outline" mr={2} onClick={onClose}>
+          <Button variant="outline" mr={2} onClick={handleOnClose}>
             Cancel
           </Button>
           <Button

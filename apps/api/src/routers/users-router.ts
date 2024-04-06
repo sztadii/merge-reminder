@@ -1,7 +1,8 @@
 import {
   EmptyResponseSchema,
-  UserRequestSchema,
+  UserCreateRequestSchema,
   UserResponseSchema,
+  UserUpdateRequestSchema,
   UsersListResponseSchema
 } from '../schemas'
 import { UsersService } from '../services/users-service'
@@ -20,11 +21,18 @@ export const usersRouter = router({
       return usersService.getById(opts.input)
     }),
   create: publicProcedure
-    .input(UserRequestSchema)
+    .input(UserCreateRequestSchema)
     .output(UserResponseSchema)
     .mutation(opts => {
       const usersService = new UsersService(opts.ctx.database)
       return usersService.create(opts.input)
+    }),
+  update: publicProcedure
+    .input(UserUpdateRequestSchema)
+    .output(UserResponseSchema)
+    .mutation(opts => {
+      const usersService = new UsersService(opts.ctx.database)
+      return usersService.update(opts.input)
     }),
   deleteById: publicProcedure
     .input(UserResponseSchema.shape.id)

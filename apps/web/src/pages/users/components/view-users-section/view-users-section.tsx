@@ -6,20 +6,26 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
-  Skeleton
+  Skeleton,
+  useDisclosure
 } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { getQueryKey } from '@trpc/react-query'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 
 import { Icon } from 'src/components/icon'
 import { SpinnerWithLabel } from 'src/components/spinner-with-label/spinner-with-label'
 import { Table, TableProps } from 'src/components/table'
 import { usePendingMutationVariables } from 'src/hooks/use-pending-mutations-variables'
+import { UserResponse } from 'src/schemas'
 import { showErrorToast } from 'src/toasts'
 import { trpc } from 'src/trpc'
 
+import { UpdateUserDrawer } from '../update-user-drawer'
+
 export function ViewUsersSection() {
+  const [user, setUser] = useState<UserResponse | undefined>()
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const queryClient = useQueryClient()
 
   const pendingMutationVariables = usePendingMutationVariables()
@@ -106,7 +112,14 @@ export function ViewUsersSection() {
                   <MenuItem onClick={() => deleteUser(user.id)}>
                     Delete user
                   </MenuItem>
-                  <MenuItem isDisabled>Edit</MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      setUser(user)
+                      onOpen()
+                    }}
+                  >
+                    Edit
+                  </MenuItem>
                 </MenuList>
               </Menu>
             )
@@ -117,15 +130,26 @@ export function ViewUsersSection() {
   }, [pendingMutationVariables])
 
   return (
-    <Card>
-      <CardBody>
-        <Table
-          columns={tableColumns}
-          rows={users}
-          isLoading={isFetchingUserList}
-          emptyRowsMessage="No users"
-        />
-      </CardBody>
-    </Card>
+    <>
+      <UpdateUserDrawer
+        user={user}
+        isOpen={isOpen}
+        onClose={() => {
+          setUser(undefined)
+          onClose()
+        }}
+      />
+
+      <Card>
+        <CardBody>
+          <Table
+            columns={tableColumns}
+            rows={users}
+            isLoading={isFetchingUserList}
+            emptyRowsMessage="No users"
+          />
+        </CardBody>
+      </Card>
+    </>
   )
 }

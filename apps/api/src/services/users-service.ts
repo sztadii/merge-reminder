@@ -1,5 +1,5 @@
 import { Database, DatabaseId, UserDatabaseRecord } from '../database'
-import { UserRequest, UserResponse } from '../schemas'
+import { UserCreateRequest, UserResponse, UserUpdateRequest } from '../schemas'
 import { DatabaseService } from './database-service'
 
 export class UsersService extends DatabaseService<UserDatabaseRecord> {
@@ -23,18 +23,40 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
     return this.mapRecordToResponse(record)
   }
 
-  async create(userToCreate: UserRequest): Promise<UserResponse> {
+  async create(userCreateRequest: UserCreateRequest): Promise<UserResponse> {
     const insertedUser = await this.collection.insertOne({
       _id: new DatabaseId(),
-      login: userToCreate.login,
-      role: userToCreate.role,
-      email: userToCreate.email,
+      login: userCreateRequest.login,
+      role: userCreateRequest.role,
+      email: userCreateRequest.email,
       createdAt: new Date()
     })
 
     const createdUser = await this.getById(insertedUser.insertedId.toString())
 
     return createdUser!
+  }
+
+  async update(userUpdateRequest: UserUpdateRequest): Promise<UserResponse> {
+    const user = await this.getById(userUpdateRequest.id)
+
+    if (!user) {
+      throw new Error(`User with ${userUpdateRequest.id} not found!`)
+    }
+
+    await this.collection.updateOne(
+      { _id: new DatabaseId(userUpdateRequest.id) },
+      {
+        $set: {
+          login: userUpdateRequest.login,
+          email: userUpdateRequest.email,
+          role: userUpdateRequest.role,
+          updatedAt: new Date()
+        }
+      }
+    )
+
+    return (await this.getById(user.id))!
   }
 
   async deleteById(id: UserResponse['id']): Promise<void> {

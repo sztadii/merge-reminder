@@ -27,10 +27,12 @@ export class ProjectsService extends DatabaseService<ProjectDatabaseRecord> {
     return this.mapRecordToResponse(record)
   }
 
-  async create(project: ProjectCreateRequest): Promise<ProjectResponse> {
+  async create(
+    projectCreateRequest: ProjectCreateRequest
+  ): Promise<ProjectResponse> {
     const newProject = {
       _id: new DatabaseId(),
-      name: project.name,
+      name: projectCreateRequest.name,
       createdAt: new Date()
     }
 
@@ -39,24 +41,26 @@ export class ProjectsService extends DatabaseService<ProjectDatabaseRecord> {
     return this.mapRecordToResponse(newProject)
   }
 
-  async update(project: ProjectUpdateRequest): Promise<ProjectResponse> {
-    const projectToUpdate = this.getById(project.id)
+  async update(
+    projectUpdateRequest: ProjectUpdateRequest
+  ): Promise<ProjectResponse> {
+    const projectToUpdate = this.getById(projectUpdateRequest.id)
 
     if (!projectToUpdate) {
-      throw new Error(`Project with ${project.id} not found!`)
+      throw new Error(`Project with ${projectUpdateRequest.id} not found!`)
     }
 
     await this.collection.updateOne(
-      { _id: new DatabaseId(project.id) },
+      { _id: new DatabaseId(projectUpdateRequest.id) },
       {
         $set: {
-          name: project.name,
+          name: projectUpdateRequest.name,
           updatedAt: new Date()
         }
       }
     )
 
-    return (await this.getById(project.id))!
+    return (await this.getById(projectUpdateRequest.id))!
   }
 
   async deleteById(id: ProjectResponse['id']): Promise<void> {
