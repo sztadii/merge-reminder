@@ -2,8 +2,6 @@ import { Box } from '@chakra-ui/react'
 import { Redirect, Route, Switch, useParams } from 'wouter'
 
 import { Navigation } from 'src/components/navigation'
-import { Project } from 'src/pages/project'
-import { Projects } from 'src/pages/projects'
 import { Users } from 'src/pages/users'
 
 export function Router() {
@@ -15,10 +13,8 @@ export function Router() {
 
       <Box p={4}>
         <Switch>
-          <Route path={routerPaths.projects.path} component={Projects} />
-          <Route path={routerPaths.project.path} component={Project} />
           <Route path={routerPaths.users.path} component={Users} />
-          <Redirect to={routerPaths.projects.path} />
+          <Redirect to={routerPaths.users.path} />
         </Switch>
       </Box>
     </>
@@ -26,20 +22,17 @@ export function Router() {
 }
 
 export const routerPaths = {
-  projects: {
-    path: '/projects'
+  users: {
+    path: '/users'
   },
-  project: {
-    path: '/projects/:id',
+  user: {
+    path: '/users/:id',
     generateURL(id: string) {
       return replacePathWithParam(this.path, { id })
     },
     getParams() {
       return useParams<{ id: string }>()
     }
-  },
-  users: {
-    path: '/users'
   }
 }
 

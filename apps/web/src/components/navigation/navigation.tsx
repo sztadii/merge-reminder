@@ -11,7 +11,6 @@ export function Navigation() {
     <Box>
       <Flex p={4} alignItems="center" justifyContent="space-between">
         <Flex alignItems="center" gap={8}>
-          <NavLink href={routerPaths.projects.path}>Projects</NavLink>
           <NavLink href={routerPaths.users.path}>Users</NavLink>
         </Flex>
 
