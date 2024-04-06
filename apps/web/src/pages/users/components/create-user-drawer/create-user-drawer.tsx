@@ -24,24 +24,24 @@ import { trpc } from 'src/trpc'
 export function CreateUserDrawer() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [isPending, setIsPending] = useState(false)
-  const [name, setName] = useState<string>()
+  const [login, setLogin] = useState<string>()
   const [email, setEmail] = useState<string>()
   const [role, setRole] = useState<UserRole>()
   const queryClient = useQueryClient()
   const { mutateAsync: createUserMutation } = trpc.users.create.useMutation()
 
   const createUser = async () => {
-    if (!name || !email || !role) return
+    if (!login || !email || !role) return
 
     try {
       setIsPending(true)
       await createUserMutation({
-        name,
+        login,
         email,
         role
       })
       await queryClient.invalidateQueries(getQueryKey(trpc.users.findAll))
-      setName(undefined)
+      setLogin(undefined)
       setRole(undefined)
       setEmail(undefined)
       onClose()
@@ -58,16 +58,12 @@ export function CreateUserDrawer() {
       value: UserRoleSchema.enum.ADMIN
     },
     {
-      name: 'Moderator',
-      value: UserRoleSchema.enum.MODERATOR
-    },
-    {
-      name: 'Translator',
-      value: UserRoleSchema.enum.TRANSLATOR
+      name: 'Client',
+      value: UserRoleSchema.enum.CLIENT
     }
   ]
 
-  const isSaveButtonDisabled = !name || !email || !role
+  const isSaveButtonDisabled = !login || !email || !role
 
   return (
     <>
@@ -80,10 +76,10 @@ export function CreateUserDrawer() {
 
           <DrawerBody>
             <FormControl>
-              <FormLabel>User name</FormLabel>
+              <FormLabel>Login</FormLabel>
               <Input
                 placeholder="Type..."
-                onChange={e => setName(e.target.value)}
+                onChange={e => setLogin(e.target.value)}
               />
             </FormControl>
 

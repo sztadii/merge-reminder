@@ -39,11 +39,11 @@ export function ViewUsersSection() {
   const tableColumns: TableProps<typeof users>['columns'] = useMemo(() => {
     return [
       {
-        id: 'name',
+        id: 'login',
         width: 600,
         rowCellSkeleton: () => <Skeleton>Loading</Skeleton>,
         headingCell: {
-          content: () => 'Name'
+          content: () => 'Login'
         },
         rowCell: {
           content: user => {
@@ -53,7 +53,7 @@ export function ViewUsersSection() {
 
             return (
               <Flex gap={2}>
-                {user.name}
+                {user.login}
                 {isCurrentUserDeleting && (
                   <SpinnerWithLabel label="Deleting" color="red.400" />
                 )}

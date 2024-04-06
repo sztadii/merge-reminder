@@ -26,7 +26,7 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
   async create(userToCreate: UserRequest): Promise<UserResponse> {
     const insertedUser = await this.collection.insertOne({
       _id: new DatabaseId(),
-      name: userToCreate.name,
+      login: userToCreate.login,
       role: userToCreate.role,
       email: userToCreate.email,
       createdAt: new Date()
@@ -44,7 +44,7 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
   protected mapRecordToResponse(user: UserDatabaseRecord): UserResponse {
     return {
       ...super.mapRecordToResponse(user),
-      name: user.name,
+      login: user.login,
       role: user.role,
       email: user.email
     }
