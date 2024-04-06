@@ -28,4 +28,4 @@ PORT=3000
 ## Links
 * [production](https://exmaple.com) URL to our app
 * [deployment](https://exmaple.com) URL to your deployment
-* [database](https://exmaple.com) URL to your database
+* [database](https://cloud.mongodb.com/v2/661119a2fb80c513aef9afcc) URL to your database
