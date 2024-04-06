@@ -1,0 +1,32 @@
+{
+  "name": "web",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "rm -rf dist && parcel build --no-cache",
+    "dev": "parcel --port 4000 --open --no-cache --watch-dir ../../",
+    "check-types": "tsc --noEmit"
+  },
+  "source": "src/index.html",
+  "dependencies": {
+    "@chakra-ui/icons": "^2.1.1",
+    "@chakra-ui/react": "^2.8.2",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.0",
+    "@tanstack/react-query": "^4.36.1",
+    "@trpc/client": "^10.45.1",
+    "@trpc/react-query": "^10.45.1",
+    "framer-motion": "^11.0.8",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "styled-components": "^6.1.8",
+    "wouter": "^3.1.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.64",
+    "@types/react-dom": "^18.2.21",
+    "@types/uuid": "^9.0.8",
+    "parcel": "^2.12.0",
+    "process": "^0.11.10",
+    "typescript": "^5.4.2"
+  }
+}
