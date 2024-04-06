@@ -24,7 +24,7 @@ import { UserResponse } from 'src/schemas'
 import { showErrorToast } from 'src/toasts'
 import { trpc } from 'src/trpc'
 
-import { UpdateUserDrawer } from '../update-user-drawer'
+import { CreateUpdateUserDrawer } from '../create-update-user-drawer'
 
 export function ViewUsersSection() {
   const [user, setUser] = useState<UserResponse | undefined>()
@@ -144,7 +144,7 @@ export function ViewUsersSection() {
 
   return (
     <>
-      <UpdateUserDrawer
+      <CreateUpdateUserDrawer
         user={user}
         isOpen={isOpen}
         onClose={() => {

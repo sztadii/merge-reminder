@@ -26,7 +26,7 @@ type UpdateUserDrawerProps = {
   onClose: () => void
 }
 
-export function UpdateUserDrawer({
+export function CreateUpdateUserDrawer({
   user,
   isOpen,
   onClose
@@ -38,6 +38,7 @@ export function UpdateUserDrawer({
   const [githubAccessToken, setGithubAccessToken] = useState<string>()
   const queryClient = useQueryClient()
   const { mutateAsync: updateUserMutation } = trpc.users.update.useMutation()
+  const { mutateAsync: createUserMutation } = trpc.users.create.useMutation()
 
   useEffect(() => {
     if (!user) return
@@ -61,21 +62,30 @@ export function UpdateUserDrawer({
   }
 
   const createUser = async () => {
-    if (!login || !email || !role || !user || !githubAccessToken) return
+    if (!login || !email || !role || !githubAccessToken) return
 
     try {
       setIsPending(true)
-      await updateUserMutation({
-        id: user.id,
-        login,
-        email,
-        role,
-        githubAccessToken
-      })
+
+      user
+        ? await updateUserMutation({
+            id: user.id,
+            login,
+            email,
+            role,
+            githubAccessToken
+          })
+        : await createUserMutation({
+            login,
+            email,
+            role,
+            githubAccessToken
+          })
       await queryClient.invalidateQueries(getQueryKey(trpc.users.findAll))
       handleOnClose()
     } catch {
-      showErrorToast('Can not update user')
+      const message = user ? 'Can not update user' : 'Can not create user'
+      showErrorToast(message)
     } finally {
       setIsPending(false)
     }
@@ -99,7 +109,7 @@ export function UpdateUserDrawer({
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader>Update user</DrawerHeader>
+        <DrawerHeader>{user ? 'Update user' : 'Create user'}</DrawerHeader>
 
         <DrawerBody>
           <FormControl>
