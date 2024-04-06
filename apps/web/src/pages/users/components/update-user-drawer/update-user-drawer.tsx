@@ -35,6 +35,7 @@ export function UpdateUserDrawer({
   const [login, setLogin] = useState<string>()
   const [email, setEmail] = useState<string>()
   const [role, setRole] = useState<UserRole>()
+  const [githubAccessToken, setGithubAccessToken] = useState<string>()
   const queryClient = useQueryClient()
   const { mutateAsync: updateUserMutation } = trpc.users.update.useMutation()
 
@@ -44,12 +45,14 @@ export function UpdateUserDrawer({
     setLogin(user.login)
     setEmail(user.email)
     setRole(user.role)
+    setGithubAccessToken(user.githubAccessToken)
   }, [user])
 
   const resetUserValues = () => {
     setLogin(undefined)
     setRole(undefined)
     setEmail(undefined)
+    setGithubAccessToken(undefined)
   }
 
   const handleOnClose = () => {
@@ -58,7 +61,7 @@ export function UpdateUserDrawer({
   }
 
   const createUser = async () => {
-    if (!login || !email || !role || !user) return
+    if (!login || !email || !role || !user || !githubAccessToken) return
 
     try {
       setIsPending(true)
@@ -66,7 +69,8 @@ export function UpdateUserDrawer({
         id: user.id,
         login,
         email,
-        role
+        role,
+        githubAccessToken
       })
       await queryClient.invalidateQueries(getQueryKey(trpc.users.findAll))
       handleOnClose()
@@ -95,7 +99,7 @@ export function UpdateUserDrawer({
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader>Create new user</DrawerHeader>
+        <DrawerHeader>Update user</DrawerHeader>
 
         <DrawerBody>
           <FormControl>
@@ -133,6 +137,15 @@ export function UpdateUserDrawer({
                 )
               })}
             </Select>
+          </FormControl>
+
+          <FormControl mt={4}>
+            <FormLabel>Github access token</FormLabel>
+            <Input
+              defaultValue={githubAccessToken}
+              placeholder="Type..."
+              onChange={e => setGithubAccessToken(e.target.value)}
+            />
           </FormControl>
         </DrawerBody>
 

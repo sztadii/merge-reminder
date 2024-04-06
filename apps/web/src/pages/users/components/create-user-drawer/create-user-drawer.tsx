@@ -27,23 +27,30 @@ export function CreateUserDrawer() {
   const [login, setLogin] = useState<string>()
   const [email, setEmail] = useState<string>()
   const [role, setRole] = useState<UserRole>()
+  const [githubAccessToken, setGithubAccessToken] = useState<string>()
   const queryClient = useQueryClient()
   const { mutateAsync: createUserMutation } = trpc.users.create.useMutation()
 
+  const resetUserValues = () => {
+    setLogin(undefined)
+    setRole(undefined)
+    setEmail(undefined)
+    setGithubAccessToken(undefined)
+  }
+
   const createUser = async () => {
-    if (!login || !email || !role) return
+    if (!login || !email || !role || !githubAccessToken) return
 
     try {
       setIsPending(true)
       await createUserMutation({
         login,
         email,
-        role
+        role,
+        githubAccessToken
       })
       await queryClient.invalidateQueries(getQueryKey(trpc.users.findAll))
-      setLogin(undefined)
-      setRole(undefined)
-      setEmail(undefined)
+      resetUserValues()
       onClose()
     } catch {
       showErrorToast('Can not create user')
@@ -108,6 +115,14 @@ export function CreateUserDrawer() {
                   )
                 })}
               </Select>
+            </FormControl>
+
+            <FormControl mt={4}>
+              <FormLabel>Github access token</FormLabel>
+              <Input
+                placeholder="Type..."
+                onChange={e => setGithubAccessToken(e.target.value)}
+              />
             </FormControl>
           </DrawerBody>
 

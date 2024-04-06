@@ -29,6 +29,7 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
       login: userCreateRequest.login,
       role: userCreateRequest.role,
       email: userCreateRequest.email,
+      githubAccessToken: userCreateRequest.githubAccessToken,
       createdAt: new Date()
     })
 
@@ -51,6 +52,7 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
           login: userUpdateRequest.login,
           email: userUpdateRequest.email,
           role: userUpdateRequest.role,
+          githubAccessToken: userUpdateRequest.githubAccessToken,
           updatedAt: new Date()
         }
       }
@@ -68,7 +70,8 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
       ...super.mapRecordToResponse(user),
       login: user.login,
       role: user.role,
-      email: user.email
+      email: user.email,
+      githubAccessToken: user.githubAccessToken
     }
   }
 }

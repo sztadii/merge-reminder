@@ -10,4 +10,4 @@ export type ProjectDatabaseRecord = DatabaseRecord &
   Pick<ProjectResponse, 'name'>
 
 export type UserDatabaseRecord = DatabaseRecord &
-  Pick<UserResponse, 'login' | 'role' | 'email'>
+  Pick<UserResponse, 'login' | 'role' | 'email' | 'githubAccessToken'>

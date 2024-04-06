@@ -8,7 +8,8 @@ export type UserRole = z.infer<typeof UserRoleSchema>
 export const UserResponseSchema = ResponseSchema.extend({
   login: z.string(),
   role: UserRoleSchema,
-  email: z.string().email()
+  email: z.string().email(),
+  githubAccessToken: z.string()
 })
 
 export const UsersListResponseSchema = z.array(UserResponseSchema)
@@ -16,7 +17,8 @@ export const UsersListResponseSchema = z.array(UserResponseSchema)
 export const UserCreateRequestSchema = UserResponseSchema.pick({
   login: true,
   role: true,
-  email: true
+  email: true,
+  githubAccessToken: true
 })
 
 export const UserUpdateRequestSchema = UpdateRequestSchema.merge(
