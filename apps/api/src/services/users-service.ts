@@ -1,6 +1,13 @@
 import { Database, DatabaseId, UserDatabaseRecord } from '../database'
-import { UserCreateRequest, UserResponse, UserUpdateRequest } from '../schemas'
+import {
+  Reminder,
+  UserCreateRequest,
+  UserResponse,
+  UserUpdateRequest
+} from '../schemas'
 import { DatabaseService } from './database-service'
+import { GithubService } from './github-service'
+import { MergeReminderService } from './merge-reminder-service'
 
 export class UsersService extends DatabaseService<UserDatabaseRecord> {
   constructor(database: Database) {
@@ -13,12 +20,14 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
     return records.map(this.mapRecordToResponse)
   }
 
-  async getById(id: UserResponse['id']): Promise<UserResponse | null> {
+  async getById(id: UserResponse['id']): Promise<UserResponse> {
     const record = await this.collection.findOne({
       _id: new DatabaseId(id)
     })
 
-    if (!record) return null
+    if (!record) {
+      throw new Error(`User with ${id} not found!`)
+    }
 
     return this.mapRecordToResponse(record)
   }
@@ -35,15 +44,11 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
 
     const createdUser = await this.getById(insertedUser.insertedId.toString())
 
-    return createdUser!
+    return createdUser
   }
 
   async update(userUpdateRequest: UserUpdateRequest): Promise<UserResponse> {
     const user = await this.getById(userUpdateRequest.id)
-
-    if (!user) {
-      throw new Error(`User with ${userUpdateRequest.id} not found!`)
-    }
 
     await this.collection.updateOne(
       { _id: new DatabaseId(userUpdateRequest.id) },
@@ -58,11 +63,26 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
       }
     )
 
-    return (await this.getById(user.id))!
+    return await this.getById(user.id)
   }
 
   async deleteById(id: UserResponse['id']): Promise<void> {
     await this.collection.deleteOne({ _id: new DatabaseId(id) })
+  }
+
+  async getUserReminder(id: UserResponse['id']): Promise<Reminder> {
+    const user = await this.getById(id)
+
+    const mergeReminderService = new MergeReminderService(
+      {
+        headBranch: 'master',
+        baseBranch: 'develop',
+        organization: 'AlefEducation'
+      },
+      new GithubService(user.githubAccessToken)
+    )
+
+    return await mergeReminderService.getReminder()
   }
 
   protected mapRecordToResponse(user: UserDatabaseRecord): UserResponse {

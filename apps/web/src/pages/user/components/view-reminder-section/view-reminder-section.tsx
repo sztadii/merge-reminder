@@ -4,32 +4,27 @@ import { Text } from 'src/components/text'
 import { routerPaths } from 'src/router'
 import { trpc } from 'src/trpc'
 
-export function ViewUserSection() {
+export function ViewReminderSection() {
   const params = routerPaths.user.getParams()
 
-  const { data: user, isLoading: isLoadingUser } = trpc.users.getById.useQuery(
-    params.id
-  )
+  const { data: reminder, isLoading: isLoadingReminder } =
+    trpc.users.getUserReminder.useQuery(params.id)
 
   return (
     <>
       <Card>
         <CardBody>
-          {isLoadingUser && (
+          {isLoadingReminder && (
             <Text>
               <Skeleton display="inline">Loading</Skeleton>
             </Text>
           )}
 
-          {!isLoadingUser && !user && (
-            <Text>No user with the {params.id} ID</Text>
+          {!isLoadingReminder && !reminder && (
+            <Text>No reminder with the {params.id} ID</Text>
           )}
 
-          {user && (
-            <Text>
-              {user.login} {user.email} {user.githubAccessToken}
-            </Text>
-          )}
+          {reminder && <Text>{reminder}</Text>}
         </CardBody>
       </Card>
     </>

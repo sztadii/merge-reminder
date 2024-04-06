@@ -12,6 +12,8 @@ export const UserResponseSchema = ResponseSchema.extend({
   githubAccessToken: z.string()
 })
 
+export const ReminderSchema = z.string()
+
 export const UsersListResponseSchema = z.array(UserResponseSchema)
 
 export const UserCreateRequestSchema = UserResponseSchema.pick({
@@ -26,5 +28,6 @@ export const UserUpdateRequestSchema = UpdateRequestSchema.merge(
 )
 
 export type UserResponse = z.infer<typeof UserResponseSchema>
+export type Reminder = z.infer<typeof ReminderSchema>
 export type UserCreateRequest = z.infer<typeof UserCreateRequestSchema>
 export type UserUpdateRequest = z.infer<typeof UserUpdateRequestSchema>
