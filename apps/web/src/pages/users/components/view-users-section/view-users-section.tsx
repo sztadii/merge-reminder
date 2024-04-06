@@ -1,4 +1,5 @@
 import {
+  Button,
   Card,
   CardBody,
   Flex,
@@ -12,11 +13,13 @@ import {
 import { useQueryClient } from '@tanstack/react-query'
 import { getQueryKey } from '@trpc/react-query'
 import { useMemo, useState } from 'react'
+import { Link } from 'wouter'
 
 import { Icon } from 'src/components/icon'
 import { SpinnerWithLabel } from 'src/components/spinner-with-label/spinner-with-label'
 import { Table, TableProps } from 'src/components/table'
 import { usePendingMutationVariables } from 'src/hooks/use-pending-mutations-variables'
+import { routerPaths } from 'src/router'
 import { UserResponse } from 'src/schemas'
 import { showErrorToast } from 'src/toasts'
 import { trpc } from 'src/trpc'
@@ -59,7 +62,17 @@ export function ViewUsersSection() {
 
             return (
               <Flex gap={2}>
-                {user.login}
+                <Button
+                  mt={1}
+                  as={Link}
+                  to={routerPaths.user.generateURL(user.id)}
+                  variant="link"
+                  rightIcon={<Icon variant="chevronRight" />}
+                  isActive
+                >
+                  {user.login}
+                </Button>
+
                 {isCurrentUserDeleting && (
                   <SpinnerWithLabel label="Deleting" color="red.400" />
                 )}

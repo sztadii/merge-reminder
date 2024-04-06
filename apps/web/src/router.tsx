@@ -2,6 +2,7 @@ import { Box } from '@chakra-ui/react'
 import { Redirect, Route, Switch, useParams } from 'wouter'
 
 import { Navigation } from 'src/components/navigation'
+import { User } from 'src/pages/user'
 import { Users } from 'src/pages/users'
 
 export function Router() {
@@ -13,6 +14,7 @@ export function Router() {
 
       <Box p={4}>
         <Switch>
+          <Route path={routerPaths.user.path} component={User} />
           <Route path={routerPaths.users.path} component={Users} />
           <Redirect to={routerPaths.users.path} />
         </Switch>
