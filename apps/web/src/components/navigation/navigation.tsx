@@ -5,7 +5,7 @@ import { NavLink } from 'src/components/nav-link'
 import { routerPaths } from 'src/router'
 
 export function Navigation() {
-  const { toggleColorMode } = useColorMode()
+  const { toggleColorMode, colorMode } = useColorMode()
 
   return (
     <Box>
@@ -18,7 +18,7 @@ export function Navigation() {
           aria-label="toggle theme"
           size="sm"
           onClick={toggleColorMode}
-          icon={<Icon variant="moon" />}
+          icon={<Icon variant={colorMode === 'light' ? 'moon' : 'sun'} />}
         />
       </Flex>
 
