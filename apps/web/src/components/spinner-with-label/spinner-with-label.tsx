@@ -4,7 +4,7 @@ import { Text } from 'src/components/text'
 
 type SpinnerWithLabelProps = {
   label: string
-  color: SpinnerProps['color']
+  color?: SpinnerProps['color']
   size?: SpinnerProps['size']
 }
 
