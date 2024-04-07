@@ -15,9 +15,11 @@ import { getQueryKey } from '@trpc/react-query'
 import { useMemo, useState } from 'react'
 import { Link } from 'wouter'
 
+import { Confirmation } from 'src/components/confirmation'
 import { Icon } from 'src/components/icon'
 import { SpinnerWithLabel } from 'src/components/spinner-with-label/spinner-with-label'
 import { Table, TableProps } from 'src/components/table'
+import { Text } from 'src/components/text'
 import { usePendingMutationVariables } from 'src/hooks/use-pending-mutations-variables'
 import { routerPaths } from 'src/router'
 import { UserResponse } from 'src/schemas'
@@ -28,7 +30,19 @@ import { CreateUpdateUserDrawer } from '../create-update-user-drawer'
 
 export function ViewUsersSection() {
   const [user, setUser] = useState<UserResponse | undefined>()
-  const { isOpen, onOpen, onClose } = useDisclosure()
+
+  const {
+    isOpen: isOpenCreateUpdateDrawer,
+    onOpen: onOpenCreateUpdateDrawer,
+    onClose: onCloseCreateUpdateDrawer
+  } = useDisclosure()
+
+  const {
+    isOpen: isOpenDeleteConfirmation,
+    onOpen: onOpenDeleteConfirmation,
+    onClose: onCloseDeleteConfirmation
+  } = useDisclosure()
+
   const queryClient = useQueryClient()
 
   const pendingMutationVariables = usePendingMutationVariables()
@@ -36,14 +50,21 @@ export function ViewUsersSection() {
   const { data: users = [], isLoading: isFetchingUserList } =
     trpc.users.findAll.useQuery()
 
-  const { mutateAsync: deleteUser } = trpc.users.deleteById.useMutation({
-    async onSuccess() {
+  const { mutateAsync: deleteUserMutation } =
+    trpc.users.deleteById.useMutation()
+
+  const deleteUser = async () => {
+    if (!user) return
+
+    onCloseDeleteConfirmation()
+
+    try {
+      await deleteUserMutation(user.id)
       await queryClient.invalidateQueries(getQueryKey(trpc.users.findAll))
-    },
-    onError() {
+    } catch {
       showErrorToast('Can not delete user')
     }
-  })
+  }
 
   const tableColumns: TableProps<typeof users>['columns'] = useMemo(() => {
     return [
@@ -122,16 +143,22 @@ export function ViewUsersSection() {
                   <Icon variant="chevronDown" size="sm" />
                 </MenuButton>
                 <MenuList>
-                  <MenuItem onClick={() => deleteUser(user.id)}>
-                    Delete user
-                  </MenuItem>
                   <MenuItem
                     onClick={() => {
                       setUser(user)
-                      onOpen()
+                      onOpenCreateUpdateDrawer()
                     }}
                   >
                     Edit
+                  </MenuItem>
+
+                  <MenuItem
+                    onClick={() => {
+                      setUser(user)
+                      onOpenDeleteConfirmation()
+                    }}
+                  >
+                    Delete user
                   </MenuItem>
                 </MenuList>
               </Menu>
@@ -146,10 +173,30 @@ export function ViewUsersSection() {
     <>
       <CreateUpdateUserDrawer
         user={user}
-        isOpen={isOpen}
+        isOpen={isOpenCreateUpdateDrawer}
         onClose={() => {
           setUser(undefined)
-          onClose()
+          onCloseCreateUpdateDrawer()
+        }}
+      />
+
+      <Confirmation
+        isOpen={isOpenDeleteConfirmation}
+        onClose={() => {
+          setUser(undefined)
+          onCloseDeleteConfirmation()
+        }}
+        title="Delete"
+        description={
+          <>
+            Are you sure you want delete{' '}
+            <Text fontWeight={700}>{user?.login}</Text>?
+          </>
+        }
+        confirmButton={{
+          name: 'Delete',
+          onClick: deleteUser,
+          colorScheme: 'red'
         }}
       />
 
