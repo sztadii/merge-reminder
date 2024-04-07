@@ -13,7 +13,8 @@ import {
   FormLabel,
   Input,
   Select,
-  Tag
+  Tag,
+  Textarea
 } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { getQueryKey } from '@trpc/react-query'
@@ -162,7 +163,7 @@ export function CreateUpdateUserDrawer({
 
           <FormControl mt={4}>
             <FormLabel>Github access token</FormLabel>
-            <Input
+            <Textarea
               defaultValue={formValues?.githubAccessToken}
               placeholder="Type..."
               onChange={e =>
