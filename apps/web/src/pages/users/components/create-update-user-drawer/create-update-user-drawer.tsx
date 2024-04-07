@@ -7,10 +7,13 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
+  Flex,
   FormControl,
+  FormHelperText,
   FormLabel,
   Input,
-  Select
+  Select,
+  Tag
 } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { getQueryKey } from '@trpc/react-query'
@@ -26,34 +29,37 @@ type UpdateUserDrawerProps = {
   onClose: () => void
 }
 
+type FormValuesRequired = Omit<UserResponse, 'id' | 'createdAt' | 'updatedAt'>
+type FormValuesInitial = Partial<FormValuesRequired>
+
 export function CreateUpdateUserDrawer({
   user,
   isOpen,
   onClose
 }: UpdateUserDrawerProps) {
   const [isPending, setIsPending] = useState(false)
-  const [login, setLogin] = useState<string>()
-  const [email, setEmail] = useState<string>()
-  const [role, setRole] = useState<UserRole>()
-  const [githubAccessToken, setGithubAccessToken] = useState<string>()
+  const [formValues, setFormValues] = useState<FormValuesInitial | undefined>()
   const queryClient = useQueryClient()
   const { mutateAsync: updateUserMutation } = trpc.users.update.useMutation()
   const { mutateAsync: createUserMutation } = trpc.users.create.useMutation()
 
+  const hasMissingFormValues =
+    !formValues?.login ||
+    !formValues?.email ||
+    !formValues?.role ||
+    !formValues?.githubAccessToken ||
+    !formValues?.githubOrganization ||
+    !formValues?.headBranch ||
+    !formValues?.baseBranch
+
   useEffect(() => {
     if (!user) return
 
-    setLogin(user.login)
-    setEmail(user.email)
-    setRole(user.role)
-    setGithubAccessToken(user.githubAccessToken)
+    setFormValues(user)
   }, [user])
 
   const resetUserValues = () => {
-    setLogin(undefined)
-    setRole(undefined)
-    setEmail(undefined)
-    setGithubAccessToken(undefined)
+    setFormValues(undefined)
   }
 
   const handleOnClose = () => {
@@ -62,25 +68,19 @@ export function CreateUpdateUserDrawer({
   }
 
   const createUser = async () => {
-    if (!login || !email || !role || !githubAccessToken) return
+    if (hasMissingFormValues) return
+
+    const formValuesToSend = formValues as FormValuesRequired
 
     try {
       setIsPending(true)
 
       user
         ? await updateUserMutation({
-            id: user.id,
-            login,
-            email,
-            role,
-            githubAccessToken
+            ...formValuesToSend,
+            id: user.id
           })
-        : await createUserMutation({
-            login,
-            email,
-            role,
-            githubAccessToken
-          })
+        : await createUserMutation(formValuesToSend)
       await queryClient.invalidateQueries(getQueryKey(trpc.users.findAll))
       handleOnClose()
     } catch {
@@ -102,8 +102,6 @@ export function CreateUpdateUserDrawer({
     }
   ]
 
-  const isSaveButtonDisabled = !login || !email || !role
-
   return (
     <Drawer isOpen={isOpen} placement="right" onClose={handleOnClose}>
       <DrawerOverlay />
@@ -115,18 +113,28 @@ export function CreateUpdateUserDrawer({
           <FormControl>
             <FormLabel>Login</FormLabel>
             <Input
-              defaultValue={login}
+              defaultValue={formValues?.login}
               placeholder="Type..."
-              onChange={e => setLogin(e.target.value)}
+              onChange={e =>
+                setFormValues({
+                  ...formValues,
+                  login: e.target.value
+                })
+              }
             />
           </FormControl>
 
           <FormControl mt={4}>
             <FormLabel>User email</FormLabel>
             <Input
-              defaultValue={email}
+              defaultValue={formValues?.email}
               placeholder="Type..."
-              onChange={e => setEmail(e.target.value)}
+              onChange={e =>
+                setFormValues({
+                  ...formValues,
+                  email: e.target.value
+                })
+              }
             />
           </FormControl>
 
@@ -134,9 +142,12 @@ export function CreateUpdateUserDrawer({
             <FormLabel>Role</FormLabel>
             <Select
               placeholder="Select option..."
-              value={role}
+              value={formValues?.role}
               onChange={e => {
-                setRole(e.target.value as UserRole)
+                setFormValues({
+                  ...formValues,
+                  role: e.target.value as UserRole
+                })
               }}
             >
               {selectOptions.map(option => {
@@ -152,10 +163,69 @@ export function CreateUpdateUserDrawer({
           <FormControl mt={4}>
             <FormLabel>Github access token</FormLabel>
             <Input
-              defaultValue={githubAccessToken}
+              defaultValue={formValues?.githubAccessToken}
               placeholder="Type..."
-              onChange={e => setGithubAccessToken(e.target.value)}
+              onChange={e =>
+                setFormValues({
+                  ...formValues,
+                  githubAccessToken: e.target.value
+                })
+              }
             />
+          </FormControl>
+
+          <FormControl mt={4}>
+            <FormLabel>Github organization</FormLabel>
+            <Input
+              defaultValue={formValues?.githubOrganization}
+              placeholder="Type..."
+              onChange={e =>
+                setFormValues({
+                  ...formValues,
+                  githubOrganization: e.target.value
+                })
+              }
+            />
+          </FormControl>
+
+          <FormControl mt={4}>
+            <FormLabel>Head branch</FormLabel>
+            <Input
+              defaultValue={formValues?.headBranch}
+              placeholder="Type..."
+              onChange={e =>
+                setFormValues({
+                  ...formValues,
+                  headBranch: e.target.value
+                })
+              }
+            />
+
+            <FormHelperText>Usually is the production branch:</FormHelperText>
+
+            <Flex alignItems="center" gap={2} mt={2}>
+              <Tag>master</Tag> <Tag>main</Tag>
+            </Flex>
+          </FormControl>
+
+          <FormControl mt={4}>
+            <FormLabel>Base branch</FormLabel>
+            <Input
+              defaultValue={formValues?.baseBranch}
+              placeholder="Type..."
+              onChange={e =>
+                setFormValues({
+                  ...formValues,
+                  baseBranch: e.target.value
+                })
+              }
+            />
+
+            <FormHelperText>Usually is the development branch:</FormHelperText>
+
+            <Flex alignItems="center" gap={2} mt={2}>
+              <Tag>develop</Tag>
+            </Flex>
           </FormControl>
         </DrawerBody>
 
@@ -165,7 +235,7 @@ export function CreateUpdateUserDrawer({
           </Button>
           <Button
             isLoading={isPending}
-            isDisabled={isSaveButtonDisabled}
+            isDisabled={hasMissingFormValues}
             onClick={createUser}
           >
             Save

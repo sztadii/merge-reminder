@@ -7,4 +7,13 @@ export type DatabaseRecord = {
 }
 
 export type UserDatabaseRecord = DatabaseRecord &
-  Pick<UserResponse, 'login' | 'role' | 'email' | 'githubAccessToken'>
+  Pick<
+    UserResponse,
+    | 'login'
+    | 'role'
+    | 'email'
+    | 'githubAccessToken'
+    | 'githubOrganization'
+    | 'headBranch'
+    | 'baseBranch'
+  >

@@ -11,9 +11,9 @@ export class RemindersService {
 
     const mergeReminderService = new MergeReminderService(
       {
-        headBranch: 'master',
-        baseBranch: 'develop',
-        organization: 'AlefEducation'
+        headBranch: user.baseBranch,
+        baseBranch: user.baseBranch,
+        organization: user.githubOrganization
       },
       new GithubService(user.githubAccessToken)
     )

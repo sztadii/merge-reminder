@@ -9,7 +9,10 @@ export const UserResponseSchema = ResponseSchema.extend({
   login: z.string(),
   role: UserRoleSchema,
   email: z.string().email(),
-  githubAccessToken: z.string()
+  githubAccessToken: z.string(),
+  githubOrganization: z.string(),
+  headBranch: z.string(),
+  baseBranch: z.string()
 })
 
 export const ReminderSchema = z.string()
@@ -20,7 +23,10 @@ export const UserCreateRequestSchema = UserResponseSchema.pick({
   login: true,
   role: true,
   email: true,
-  githubAccessToken: true
+  githubAccessToken: true,
+  githubOrganization: true,
+  headBranch: true,
+  baseBranch: true
 })
 
 export const UserUpdateRequestSchema = UpdateRequestSchema.merge(

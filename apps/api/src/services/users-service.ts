@@ -28,11 +28,14 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
   async create(userCreateRequest: UserCreateRequest): Promise<UserResponse> {
     const insertedUser = await this.collection.insertOne({
       _id: new DatabaseId(),
+      createdAt: new Date(),
       login: userCreateRequest.login,
       role: userCreateRequest.role,
       email: userCreateRequest.email,
       githubAccessToken: userCreateRequest.githubAccessToken,
-      createdAt: new Date()
+      githubOrganization: userCreateRequest.githubOrganization,
+      headBranch: userCreateRequest.headBranch,
+      baseBranch: userCreateRequest.baseBranch
     })
 
     return this.getById(insertedUser.insertedId.toString())
@@ -45,11 +48,14 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
       { _id: new DatabaseId(userUpdateRequest.id) },
       {
         $set: {
+          updatedAt: new Date(),
           login: userUpdateRequest.login,
           email: userUpdateRequest.email,
           role: userUpdateRequest.role,
           githubAccessToken: userUpdateRequest.githubAccessToken,
-          updatedAt: new Date()
+          githubOrganization: userUpdateRequest.githubAccessToken,
+          headBranch: userUpdateRequest.headBranch,
+          baseBranch: userUpdateRequest.baseBranch
         }
       }
     )
@@ -67,7 +73,10 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
       login: user.login,
       role: user.role,
       email: user.email,
-      githubAccessToken: user.githubAccessToken
+      githubAccessToken: user.githubAccessToken,
+      githubOrganization: user.githubOrganization,
+      headBranch: user.headBranch,
+      baseBranch: user.baseBranch
     }
   }
 }
