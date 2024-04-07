@@ -30,15 +30,15 @@ export class MergeReminderService {
     )
 
     if (error?.status === 401) {
-      return 'Your access token got expired :('
+      return 'Your access token is wrong or get expired.'
     }
 
     if (error) {
-      return 'Something went wrong during fetching organization repos :('
+      return 'Something went wrong during fetching organization repos.'
     }
 
     if (!allOrganizationRepos || allOrganizationRepos.length === 0) {
-      return 'Organization do not have any repos :('
+      return 'Organization do not have any repos.'
     }
 
     const infosFromAffectedBranches =
@@ -48,7 +48,7 @@ export class MergeReminderService {
       return this.prepareMessage(infosFromAffectedBranches)
     }
 
-    return 'All your repos are looking well. Good job team :)'
+    return 'All your repos are looking well. Good job team!'
   }
 
   private async getInfosFromAffectedBranches(
