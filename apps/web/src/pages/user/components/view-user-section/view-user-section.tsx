@@ -1,4 +1,4 @@
-import { Card, CardBody, Skeleton } from '@chakra-ui/react'
+import { Box, Card, CardBody, SimpleGrid, Skeleton } from '@chakra-ui/react'
 
 import { Text } from 'src/components/text'
 import { routerPaths } from 'src/router'
@@ -11,14 +11,59 @@ export function ViewUserSection() {
     params.id
   )
 
+  const details = [
+    {
+      heading: 'Role',
+      text: user?.role
+    },
+    {
+      heading: 'Email',
+      text: user?.email
+    },
+    {
+      heading: 'Github login',
+      text: user?.githubLogin
+    },
+    {
+      heading: 'Github organization',
+      text: user?.githubOrganization
+    },
+    {
+      heading: 'Head branch',
+      text: user?.headBranch
+    },
+    {
+      heading: 'Base branch',
+      text: user?.baseBranch
+    },
+    {
+      heading: 'Github access token',
+      text: user?.githubAccessToken
+    }
+  ]
+
   return (
     <>
       <Card>
         <CardBody>
           {isLoadingUser && (
-            <Text>
-              <Skeleton display="inline">Loading</Skeleton>
-            </Text>
+            <SimpleGrid columns={4} spacing={8}>
+              {details.map(detail => {
+                return (
+                  <Box key={detail.heading}>
+                    <Box>
+                      <Text fontSize="xs" color="gray.400">
+                        <Skeleton>Loading</Skeleton>
+                      </Text>
+                    </Box>
+
+                    <Text>
+                      <Skeleton>Loading</Skeleton>
+                    </Text>
+                  </Box>
+                )
+              })}
+            </SimpleGrid>
           )}
 
           {!isLoadingUser && !user && (
@@ -26,9 +71,21 @@ export function ViewUserSection() {
           )}
 
           {user && (
-            <Text>
-              {user.githubLogin} {user.email} {user.githubAccessToken}
-            </Text>
+            <SimpleGrid columns={4} spacing={8}>
+              {details.map(detail => {
+                return (
+                  <Box key={detail.heading}>
+                    <Box>
+                      <Text fontSize="xs" color="gray.400">
+                        {detail.heading}:
+                      </Text>
+                    </Box>
+
+                    <Text>{detail.text}</Text>
+                  </Box>
+                )
+              })}
+            </SimpleGrid>
           )}
         </CardBody>
       </Card>
