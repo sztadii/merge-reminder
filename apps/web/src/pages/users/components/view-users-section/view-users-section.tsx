@@ -84,12 +84,12 @@ export function ViewUsersSection() {
             return (
               <Flex gap={2}>
                 <Button
-                  mt={1}
                   as={Link}
                   to={routerPaths.user.generateURL(user.id)}
                   variant="link"
                   rightIcon={<Icon variant="chevronRight" />}
                   isActive
+                  size="sm"
                 >
                   {user.githubLogin}
                 </Button>
