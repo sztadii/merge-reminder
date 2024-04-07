@@ -2,15 +2,24 @@ export async function wait(delay: number) {
   return new Promise(resolve => setTimeout(resolve, delay))
 }
 
+type HandlePromiseError = {
+  message: string
+  status?: number
+}
+
 export async function handlePromise<T>(
   promise: Promise<T>
-): Promise<[T?, string?]> {
+): Promise<[T?, HandlePromiseError?]> {
   try {
     const value = await promise
     return [value]
   } catch (e) {
-    const errorMessage = (e as Error)?.message || 'Something went wrong'
-    return [undefined, errorMessage]
+    const err = e as HandlePromiseError
+    const error = {
+      message: err.message || 'Something went wrong',
+      status: err.status
+    }
+    return [undefined, error]
   }
 }
 

@@ -29,6 +29,10 @@ export class MergeReminderService {
       this.githubService.getAllOrganizationRepos(this.config.organization)
     )
 
+    if (error?.status === 401) {
+      return 'Your access token got expired :('
+    }
+
     if (error) {
       return 'Something went wrong during fetching organization repos :('
     }
