@@ -9,11 +9,8 @@ export function Users() {
   return (
     <>
       <Button onClick={onOpen}>Create</Button>
-
       <CreateUpdateUserDrawer isOpen={isOpen} onClose={onClose} />
-
       <Divider my={4} />
-
       <ViewUsersSection />
     </>
   )

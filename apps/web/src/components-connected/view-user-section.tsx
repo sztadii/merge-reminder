@@ -1,15 +1,10 @@
 import { Box, Card, CardBody, SimpleGrid, Skeleton } from '@chakra-ui/react'
 
 import { Text } from 'src/components/text'
-import { routerPaths } from 'src/router'
-import { trpc } from 'src/trpc'
+import { useUserFromUrl } from 'src/hooks/use-user-from-url'
 
 export function ViewUserSection() {
-  const params = routerPaths.user.getParams()
-
-  const { data: user, isLoading: isLoadingUser } = trpc.users.getById.useQuery(
-    params.id
-  )
+  const { data: user, isLoading: isLoadingUser } = useUserFromUrl()
 
   const details = [
     {
@@ -70,9 +65,7 @@ export function ViewUserSection() {
             </SimpleGrid>
           )}
 
-          {!isLoadingUser && !user && (
-            <Text>No user with the {params.id} ID</Text>
-          )}
+          {!isLoadingUser && !user && <Text>No user with the selected ID</Text>}
 
           {user && (
             <SimpleGrid columns={4} spacing={8}>

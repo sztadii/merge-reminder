@@ -83,6 +83,7 @@ export function CreateUpdateUserDrawer({
           })
         : await createUserMutation(formValuesToSend)
       await queryClient.invalidateQueries(getQueryKey(trpc.users.findAll))
+      await queryClient.invalidateQueries(getQueryKey(trpc.users.getById))
       handleOnClose()
     } catch {
       const message = user ? 'Can not update user' : 'Can not create user'
