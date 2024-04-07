@@ -1,7 +1,7 @@
 import { Button, Divider, useDisclosure } from '@chakra-ui/react'
 
-import { CreateUpdateUserDrawer } from './components/create-update-user-drawer'
-import { ViewUsersSection } from './components/view-users-section'
+import { CreateUpdateUserDrawer } from 'src/components-connected/create-update-user-drawer'
+import { ViewUsersSection } from 'src/components-connected/view-users-section'
 
 export function Users() {
   const { isOpen, onOpen, onClose } = useDisclosure()
