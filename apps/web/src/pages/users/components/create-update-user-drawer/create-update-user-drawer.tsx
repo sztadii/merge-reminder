@@ -202,7 +202,7 @@ export function CreateUpdateUserDrawer({
               }
             />
 
-            <FormHelperText>Usually is the production branch:</FormHelperText>
+            <FormHelperText>Usually the production branch:</FormHelperText>
 
             <Flex alignItems="center" gap={2} mt={2}>
               <Button
@@ -243,7 +243,7 @@ export function CreateUpdateUserDrawer({
               }
             />
 
-            <FormHelperText>Usually is the development branch:</FormHelperText>
+            <FormHelperText>Usually the development branch:</FormHelperText>
 
             <Flex alignItems="center" gap={2} mt={2}>
               <Button
