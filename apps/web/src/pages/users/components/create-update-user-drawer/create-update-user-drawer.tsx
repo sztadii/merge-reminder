@@ -112,34 +112,6 @@ export function CreateUpdateUserDrawer({
 
         <DrawerBody>
           <FormControl>
-            <FormLabel>Login</FormLabel>
-            <Input
-              defaultValue={formValues?.login}
-              placeholder="Type..."
-              onChange={e =>
-                setFormValues({
-                  ...formValues,
-                  login: e.target.value
-                })
-              }
-            />
-          </FormControl>
-
-          <FormControl mt={4}>
-            <FormLabel>User email</FormLabel>
-            <Input
-              defaultValue={formValues?.email}
-              placeholder="Type..."
-              onChange={e =>
-                setFormValues({
-                  ...formValues,
-                  email: e.target.value
-                })
-              }
-            />
-          </FormControl>
-
-          <FormControl mt={4}>
             <FormLabel>Role</FormLabel>
             <Select
               placeholder="Select option..."
@@ -159,6 +131,34 @@ export function CreateUpdateUserDrawer({
                 )
               })}
             </Select>
+          </FormControl>
+
+          <FormControl mt={4}>
+            <FormLabel>User email</FormLabel>
+            <Input
+              defaultValue={formValues?.email}
+              placeholder="Type..."
+              onChange={e =>
+                setFormValues({
+                  ...formValues,
+                  email: e.target.value
+                })
+              }
+            />
+          </FormControl>
+
+          <FormControl mt={4}>
+            <FormLabel>Login</FormLabel>
+            <Input
+              defaultValue={formValues?.login}
+              placeholder="Type..."
+              onChange={e =>
+                setFormValues({
+                  ...formValues,
+                  login: e.target.value
+                })
+              }
+            />
           </FormControl>
 
           <FormControl mt={4}>
