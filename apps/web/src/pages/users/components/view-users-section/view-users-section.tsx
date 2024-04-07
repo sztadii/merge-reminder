@@ -70,7 +70,7 @@ export function ViewUsersSection() {
     return [
       {
         id: 'login',
-        width: 600,
+        width: 300,
         rowCellSkeleton: () => <Skeleton>Loading</Skeleton>,
         headingCell: {
           content: () => 'Login'
@@ -104,7 +104,7 @@ export function ViewUsersSection() {
       },
       {
         id: 'email',
-        width: 600,
+        width: 300,
         rowCellSkeleton: () => <Skeleton>Loading</Skeleton>,
         headingCell: {
           content: () => 'Email'
@@ -115,13 +115,24 @@ export function ViewUsersSection() {
       },
       {
         id: 'role',
-        width: 200,
+        width: 300,
         rowCellSkeleton: () => <Skeleton>Loading</Skeleton>,
         headingCell: {
           content: () => 'Role'
         },
         rowCell: {
           content: user => user.role
+        }
+      },
+      {
+        id: 'githubOrganization',
+        width: 300,
+        rowCellSkeleton: () => <Skeleton>Loading</Skeleton>,
+        headingCell: {
+          content: () => 'Github organization'
+        },
+        rowCell: {
+          content: user => user.githubOrganization
         }
       },
       {
