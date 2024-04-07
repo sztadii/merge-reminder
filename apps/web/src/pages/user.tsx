@@ -1,4 +1,4 @@
-import { Box, Button, Divider, useDisclosure } from '@chakra-ui/react'
+import { Box, Button, Divider, Skeleton, useDisclosure } from '@chakra-ui/react'
 
 import { CreateUpdateUserDrawer } from 'src/components-connected/create-update-user-drawer'
 import { ViewReminderSection } from 'src/components-connected/view-reminder-section'
@@ -7,11 +7,19 @@ import { useUserFromUrl } from 'src/hooks/use-user-from-url'
 
 export function User() {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const { data: user } = useUserFromUrl()
+  const { data: user, isLoading, isError } = useUserFromUrl()
 
   return (
     <>
-      <Button onClick={onOpen}>Edit</Button>
+      {isLoading ? (
+        <Skeleton display="inline-block">
+          <Button>Edit</Button>
+        </Skeleton>
+      ) : (
+        <Button disabled={isError} onClick={onOpen}>
+          Edit
+        </Button>
+      )}
       <CreateUpdateUserDrawer user={user} isOpen={isOpen} onClose={onClose} />
       <Divider my={4} />
       <ViewUserSection />
