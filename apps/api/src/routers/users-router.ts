@@ -1,6 +1,5 @@
 import {
   EmptyResponseSchema,
-  ReminderSchema,
   UserCreateRequestSchema,
   UserResponseSchema,
   UserUpdateRequestSchema,
@@ -41,12 +40,5 @@ export const usersRouter = router({
     .mutation(opts => {
       const usersService = new UsersService(opts.ctx.database)
       return usersService.deleteById(opts.input)
-    }),
-  getUserReminder: publicProcedure
-    .input(UserResponseSchema.shape.id)
-    .output(ReminderSchema)
-    .query(opts => {
-      const usersService = new UsersService(opts.ctx.database)
-      return usersService.getUserReminder(opts.input)
     })
 })

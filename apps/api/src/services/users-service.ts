@@ -1,13 +1,6 @@
 import { Database, DatabaseId, UserDatabaseRecord } from '../database'
-import {
-  Reminder,
-  UserCreateRequest,
-  UserResponse,
-  UserUpdateRequest
-} from '../schemas'
+import { UserCreateRequest, UserResponse, UserUpdateRequest } from '../schemas'
 import { DatabaseService } from './database-service'
-import { GithubService } from './github-service'
-import { MergeReminderService } from './merge-reminder-service'
 
 export class UsersService extends DatabaseService<UserDatabaseRecord> {
   constructor(database: Database) {
@@ -42,9 +35,7 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
       createdAt: new Date()
     })
 
-    const createdUser = await this.getById(insertedUser.insertedId.toString())
-
-    return createdUser
+    return this.getById(insertedUser.insertedId.toString())
   }
 
   async update(userUpdateRequest: UserUpdateRequest): Promise<UserResponse> {
@@ -63,26 +54,11 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
       }
     )
 
-    return await this.getById(user.id)
+    return this.getById(user.id)
   }
 
   async deleteById(id: UserResponse['id']): Promise<void> {
     await this.collection.deleteOne({ _id: new DatabaseId(id) })
-  }
-
-  async getUserReminder(id: UserResponse['id']): Promise<Reminder> {
-    const user = await this.getById(id)
-
-    const mergeReminderService = new MergeReminderService(
-      {
-        headBranch: 'master',
-        baseBranch: 'develop',
-        organization: 'AlefEducation'
-      },
-      new GithubService(user.githubAccessToken)
-    )
-
-    return await mergeReminderService.getReminder()
   }
 
   protected mapRecordToResponse(user: UserDatabaseRecord): UserResponse {

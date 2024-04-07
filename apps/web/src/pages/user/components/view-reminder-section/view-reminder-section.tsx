@@ -8,7 +8,7 @@ export function ViewReminderSection() {
   const params = routerPaths.user.getParams()
 
   const { data: reminder, isLoading: isLoadingReminder } =
-    trpc.users.getUserReminder.useQuery(params.id)
+    trpc.reminders.getReminder.useQuery(params.id)
 
   return (
     <>
