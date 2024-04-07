@@ -55,7 +55,7 @@ export function Table<T extends unknown[]>({
                     width={column.width}
                     textAlign={column.textAlign}
                   >
-                    <Box width={column.width}>
+                    <Box width={column.width} textTransform="none">
                       {column.headingCell.content(rows)}
                     </Box>
                   </Th>
@@ -101,7 +101,7 @@ export function Table<T extends unknown[]>({
                   width={column.width}
                   textAlign={column.textAlign}
                 >
-                  <Box width={column.width}>
+                  <Box width={column.width} textTransform="none">
                     {column.headingCell.content(rows)}
                   </Box>
                 </Th>
