@@ -17,7 +17,7 @@ import { Link } from 'wouter'
 
 import { Confirmation } from 'src/components/confirmation'
 import { Icon } from 'src/components/icon'
-import { SpinnerWithLabel } from 'src/components/spinner-with-label/spinner-with-label'
+import { SpinnerWithLabel } from 'src/components/spinner-with-label'
 import { Table, TableProps } from 'src/components/table'
 import { Text } from 'src/components/text'
 import { usePendingMutationVariables } from 'src/hooks/use-pending-mutations-variables'
@@ -26,7 +26,7 @@ import { UserResponse } from 'src/schemas'
 import { showErrorToast } from 'src/toasts'
 import { trpc } from 'src/trpc'
 
-import { CreateUpdateUserDrawer } from '../create-update-user-drawer'
+import { CreateUpdateUserDrawer } from './create-update-user-drawer'
 
 export function ViewUsersSection() {
   const [user, setUser] = useState<UserResponse | undefined>()
