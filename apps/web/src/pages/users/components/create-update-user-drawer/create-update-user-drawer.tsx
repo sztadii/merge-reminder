@@ -136,7 +136,7 @@ export function CreateUpdateUserDrawer({
           <FormControl mt={4}>
             <FormLabel>User email</FormLabel>
             <Input
-              defaultValue={formValues?.email}
+              value={formValues?.email}
               placeholder="Type..."
               onChange={e =>
                 setFormValues({
@@ -150,7 +150,7 @@ export function CreateUpdateUserDrawer({
           <FormControl mt={4}>
             <FormLabel>Github login</FormLabel>
             <Input
-              defaultValue={formValues?.githubLogin}
+              value={formValues?.githubLogin}
               placeholder="Type..."
               onChange={e =>
                 setFormValues({
@@ -164,7 +164,7 @@ export function CreateUpdateUserDrawer({
           <FormControl mt={4}>
             <FormLabel>Github access token</FormLabel>
             <Textarea
-              defaultValue={formValues?.githubAccessToken}
+              value={formValues?.githubAccessToken}
               placeholder="Type..."
               onChange={e =>
                 setFormValues({
@@ -178,7 +178,7 @@ export function CreateUpdateUserDrawer({
           <FormControl mt={4}>
             <FormLabel>Github organization</FormLabel>
             <Input
-              defaultValue={formValues?.githubOrganization}
+              value={formValues?.githubOrganization}
               placeholder="Type..."
               onChange={e =>
                 setFormValues({
@@ -192,7 +192,7 @@ export function CreateUpdateUserDrawer({
           <FormControl mt={4}>
             <FormLabel>Head branch</FormLabel>
             <Input
-              defaultValue={formValues?.headBranch}
+              value={formValues?.headBranch}
               placeholder="Type..."
               onChange={e =>
                 setFormValues({
@@ -205,14 +205,35 @@ export function CreateUpdateUserDrawer({
             <FormHelperText>Usually is the production branch:</FormHelperText>
 
             <Flex alignItems="center" gap={2} mt={2}>
-              <Tag>master</Tag> <Tag>main</Tag>
+              <Button
+                size="xs"
+                onClick={() => {
+                  setFormValues({
+                    ...formValues,
+                    headBranch: 'master'
+                  })
+                }}
+              >
+                master
+              </Button>
+              <Button
+                size="xs"
+                onClick={() => {
+                  setFormValues({
+                    ...formValues,
+                    headBranch: 'main'
+                  })
+                }}
+              >
+                main
+              </Button>
             </Flex>
           </FormControl>
 
           <FormControl mt={4}>
             <FormLabel>Base branch</FormLabel>
             <Input
-              defaultValue={formValues?.baseBranch}
+              value={formValues?.baseBranch}
               placeholder="Type..."
               onChange={e =>
                 setFormValues({
@@ -225,7 +246,17 @@ export function CreateUpdateUserDrawer({
             <FormHelperText>Usually is the development branch:</FormHelperText>
 
             <Flex alignItems="center" gap={2} mt={2}>
-              <Tag>develop</Tag>
+              <Button
+                size="xs"
+                onClick={() => {
+                  setFormValues({
+                    ...formValues,
+                    baseBranch: 'develop'
+                  })
+                }}
+              >
+                develop
+              </Button>
             </Flex>
           </FormControl>
         </DrawerBody>
