@@ -45,7 +45,7 @@ export function CreateUpdateUserDrawer({
   const { mutateAsync: createUserMutation } = trpc.users.create.useMutation()
 
   const hasMissingFormValues =
-    !formValues?.login ||
+    !formValues?.githubLogin ||
     !formValues?.email ||
     !formValues?.role ||
     !formValues?.githubAccessToken ||
@@ -148,14 +148,14 @@ export function CreateUpdateUserDrawer({
           </FormControl>
 
           <FormControl mt={4}>
-            <FormLabel>Login</FormLabel>
+            <FormLabel>Github login</FormLabel>
             <Input
-              defaultValue={formValues?.login}
+              defaultValue={formValues?.githubLogin}
               placeholder="Type..."
               onChange={e =>
                 setFormValues({
                   ...formValues,
-                  login: e.target.value
+                  githubLogin: e.target.value
                 })
               }
             />

@@ -27,7 +27,7 @@ export function ViewUserSection() {
 
           {user && (
             <Text>
-              {user.login} {user.email} {user.githubAccessToken}
+              {user.githubLogin} {user.email} {user.githubAccessToken}
             </Text>
           )}
         </CardBody>

@@ -6,9 +6,9 @@ export const UserRoleSchema = z.enum(['ADMIN', 'CLIENT'])
 export type UserRole = z.infer<typeof UserRoleSchema>
 
 export const UserResponseSchema = ResponseSchema.extend({
-  login: z.string(),
   role: UserRoleSchema,
   email: z.string().email(),
+  githubLogin: z.string(),
   githubAccessToken: z.string(),
   githubOrganization: z.string(),
   headBranch: z.string(),
@@ -20,7 +20,7 @@ export const ReminderSchema = z.string()
 export const UsersListResponseSchema = z.array(UserResponseSchema)
 
 export const UserCreateRequestSchema = UserResponseSchema.pick({
-  login: true,
+  githubLogin: true,
   role: true,
   email: true,
   githubAccessToken: true,

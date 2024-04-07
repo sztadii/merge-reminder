@@ -69,11 +69,11 @@ export function ViewUsersSection() {
   const tableColumns: TableProps<typeof users>['columns'] = useMemo(() => {
     return [
       {
-        id: 'login',
+        id: 'githubLogin',
         width: 300,
         rowCellSkeleton: () => <Skeleton>Loading</Skeleton>,
         headingCell: {
-          content: () => 'Login'
+          content: () => 'Github login'
         },
         rowCell: {
           content: user => {
@@ -91,7 +91,7 @@ export function ViewUsersSection() {
                   rightIcon={<Icon variant="chevronRight" />}
                   isActive
                 >
-                  {user.login}
+                  {user.githubLogin}
                 </Button>
 
                 {isCurrentUserDeleting && (
@@ -201,7 +201,7 @@ export function ViewUsersSection() {
         description={
           <>
             Are you sure you want delete{' '}
-            <Text fontWeight={700}>{user?.login}</Text>?
+            <Text fontWeight={700}>{user?.githubLogin}</Text>?
           </>
         }
         confirmButton={{

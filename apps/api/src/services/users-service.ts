@@ -29,7 +29,7 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
     const insertedUser = await this.collection.insertOne({
       _id: new DatabaseId(),
       createdAt: new Date(),
-      login: userCreateRequest.login,
+      githubLogin: userCreateRequest.githubLogin,
       role: userCreateRequest.role,
       email: userCreateRequest.email,
       githubAccessToken: userCreateRequest.githubAccessToken,
@@ -49,7 +49,7 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
       {
         $set: {
           updatedAt: new Date(),
-          login: userUpdateRequest.login,
+          githubLogin: userUpdateRequest.githubLogin,
           email: userUpdateRequest.email,
           role: userUpdateRequest.role,
           githubAccessToken: userUpdateRequest.githubAccessToken,
@@ -70,7 +70,7 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
   protected mapRecordToResponse(user: UserDatabaseRecord): UserResponse {
     return {
       ...super.mapRecordToResponse(user),
-      login: user.login,
+      githubLogin: user.githubLogin,
       role: user.role,
       email: user.email,
       githubAccessToken: user.githubAccessToken,
