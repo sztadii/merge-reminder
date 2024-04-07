@@ -20,7 +20,9 @@ export function ViewReminderSection() {
         <CardBody>
           {isLoadingReminder && (
             <Text>
-              <Skeleton display="inline">Loading</Skeleton>
+              <Skeleton display="inline-block" width={400}>
+                Loading
+              </Skeleton>
             </Text>
           )}
 

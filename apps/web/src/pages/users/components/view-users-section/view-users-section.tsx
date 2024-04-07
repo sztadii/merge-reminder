@@ -139,7 +139,7 @@ export function ViewUsersSection() {
         id: 'options',
         textAlign: 'right',
         rowCellSkeleton: () => (
-          <Skeleton display="inline-block">
+          <Skeleton display="inline">
             <Icon variant="chevronDown" size="sm" />
           </Skeleton>
         ),

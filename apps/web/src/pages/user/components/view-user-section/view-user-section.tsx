@@ -51,14 +51,18 @@ export function ViewUserSection() {
               {details.map(detail => {
                 return (
                   <Box key={detail.heading}>
-                    <Box>
+                    <Box mb={1}>
                       <Text fontSize="xs" color="gray.400">
-                        <Skeleton>Loading</Skeleton>
+                        <Skeleton display="inline-block" width={100}>
+                          Loading
+                        </Skeleton>
                       </Text>
                     </Box>
 
                     <Text>
-                      <Skeleton>Loading</Skeleton>
+                      <Skeleton display="inline-block" width={200}>
+                        Loading
+                      </Skeleton>
                     </Text>
                   </Box>
                 )
@@ -75,7 +79,7 @@ export function ViewUserSection() {
               {details.map(detail => {
                 return (
                   <Box key={detail.heading}>
-                    <Box>
+                    <Box mb={1}>
                       <Text fontSize="xs" color="gray.400">
                         {detail.heading}:
                       </Text>
