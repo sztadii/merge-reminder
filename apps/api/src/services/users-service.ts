@@ -53,7 +53,7 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
           email: userUpdateRequest.email,
           role: userUpdateRequest.role,
           githubAccessToken: userUpdateRequest.githubAccessToken,
-          githubOrganization: userUpdateRequest.githubAccessToken,
+          githubOrganization: userUpdateRequest.githubOrganization,
           headBranch: userUpdateRequest.headBranch,
           baseBranch: userUpdateRequest.baseBranch
         }
