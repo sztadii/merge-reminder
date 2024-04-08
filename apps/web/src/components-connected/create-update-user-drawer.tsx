@@ -60,15 +60,6 @@ export function CreateUpdateUserDrawer({
     setFormValues(user)
   }, [user])
 
-  const resetUserValues = () => {
-    setFormValues(undefined)
-  }
-
-  const handleOnClose = () => {
-    resetUserValues()
-    onClose()
-  }
-
   const createUser = async () => {
     if (hasMissingFormValues) return
 
@@ -91,7 +82,8 @@ export function CreateUpdateUserDrawer({
         .invalidateQueries(getQueryKey(trpc.reminders.getReminder))
         .then()
 
-      handleOnClose()
+      onClose()
+      setFormValues(undefined)
     } catch {
       const message = user ? 'Can not update user' : 'Can not create user'
       showErrorToast(message)
@@ -112,7 +104,7 @@ export function CreateUpdateUserDrawer({
   ]
 
   return (
-    <Drawer isOpen={isOpen} placement="right" onClose={handleOnClose}>
+    <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
@@ -285,7 +277,7 @@ export function CreateUpdateUserDrawer({
         </DrawerBody>
 
         <DrawerFooter>
-          <Button variant="outline" mr={2} onClick={handleOnClose}>
+          <Button variant="outline" mr={2} onClick={onClose}>
             Cancel
           </Button>
           <Button
