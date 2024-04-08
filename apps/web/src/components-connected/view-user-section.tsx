@@ -6,7 +6,8 @@ import {
   CardBody,
   Link,
   SimpleGrid,
-  Skeleton
+  Skeleton,
+  useColorModeValue
 } from '@chakra-ui/react'
 
 import { Text } from 'src/components/text'
@@ -14,6 +15,8 @@ import { useUserFromUrl } from 'src/hooks/use-user-from-url'
 
 export function ViewUserSection() {
   const { data: user, isLoading } = useUserFromUrl()
+
+  const colorForLink = useColorModeValue('yellow.600', 'yellow.400')
 
   const details = [
     {
@@ -48,7 +51,7 @@ export function ViewUserSection() {
 
   const usersLink = (
     <Link
-      color="yellow.500"
+      color={colorForLink}
       href="https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#list-repositories-for-a-user"
       isExternal
       ml={1}
@@ -59,7 +62,7 @@ export function ViewUserSection() {
 
   const organizationsLink = (
     <Link
-      color="yellow.500"
+      color={colorForLink}
       href="https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#list-organization-repositories"
       isExternal
       ml={1}
