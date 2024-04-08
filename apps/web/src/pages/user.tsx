@@ -11,7 +11,6 @@ import { CreateUpdateUserDrawer } from 'src/components-connected/create-update-u
 import { DeleteUserConfirmation } from 'src/components-connected/delete-user-confirmation'
 import { ViewReminderSection } from 'src/components-connected/view-reminder-section'
 import { ViewUserSection } from 'src/components-connected/view-user-section'
-import { useNavigate } from 'src/hooks/use-navigate'
 import { useUserFromUrl } from 'src/hooks/use-user-from-url'
 import { routerPaths } from 'src/router'
 
@@ -27,7 +26,6 @@ export function User() {
     onClose: onCloseDeleteModal
   } = useDisclosure()
   const { data: user, isLoading } = useUserFromUrl()
-  const navigate = useNavigate()
 
   return (
     <>
@@ -69,7 +67,7 @@ export function User() {
           // TODO based on the user role we should redirect somewhere
           // Admin should be redirected to routerPaths.users.path
           // Other users should be redirected to login page
-          navigate(routerPaths.users.path)
+          routerPaths.users.navigate()
         }}
       />
       <Divider my={4} />

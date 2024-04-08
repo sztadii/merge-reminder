@@ -1,5 +1,6 @@
 import { Box } from '@chakra-ui/react'
 import { Redirect, Route, Switch, useParams } from 'wouter'
+import { navigate as wouterNavigate } from 'wouter/use-browser-location'
 
 import { Navigation } from 'src/components/navigation'
 import { User } from 'src/pages/user'
@@ -25,7 +26,10 @@ export function Router() {
 
 export const routerPaths = {
   users: {
-    path: '/users'
+    path: '/users',
+    navigate() {
+      wouterNavigate(this.path)
+    }
   },
   user: {
     path: '/users/:id',
@@ -34,6 +38,9 @@ export const routerPaths = {
     },
     getParams() {
       return useParams<{ id: string }>()
+    },
+    navigate() {
+      wouterNavigate(this.path)
     }
   }
 }
