@@ -13,11 +13,11 @@ export function User() {
     <>
       {isLoading ? (
         <Skeleton display="inline-block">
-          <Button>Edit</Button>
+          <Button>Update user</Button>
         </Skeleton>
       ) : (
         <Button isDisabled={!user} onClick={onOpen}>
-          Edit
+          Update user
         </Button>
       )}
       <CreateUpdateUserDrawer user={user} isOpen={isOpen} onClose={onClose} />

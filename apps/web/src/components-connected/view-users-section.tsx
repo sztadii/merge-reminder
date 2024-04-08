@@ -160,7 +160,7 @@ export function ViewUsersSection() {
                       onOpenCreateUpdateDrawer()
                     }}
                   >
-                    Edit
+                    Update user
                   </MenuItem>
 
                   <MenuItem
@@ -197,7 +197,7 @@ export function ViewUsersSection() {
           setUser(undefined)
           onCloseDeleteConfirmation()
         }}
-        title="Delete"
+        title="Delete user"
         description={
           <>
             Are you sure you want delete{' '}
