@@ -11,7 +11,7 @@ export class RemindersService {
 
     const mergeReminderService = new MergeReminderService(
       {
-        headBranch: user.baseBranch,
+        headBranch: user.headBranch,
         baseBranch: user.baseBranch,
         userOrOrganizationName: user.userOrOrganizationName,
         isOrganization: user.isOrganization
