@@ -13,7 +13,9 @@ export class RemindersService {
       {
         headBranch: user.baseBranch,
         baseBranch: user.baseBranch,
-        organization: user.githubOrganization
+        organization: user.githubOrganization,
+        login: user.githubLogin,
+        isOrganization: user.isOrganization
       },
       new GithubService(user.githubAccessToken)
     )

@@ -1,6 +1,6 @@
 import { Octokit, RestEndpointMethodTypes } from '@octokit/rest'
 
-export type OrganizationRepo =
+export type Repo =
   RestEndpointMethodTypes['repos']['listForOrg']['response']['data'][0]
 
 export class GithubService {
@@ -10,27 +10,31 @@ export class GithubService {
     this.githubService = new Octokit({ auth: accessToken })
   }
 
-  async getAllOrganizationRepos(
-    organization: string
-  ): Promise<OrganizationRepo[]> {
+  async getAllRepos(
+    login: string,
+    organization: string,
+    isOrganization: boolean
+  ): Promise<Repo[]> {
     const allRepos = []
     let canFetchMoreData = true
 
     for (let i = 1; canFetchMoreData; i++) {
       console.log(`Fetching repos from page nr ${i}`)
 
-      // Check why there are no conflicts between main and develop in rc-reminder-bot
-      // const { data: repos } = await this.githubService.repos.listForUser({
-      //   username: organization,
-      //   page: i,
-      //   per_page: 100
-      // })
+      const responseWithRepos = isOrganization
+        ? await this.githubService.repos.listForOrg({
+            org: organization,
+            page: i,
+            per_page: 100
+          })
+        : await this.githubService.repos.listForUser({
+            username: login,
+            page: i,
+            per_page: 100
+          })
 
-      const { data: repos } = await this.githubService.repos.listForOrg({
-        org: organization,
-        page: i,
-        per_page: 100 // GITHUB API is not allowing to fetch more that 100
-      })
+      const { data: repos } = responseWithRepos
+
       canFetchMoreData = !!repos.length
       allRepos.push(...repos)
     }

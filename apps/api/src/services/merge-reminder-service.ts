@@ -1,7 +1,7 @@
 import { differenceInCalendarDays } from 'date-fns'
 
 import { handlePromise, isTruthy } from '../helpers'
-import { GithubService, OrganizationRepo } from './github-service'
+import { GithubService, Repo } from './github-service'
 
 type RepoInfo = {
   repoName: string
@@ -13,7 +13,9 @@ type RepoInfo = {
 type Config = {
   baseBranch: string
   headBranch: string
+  login: string
   organization: string
+  isOrganization: boolean
 }
 
 export class MergeReminderService {
@@ -25,8 +27,12 @@ export class MergeReminderService {
   public async getReminder(): Promise<string> {
     console.log('\nStart running checkBranches script \n')
 
-    const [allOrganizationRepos, error] = await handlePromise(
-      this.githubService.getAllOrganizationRepos(this.config.organization)
+    const [allRepos, error] = await handlePromise(
+      this.githubService.getAllRepos(
+        this.config.login,
+        this.config.organization,
+        this.config.isOrganization
+      )
     )
 
     if (error?.status === 401) {
@@ -34,15 +40,15 @@ export class MergeReminderService {
     }
 
     if (error) {
-      return 'Something went wrong during fetching organization repos.'
+      return 'Something went wrong during fetching repos.'
     }
 
-    if (!allOrganizationRepos || allOrganizationRepos.length === 0) {
-      return 'Organization do not have any repos.'
+    if (!allRepos || allRepos.length === 0) {
+      return 'You do not have any repos.'
     }
 
     const infosFromAffectedBranches =
-      await this.getInfosFromAffectedBranches(allOrganizationRepos)
+      await this.getInfosFromAffectedBranches(allRepos)
 
     if (infosFromAffectedBranches.length) {
       return this.prepareMessage(infosFromAffectedBranches)
@@ -52,7 +58,7 @@ export class MergeReminderService {
   }
 
   private async getInfosFromAffectedBranches(
-    repos: OrganizationRepo[]
+    repos: Repo[]
   ): Promise<RepoInfo[]> {
     const allBranchesResponses = repos.map(async repo => {
       const [compareData] = await handlePromise(
