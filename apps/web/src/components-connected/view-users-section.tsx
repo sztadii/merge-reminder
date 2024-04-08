@@ -52,7 +52,7 @@ export function ViewUsersSection() {
         width: 300,
         rowCellSkeleton: () => <Skeleton>Loading</Skeleton>,
         headingCell: {
-          content: () => 'Github login'
+          content: () => 'User / organization name'
         },
         rowCell: {
           content: user => {
@@ -70,7 +70,7 @@ export function ViewUsersSection() {
                   isActive
                   size="sm"
                 >
-                  {user.githubLogin}
+                  {user.userOrOrganizationName}
                 </Button>
 
                 {isCurrentUserDeleting && (
@@ -101,17 +101,6 @@ export function ViewUsersSection() {
         },
         rowCell: {
           content: user => user.role
-        }
-      },
-      {
-        id: 'githubOrganization',
-        width: 300,
-        rowCellSkeleton: () => <Skeleton>Loading</Skeleton>,
-        headingCell: {
-          content: () => 'Github organization'
-        },
-        rowCell: {
-          content: user => user.githubOrganization
         }
       },
       {

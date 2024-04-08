@@ -11,8 +11,7 @@ export class GithubService {
   }
 
   async getAllRepos(
-    login: string,
-    organization: string,
+    userOrOrganizationName: string,
     isOrganization: boolean
   ): Promise<Repo[]> {
     const allRepos = []
@@ -23,12 +22,12 @@ export class GithubService {
 
       const responseWithRepos = isOrganization
         ? await this.githubService.repos.listForOrg({
-            org: organization,
+            org: userOrOrganizationName,
             page: i,
             per_page: 100
           })
         : await this.githubService.repos.listForUser({
-            username: login,
+            username: userOrOrganizationName,
             page: i,
             per_page: 100
           })

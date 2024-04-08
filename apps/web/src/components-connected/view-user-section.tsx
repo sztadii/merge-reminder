@@ -16,12 +16,12 @@ export function ViewUserSection() {
       text: user?.email
     },
     {
-      heading: 'Github login',
-      text: user?.githubLogin
+      heading: 'User / organization name',
+      text: user?.userOrOrganizationName
     },
     {
-      heading: 'Github organization',
-      text: user?.githubOrganization
+      heading: 'Is organization',
+      text: user?.isOrganization ? 'Yes' : 'No'
     },
     {
       heading: 'Head branch',

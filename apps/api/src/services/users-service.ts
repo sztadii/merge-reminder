@@ -29,11 +29,10 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
     const insertedUser = await this.collection.insertOne({
       _id: new DatabaseId(),
       createdAt: new Date(),
-      githubLogin: userCreateRequest.githubLogin,
+      userOrOrganizationName: userCreateRequest.userOrOrganizationName,
       role: userCreateRequest.role,
       email: userCreateRequest.email,
       githubAccessToken: userCreateRequest.githubAccessToken,
-      githubOrganization: userCreateRequest.githubOrganization,
       headBranch: userCreateRequest.headBranch,
       baseBranch: userCreateRequest.baseBranch,
       isOrganization: userCreateRequest.isOrganization
@@ -50,11 +49,10 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
       {
         $set: {
           updatedAt: new Date(),
-          githubLogin: userUpdateRequest.githubLogin,
+          userOrOrganizationName: userUpdateRequest.userOrOrganizationName,
           email: userUpdateRequest.email,
           role: userUpdateRequest.role,
           githubAccessToken: userUpdateRequest.githubAccessToken,
-          githubOrganization: userUpdateRequest.githubOrganization,
           headBranch: userUpdateRequest.headBranch,
           baseBranch: userUpdateRequest.baseBranch,
           isOrganization: userUpdateRequest.isOrganization
@@ -72,11 +70,10 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
   protected mapRecordToResponse(user: UserDatabaseRecord): UserResponse {
     return {
       ...super.mapRecordToResponse(user),
-      githubLogin: user.githubLogin,
+      userOrOrganizationName: user.userOrOrganizationName,
       role: user.role,
       email: user.email,
       githubAccessToken: user.githubAccessToken,
-      githubOrganization: user.githubOrganization,
       headBranch: user.headBranch,
       baseBranch: user.baseBranch,
       isOrganization: user.isOrganization

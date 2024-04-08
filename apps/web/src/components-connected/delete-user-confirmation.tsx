@@ -22,23 +22,24 @@ export function DeleteUserConfirmation({
   onCancel,
   onConfirm
 }: DeleteUserConfirmationProps) {
-  const [githubLoginConfirmation, setGithubLoginConfirmation] = useState<
+  const [userOrOrganizationName, setUserOrOrganizationName] = useState<
     string | undefined
   >()
 
-  const isDeletionConfirmed = githubLoginConfirmation === user?.githubLogin
+  const isDeletionConfirmed =
+    userOrOrganizationName === user?.userOrOrganizationName
   const queryClient = useQueryClient()
 
   const { mutateAsync: deleteUserMutation } =
     trpc.users.deleteById.useMutation()
 
   const handleClose = () => {
-    setGithubLoginConfirmation(undefined)
+    setUserOrOrganizationName(undefined)
     onCancel()
   }
 
   const handleConfirm = () => {
-    setGithubLoginConfirmation(undefined)
+    setUserOrOrganizationName(undefined)
     onConfirm()
   }
 
@@ -68,15 +69,14 @@ export function DeleteUserConfirmation({
           <FormControl>
             <FormLabel>
               If you are sure about deletion, <br />
-              then please type <Text fontWeight={700}>
-                {user?.githubLogin}
-              </Text>{' '}
+              then please type{' '}
+              <Text fontWeight={700}>{user?.userOrOrganizationName}</Text>{' '}
               below.
             </FormLabel>
             <Input
-              value={githubLoginConfirmation}
+              value={userOrOrganizationName}
               placeholder="Type..."
-              onChange={e => setGithubLoginConfirmation(e.target.value)}
+              onChange={e => setUserOrOrganizationName(e.target.value)}
             />
           </FormControl>
         </>

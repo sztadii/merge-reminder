@@ -9,11 +9,10 @@ export type DatabaseRecord = {
 export type UserDatabaseRecord = DatabaseRecord &
   Pick<
     UserResponse,
-    | 'githubLogin'
+    | 'userOrOrganizationName'
     | 'role'
     | 'email'
     | 'githubAccessToken'
-    | 'githubOrganization'
     | 'headBranch'
     | 'baseBranch'
     | 'isOrganization'

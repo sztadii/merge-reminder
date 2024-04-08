@@ -45,11 +45,10 @@ export function CreateUpdateUserDrawer({
   const { mutateAsync: createUserMutation } = trpc.users.create.useMutation()
 
   const hasMissingFormValues =
-    !formValues?.githubLogin ||
+    !formValues?.userOrOrganizationName ||
     !formValues?.email ||
     !formValues?.role ||
     !formValues?.githubAccessToken ||
-    !formValues?.githubOrganization ||
     !formValues?.headBranch ||
     !formValues?.baseBranch
 
@@ -62,9 +61,11 @@ export function CreateUpdateUserDrawer({
   const createUser = async () => {
     if (hasMissingFormValues) return
 
+    debugger
+
     const formValuesToSend = {
       ...formValues,
-      isOrganization: !!formValues
+      isOrganization: !!formValues?.isOrganization
     } as FormValuesRequired
 
     try {
@@ -150,14 +151,29 @@ export function CreateUpdateUserDrawer({
           </FormControl>
 
           <FormControl mt={4}>
-            <FormLabel>Github login</FormLabel>
+            <FormLabel>User / organization name</FormLabel>
             <Input
-              value={formValues?.githubLogin}
+              value={formValues?.userOrOrganizationName}
               placeholder="Type..."
               onChange={e =>
                 setFormValues({
                   ...formValues,
-                  githubLogin: e.target.value
+                  userOrOrganizationName: e.target.value
+                })
+              }
+            />
+          </FormControl>
+
+          <FormControl mt={4}>
+            <FormLabel>Is organization</FormLabel>
+            <Switch
+              size="lg"
+              isChecked={formValues?.isOrganization}
+              placeholder="Type..."
+              onChange={e =>
+                setFormValues({
+                  ...formValues,
+                  isOrganization: e.target.checked
                 })
               }
             />
@@ -172,20 +188,6 @@ export function CreateUpdateUserDrawer({
                 setFormValues({
                   ...formValues,
                   githubAccessToken: e.target.value
-                })
-              }
-            />
-          </FormControl>
-
-          <FormControl mt={4}>
-            <FormLabel>Github organization</FormLabel>
-            <Input
-              value={formValues?.githubOrganization}
-              placeholder="Type..."
-              onChange={e =>
-                setFormValues({
-                  ...formValues,
-                  githubOrganization: e.target.value
                 })
               }
             />
@@ -261,23 +263,7 @@ export function CreateUpdateUserDrawer({
               </Button>
             </Flex>
           </FormControl>
-
-          <FormControl mt={4}>
-            <FormLabel>Is organization</FormLabel>
-            <Switch
-              size="lg"
-              isChecked={formValues?.isOrganization}
-              placeholder="Type..."
-              onChange={e =>
-                setFormValues({
-                  ...formValues,
-                  isOrganization: e.target.checked
-                })
-              }
-            />
-          </FormControl>
         </DrawerBody>
-
         <DrawerFooter>
           <Button variant="outline" mr={2} onClick={onClose}>
             Cancel

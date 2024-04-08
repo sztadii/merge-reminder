@@ -13,8 +13,7 @@ type RepoInfo = {
 type Config = {
   baseBranch: string
   headBranch: string
-  login: string
-  organization: string
+  userOrOrganizationName: string
   isOrganization: boolean
 }
 
@@ -29,8 +28,7 @@ export class MergeReminderService {
 
     const [allRepos, error] = await handlePromise(
       this.githubService.getAllRepos(
-        this.config.login,
-        this.config.organization,
+        this.config.userOrOrganizationName,
         this.config.isOrganization
       )
     )
