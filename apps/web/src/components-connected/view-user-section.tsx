@@ -4,7 +4,7 @@ import { Text } from 'src/components/text'
 import { useUserFromUrl } from 'src/hooks/use-user-from-url'
 
 export function ViewUserSection() {
-  const { data: user, isLoading: isLoadingUser } = useUserFromUrl()
+  const { data: user, isLoading } = useUserFromUrl()
 
   const details = [
     {
@@ -41,7 +41,7 @@ export function ViewUserSection() {
     <>
       <Card>
         <CardBody>
-          {isLoadingUser && (
+          {isLoading && (
             <SimpleGrid columns={4} spacing={8}>
               {details.map(detail => {
                 return (
@@ -65,7 +65,7 @@ export function ViewUserSection() {
             </SimpleGrid>
           )}
 
-          {!isLoadingUser && !user && <Text>No user with the selected ID</Text>}
+          {!isLoading && !user && <Text>No user with the selected ID</Text>}
 
           {user && (
             <SimpleGrid columns={4} spacing={8}>

@@ -19,6 +19,13 @@ export class GithubService {
     for (let i = 1; canFetchMoreData; i++) {
       console.log(`Fetching repos from page nr ${i}`)
 
+      // Check why there are no conflicts between main and develop in rc-reminder-bot
+      // const { data: repos } = await this.githubService.repos.listForUser({
+      //   username: organization,
+      //   page: i,
+      //   per_page: 100
+      // })
+
       const { data: repos } = await this.githubService.repos.listForOrg({
         org: organization,
         page: i,
