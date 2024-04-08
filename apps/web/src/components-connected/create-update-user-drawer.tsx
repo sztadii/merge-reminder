@@ -58,7 +58,7 @@ export function CreateUpdateUserDrawer({
     setFormValues(user)
   }, [user])
 
-  const createUser = async () => {
+  const createUpdateUser = async () => {
     if (hasMissingFormValues) return
 
     debugger
@@ -271,7 +271,7 @@ export function CreateUpdateUserDrawer({
           <Button
             isLoading={isPending}
             isDisabled={hasMissingFormValues}
-            onClick={createUser}
+            onClick={createUpdateUser}
           >
             Save
           </Button>
