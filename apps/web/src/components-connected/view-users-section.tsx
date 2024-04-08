@@ -16,6 +16,7 @@ import { Link } from 'wouter'
 import { Icon } from 'src/components/icon'
 import { SpinnerWithLabel } from 'src/components/spinner-with-label'
 import { Table, TableProps } from 'src/components/table'
+import { Text } from 'src/components/text'
 import { usePendingMutationVariables } from 'src/hooks/use-pending-mutations-variables'
 import { routerPaths } from 'src/router'
 import { UserResponse } from 'src/schemas'
@@ -147,7 +148,7 @@ export function ViewUsersSection() {
                       onOpenDeleteConfirmation()
                     }}
                   >
-                    Delete user
+                    <Text color="red">Delete user</Text>
                   </MenuItem>
                 </MenuList>
               </Menu>
@@ -172,7 +173,11 @@ export function ViewUsersSection() {
       <DeleteUserConfirmation
         user={user}
         isOpen={isOpenDeleteConfirmation}
-        onClose={() => {
+        onCancel={() => {
+          setUser(undefined)
+          onCloseDeleteConfirmation()
+        }}
+        onConfirm={() => {
           setUser(undefined)
           onCloseDeleteConfirmation()
         }}

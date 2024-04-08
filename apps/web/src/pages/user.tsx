@@ -45,7 +45,11 @@ export function User() {
             Update user
           </Button>
 
-          <Button isDisabled={!user} onClick={onOpenDeleteModal}>
+          <Button
+            isDisabled={!user}
+            onClick={onOpenDeleteModal}
+            colorScheme="red"
+          >
             Delete user
           </Button>
         </Flex>
