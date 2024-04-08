@@ -51,8 +51,7 @@ export function CreateUpdateUserDrawer({
     !formValues?.githubAccessToken ||
     !formValues?.githubOrganization ||
     !formValues?.headBranch ||
-    !formValues?.baseBranch ||
-    !formValues?.isOrganization
+    !formValues?.baseBranch
 
   useEffect(() => {
     if (!user) return
@@ -63,7 +62,10 @@ export function CreateUpdateUserDrawer({
   const createUser = async () => {
     if (hasMissingFormValues) return
 
-    const formValuesToSend = formValues as FormValuesRequired
+    const formValuesToSend = {
+      ...formValues,
+      isOrganization: !!formValues
+    } as FormValuesRequired
 
     try {
       setIsPending(true)
