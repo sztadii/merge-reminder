@@ -1,5 +1,7 @@
+import { FormControl, FormLabel, Input } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { getQueryKey } from '@trpc/react-query'
+import { useState } from 'react'
 
 import { Confirmation } from 'src/components/confirmation'
 import { Text } from 'src/components/text'
@@ -20,15 +22,30 @@ export function DeleteUserConfirmation({
   onCancel,
   onConfirm
 }: DeleteUserConfirmationProps) {
+  const [githubLoginConfirmation, setGithubLoginConfirmation] = useState<
+    string | undefined
+  >()
+
+  const isDeletionConfirmed = githubLoginConfirmation === user?.githubLogin
   const queryClient = useQueryClient()
 
   const { mutateAsync: deleteUserMutation } =
     trpc.users.deleteById.useMutation()
 
-  const deleteUser = async () => {
-    if (!user) return
+  const handleClose = () => {
+    setGithubLoginConfirmation(undefined)
+    onCancel()
+  }
 
+  const handleConfirm = () => {
+    setGithubLoginConfirmation(undefined)
     onConfirm()
+  }
+
+  const deleteUser = async () => {
+    if (!user || !isDeletionConfirmed) return
+
+    handleConfirm()
 
     try {
       await deleteUserMutation(user.id)
@@ -44,18 +61,31 @@ export function DeleteUserConfirmation({
   return (
     <Confirmation
       isOpen={isOpen}
-      onClose={onCancel}
+      onClose={handleClose}
       title="Delete user"
       description={
         <>
-          Are you sure you want delete{' '}
-          <Text fontWeight={700}>{user?.githubLogin}</Text>?
+          <FormControl>
+            <FormLabel>
+              If you are sure about deletion, <br />
+              then please type <Text fontWeight={700}>
+                {user?.githubLogin}
+              </Text>{' '}
+              below.
+            </FormLabel>
+            <Input
+              value={githubLoginConfirmation}
+              placeholder="Type..."
+              onChange={e => setGithubLoginConfirmation(e.target.value)}
+            />
+          </FormControl>
         </>
       }
       confirmButton={{
         name: 'Delete',
         onClick: deleteUser,
-        colorScheme: 'red'
+        colorScheme: 'red',
+        isDisabled: !isDeletionConfirmed
       }}
     />
   )

@@ -18,6 +18,7 @@ type ConfirmationProps = {
     onClick: ButtonProps['onClick']
     name: string
     colorScheme: ButtonProps['colorScheme']
+    isDisabled?: boolean
   }
   title: string
   description: ReactNode
@@ -46,6 +47,7 @@ export function Confirmation({
           <Button
             onClick={confirmButton.onClick}
             colorScheme={confirmButton.colorScheme}
+            isDisabled={confirmButton.isDisabled}
           >
             {confirmButton.name}
           </Button>
