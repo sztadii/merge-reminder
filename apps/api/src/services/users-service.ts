@@ -35,7 +35,8 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
       githubAccessToken: userCreateRequest.githubAccessToken,
       githubOrganization: userCreateRequest.githubOrganization,
       headBranch: userCreateRequest.headBranch,
-      baseBranch: userCreateRequest.baseBranch
+      baseBranch: userCreateRequest.baseBranch,
+      isOrganization: userCreateRequest.isOrganization
     })
 
     return this.getById(insertedUser.insertedId.toString())
@@ -55,7 +56,8 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
           githubAccessToken: userUpdateRequest.githubAccessToken,
           githubOrganization: userUpdateRequest.githubOrganization,
           headBranch: userUpdateRequest.headBranch,
-          baseBranch: userUpdateRequest.baseBranch
+          baseBranch: userUpdateRequest.baseBranch,
+          isOrganization: userUpdateRequest.isOrganization
         }
       }
     )
@@ -76,7 +78,8 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
       githubAccessToken: user.githubAccessToken,
       githubOrganization: user.githubOrganization,
       headBranch: user.headBranch,
-      baseBranch: user.baseBranch
+      baseBranch: user.baseBranch,
+      isOrganization: user.isOrganization
     }
   }
 }

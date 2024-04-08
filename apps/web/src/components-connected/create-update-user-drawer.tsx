@@ -13,7 +13,7 @@ import {
   FormLabel,
   Input,
   Select,
-  Tag,
+  Switch,
   Textarea
 } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
@@ -51,7 +51,8 @@ export function CreateUpdateUserDrawer({
     !formValues?.githubAccessToken ||
     !formValues?.githubOrganization ||
     !formValues?.headBranch ||
-    !formValues?.baseBranch
+    !formValues?.baseBranch ||
+    !formValues?.isOrganization
 
   useEffect(() => {
     if (!user) return
@@ -265,6 +266,21 @@ export function CreateUpdateUserDrawer({
                 develop
               </Button>
             </Flex>
+          </FormControl>
+
+          <FormControl mt={4}>
+            <FormLabel>Is organization</FormLabel>
+            <Switch
+              size="lg"
+              isChecked={formValues?.isOrganization}
+              placeholder="Type..."
+              onChange={e =>
+                setFormValues({
+                  ...formValues,
+                  isOrganization: e.target.checked
+                })
+              }
+            />
           </FormControl>
         </DrawerBody>
 

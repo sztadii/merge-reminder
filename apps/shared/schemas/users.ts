@@ -12,7 +12,8 @@ export const UserResponseSchema = ResponseSchema.extend({
   githubAccessToken: z.string(),
   githubOrganization: z.string(),
   headBranch: z.string(),
-  baseBranch: z.string()
+  baseBranch: z.string(),
+  isOrganization: z.boolean()
 })
 
 export const ReminderSchema = z.string()
@@ -26,7 +27,8 @@ export const UserCreateRequestSchema = UserResponseSchema.pick({
   githubAccessToken: true,
   githubOrganization: true,
   headBranch: true,
-  baseBranch: true
+  baseBranch: true,
+  isOrganization: true
 })
 
 export const UserUpdateRequestSchema = UpdateRequestSchema.merge(

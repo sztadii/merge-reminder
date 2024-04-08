@@ -16,4 +16,5 @@ export type UserDatabaseRecord = DatabaseRecord &
     | 'githubOrganization'
     | 'headBranch'
     | 'baseBranch'
+    | 'isOrganization'
   >
