@@ -1,4 +1,13 @@
-import { Box, Card, CardBody, SimpleGrid, Skeleton } from '@chakra-ui/react'
+import {
+  Alert,
+  AlertIcon,
+  Box,
+  Card,
+  CardBody,
+  Link,
+  SimpleGrid,
+  Skeleton
+} from '@chakra-ui/react'
 
 import { Text } from 'src/components/text'
 import { useUserFromUrl } from 'src/hooks/use-user-from-url'
@@ -37,8 +46,39 @@ export function ViewUserSection() {
     }
   ]
 
+  const usersLink = (
+    <Link
+      color="yellow.500"
+      href="https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#list-repositories-for-a-user"
+      isExternal
+      ml={1}
+    >
+      normal users
+    </Link>
+  )
+
+  const organizationsLink = (
+    <Link
+      color="yellow.500"
+      href="https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#list-organization-repositories"
+      isExternal
+      ml={1}
+    >
+      organizations
+    </Link>
+  )
+
   return (
     <>
+      {user?.isOrganization === false && (
+        <Alert status="warning" mb={4}>
+          <AlertIcon />
+          For {usersLink}, we can only fetch public repositories. However, we
+          can retrieve all repositories from all repositories from
+          {organizationsLink}.
+        </Alert>
+      )}
+
       <Card>
         <CardBody>
           {isLoading && (

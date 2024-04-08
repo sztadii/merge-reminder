@@ -1,4 +1,8 @@
-import { ChakraProvider, extendTheme } from '@chakra-ui/react'
+import {
+  ChakraProvider,
+  defineStyleConfig,
+  extendTheme
+} from '@chakra-ui/react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { httpLink } from '@trpc/client'
 
