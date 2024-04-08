@@ -60,7 +60,10 @@ export function User() {
       <DeleteUserConfirmation
         user={user}
         isOpen={isOpenDeleteModal}
-        onClose={() => {
+        onCancel={() => {
+          onCloseDeleteModal()
+        }}
+        onConfirm={() => {
           onCloseDeleteModal()
 
           // TODO based on the user role we should redirect somewhere

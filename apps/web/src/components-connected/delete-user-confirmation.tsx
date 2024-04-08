@@ -10,13 +10,15 @@ import { trpc } from 'src/trpc'
 type DeleteUserConfirmationProps = {
   user?: UserResponse
   isOpen: boolean
-  onClose: () => void
+  onCancel: () => void
+  onConfirm: () => void
 }
 
 export function DeleteUserConfirmation({
   user,
   isOpen,
-  onClose
+  onCancel,
+  onConfirm
 }: DeleteUserConfirmationProps) {
   const queryClient = useQueryClient()
 
@@ -26,7 +28,7 @@ export function DeleteUserConfirmation({
   const deleteUser = async () => {
     if (!user) return
 
-    onClose()
+    onConfirm()
 
     try {
       await deleteUserMutation(user.id)
@@ -42,7 +44,7 @@ export function DeleteUserConfirmation({
   return (
     <Confirmation
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={onCancel}
       title="Delete user"
       description={
         <>
