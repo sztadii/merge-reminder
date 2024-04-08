@@ -7,7 +7,7 @@ import { useUserFromUrl } from 'src/hooks/use-user-from-url'
 
 export function User() {
   const { isOpen, onOpen, onClose } = useDisclosure()
-  const { data: user, isLoading, isError } = useUserFromUrl()
+  const { data: user, isLoading } = useUserFromUrl()
 
   return (
     <>
@@ -16,7 +16,7 @@ export function User() {
           <Button>Edit</Button>
         </Skeleton>
       ) : (
-        <Button disabled={isError} onClick={onOpen}>
+        <Button isDisabled={!user} onClick={onOpen}>
           Edit
         </Button>
       )}
