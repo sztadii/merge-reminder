@@ -34,6 +34,15 @@ export const theme = extendTheme({
   config: {
     initialColorMode: 'dark',
     useSystemColorMode: false
+  },
+  components: {
+    Alert: {
+      baseStyle: {
+        container: {
+          borderRadius: 'md'
+        }
+      }
+    }
   }
 })
 
