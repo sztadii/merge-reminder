@@ -76,9 +76,11 @@ export function ViewUserSection() {
       {user?.isOrganization === false && (
         <Alert status="warning" mb={4}>
           <AlertIcon />
-          For {usersLink}, we can only fetch public repositories. However, we
-          can retrieve all repositories from all repositories from
-          {organizationsLink}.
+          <div>
+            For {usersLink}, we can only fetch public repositories. However, we
+            can retrieve all repositories from all repositories from
+            {organizationsLink}.
+          </div>
         </Alert>
       )}
 

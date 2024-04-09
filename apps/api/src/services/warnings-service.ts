@@ -1,15 +1,15 @@
-import { Reminder, UserResponse } from '../schemas'
+import { UserResponse, Warning } from '../schemas'
 import { GithubService } from './github-service'
-import { MergeReminderService } from './merge-reminder-service'
 import { UsersService } from './users-service'
+import { WarningsRepoService } from './warnings-repo-service'
 
-export class RemindersService {
+export class WarningsService {
   constructor(private usersService: UsersService) {}
 
-  async getReminder(userId: UserResponse['id']): Promise<Reminder> {
+  async getWarnings(userId: UserResponse['id']): Promise<Warning[]> {
     const user = await this.usersService.getById(userId)
 
-    const mergeReminderService = new MergeReminderService(
+    const warningsRepoService = new WarningsRepoService(
       {
         headBranch: user.headBranch,
         baseBranch: user.baseBranch,
@@ -19,6 +19,6 @@ export class RemindersService {
       new GithubService(user.githubAccessToken)
     )
 
-    return await mergeReminderService.getReminder()
+    return warningsRepoService.getWarnings()
   }
 }

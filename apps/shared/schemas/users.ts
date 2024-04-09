@@ -15,7 +15,14 @@ export const UserResponseSchema = ResponseSchema.extend({
   isOrganization: z.boolean()
 })
 
-export const ReminderSchema = z.string()
+export const WarningSchema = z.object({
+  repo: z.string(),
+  commits: z.array(z.string()),
+  authors: z.array(z.string()),
+  delayInHours: z.number()
+})
+
+export const WarningsSchema = z.array(WarningSchema)
 
 export const UsersListResponseSchema = z.array(UserResponseSchema)
 
@@ -34,6 +41,6 @@ export const UserUpdateRequestSchema = UpdateRequestSchema.merge(
 )
 
 export type UserResponse = z.infer<typeof UserResponseSchema>
-export type Reminder = z.infer<typeof ReminderSchema>
+export type Warning = z.infer<typeof WarningSchema>
 export type UserCreateRequest = z.infer<typeof UserCreateRequestSchema>
 export type UserUpdateRequest = z.infer<typeof UserUpdateRequestSchema>

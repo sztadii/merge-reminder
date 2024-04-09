@@ -13,8 +13,7 @@ import { trpc } from 'src/trpc'
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: 3,
-      retryDelay: 1_000,
+      retry: 0,
       refetchOnWindowFocus: false
     }
   }
