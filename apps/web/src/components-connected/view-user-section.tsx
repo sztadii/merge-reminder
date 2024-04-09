@@ -1,20 +1,17 @@
 import {
   Alert,
   AlertIcon,
-  Box,
   Card,
   CardBody,
   Link,
-  SimpleGrid,
-  Skeleton,
   useColorModeValue
 } from '@chakra-ui/react'
 
-import { Text } from 'src/components/text'
+import { DetailsGrid } from 'src/components/details-grid'
 import { useUserFromUrl } from 'src/hooks/use-user-from-url'
 
 export function ViewUserSection() {
-  const { data: user, isLoading } = useUserFromUrl()
+  const { data: user, isLoading, error } = useUserFromUrl()
 
   const colorForLink = useColorModeValue('yellow.600', 'yellow.400')
 
@@ -86,49 +83,11 @@ export function ViewUserSection() {
 
       <Card>
         <CardBody>
-          {isLoading && (
-            <SimpleGrid columns={4} spacing={8}>
-              {details.map(detail => {
-                return (
-                  <Box key={detail.heading}>
-                    <Box mb={1}>
-                      <Text fontSize="xs" color="gray.400">
-                        <Skeleton display="inline-block" width={100}>
-                          Loading
-                        </Skeleton>
-                      </Text>
-                    </Box>
-
-                    <Text>
-                      <Skeleton display="inline-block" width={200}>
-                        Loading
-                      </Skeleton>
-                    </Text>
-                  </Box>
-                )
-              })}
-            </SimpleGrid>
-          )}
-
-          {!isLoading && !user && <Text>No user with the selected ID</Text>}
-
-          {user && (
-            <SimpleGrid columns={4} spacing={8}>
-              {details.map(detail => {
-                return (
-                  <Box key={detail.heading}>
-                    <Box mb={1}>
-                      <Text fontSize="xs" color="gray.400">
-                        {detail.heading}:
-                      </Text>
-                    </Box>
-
-                    <Text>{detail.text}</Text>
-                  </Box>
-                )
-              })}
-            </SimpleGrid>
-          )}
+          <DetailsGrid
+            details={details}
+            isLoading={isLoading}
+            error={error?.message}
+          />
         </CardBody>
       </Card>
     </>
