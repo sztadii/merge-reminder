@@ -20,7 +20,7 @@ export const WarningSchema = z.object({
   commits: z.array(z.string()),
   compareLink: z.string(),
   authors: z.array(z.string()),
-  delayInHours: z.number()
+  delay: z.string()
 })
 
 export const WarningsSchema = z.array(WarningSchema)

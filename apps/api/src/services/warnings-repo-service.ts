@@ -1,6 +1,10 @@
 import { differenceInHours } from 'date-fns'
 
-import { handlePromise, isTruthy } from '../helpers'
+import {
+  convertHoursToReadableFormat,
+  handlePromise,
+  isTruthy
+} from '../helpers'
 import { GithubService, Repo } from './github-service'
 
 type RepoWarning = {
@@ -8,7 +12,7 @@ type RepoWarning = {
   commits: string[]
   compareLink: string
   authors: string[]
-  delayInHours: number
+  delay: string
 }
 
 type Config = {
@@ -86,7 +90,7 @@ export class WarningsRepoService {
         commits: commits.map(commit => commit.commit.message),
         compareLink: `https://github.com/${this.config.userOrOrganizationName}/${repo.name}/compare/${this.config.baseBranch}...${this.config.headBranch}`,
         authors,
-        delayInHours: firstCommitDelayInHours
+        delay: convertHoursToReadableFormat(firstCommitDelayInHours)
       }
     })
 
