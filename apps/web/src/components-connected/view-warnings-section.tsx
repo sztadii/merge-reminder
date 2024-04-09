@@ -13,6 +13,7 @@ import { Icon } from 'src/components/icon'
 import { SpinnerWithLabel } from 'src/components/spinner-with-label'
 import { Table, TableProps } from 'src/components/table'
 import { Text } from 'src/components/text'
+import { convertHoursToReadableFormat } from 'src/helpers'
 import { routerPaths } from 'src/router'
 import { trpc } from 'src/trpc'
 
@@ -45,18 +46,18 @@ export function ViewWarningsSection() {
         id: 'delayInHours',
         headingCell: {
           skeleton: () => <Skeleton>Loading</Skeleton>,
-          content: () => 'Delay in hours'
+          content: () => 'Delay'
         },
         rowCell: {
           skeleton: () => <Skeleton>Loading</Skeleton>,
-          content: user => user.delayInHours
+          content: user => convertHoursToReadableFormat(user.delayInHours)
         }
       },
       {
         id: 'commits',
         headingCell: {
           skeleton: () => <Skeleton>Loading</Skeleton>,
-          content: () => 'Commits'
+          content: () => 'Unmerged commits'
         },
         rowCell: {
           skeleton: () => <Skeleton>Loading</Skeleton>,
