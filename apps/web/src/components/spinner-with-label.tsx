@@ -9,9 +9,9 @@ type SpinnerWithLabelProps = {
 }
 
 const gaps = {
-  sm: 3,
-  md: 4,
-  lg: 5
+  sm: 2,
+  md: 3,
+  lg: 4
 }
 
 export function SpinnerWithLabel({

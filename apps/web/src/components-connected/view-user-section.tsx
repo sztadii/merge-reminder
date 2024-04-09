@@ -86,7 +86,7 @@ export function ViewUserSection() {
 
       <Card>
         <CardHeader>
-          <Heading size="sm">
+          <Heading size="md">
             {isLoading ? (
               <Skeleton display="inline-block">Basic information</Skeleton>
             ) : (

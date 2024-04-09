@@ -42,19 +42,24 @@ export function ViewUsersSection() {
 
   const pendingMutationVariables = usePendingMutationVariables()
 
-  const { data: users = [], isLoading: isFetchingUserList } =
-    trpc.users.findAll.useQuery()
+  const {
+    data: users = [],
+    isLoading: isFetchingUserList,
+    error: errorForUserList
+  } = trpc.users.findAll.useQuery()
 
   const tableColumns: TableProps<typeof users>['columns'] = useMemo(() => {
     return [
       {
         id: 'githubLogin',
-        width: 300,
-        rowCellSkeleton: () => <Skeleton>Loading</Skeleton>,
         headingCell: {
+          skeleton: () => (
+            <Skeleton display="inline-block">User / organization name</Skeleton>
+          ),
           content: () => 'User / organization name'
         },
         rowCell: {
+          skeleton: () => <Skeleton>Loading</Skeleton>,
           content: user => {
             const isCurrentUserDeleting = pendingMutationVariables.some(
               variable => variable === user.id
@@ -84,38 +89,39 @@ export function ViewUsersSection() {
       },
       {
         id: 'email',
-        width: 300,
-        rowCellSkeleton: () => <Skeleton>Loading</Skeleton>,
         headingCell: {
+          skeleton: () => <Skeleton display="inline-block">Email</Skeleton>,
           content: () => 'Email'
         },
         rowCell: {
+          skeleton: () => <Skeleton>Loading</Skeleton>,
           content: user => user.email
         }
       },
       {
         id: 'role',
-        width: 300,
-        rowCellSkeleton: () => <Skeleton>Loading</Skeleton>,
         headingCell: {
+          skeleton: () => <Skeleton display="inline-block">Role</Skeleton>,
           content: () => 'Role'
         },
         rowCell: {
+          skeleton: () => <Skeleton>Loading</Skeleton>,
           content: user => user.role
         }
       },
       {
         id: 'options',
         textAlign: 'right',
-        rowCellSkeleton: () => (
-          <Skeleton display="inline-block">
-            <Icon variant="chevronDown" size="sm" />
-          </Skeleton>
-        ),
         headingCell: {
+          skeleton: () => <Skeleton display="inline-block">Options</Skeleton>,
           content: () => 'Options'
         },
         rowCell: {
+          skeleton: () => (
+            <Skeleton display="inline-block">
+              <Icon variant="chevronDown" size="sm" />
+            </Skeleton>
+          ),
           content: user => {
             return (
               <Menu placement="left-start">
@@ -178,8 +184,10 @@ export function ViewUsersSection() {
           <Table
             columns={tableColumns}
             rows={users}
+            skeletonRows={15}
             isLoading={isFetchingUserList}
-            emptyRowsMessage="No users"
+            errorMessage={errorForUserList?.message}
+            noDataMessage="No users"
           />
         </CardBody>
       </Card>

@@ -61,8 +61,6 @@ export function CreateUpdateUserDrawer({
   const createUpdateUser = async () => {
     if (hasMissingFormValues) return
 
-    debugger
-
     const formValuesToSend = {
       ...formValues,
       isOrganization: !!formValues?.isOrganization

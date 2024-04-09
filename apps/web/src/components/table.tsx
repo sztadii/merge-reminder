@@ -1,143 +1,123 @@
-import {
-  Box,
-  TableCellProps,
-  TableColumnHeaderProps,
-  Table as TableComponent,
-  TableContainer,
-  Tbody,
-  Td,
-  Text,
-  Th,
-  Thead,
-  Tr
-} from '@chakra-ui/react'
+import { Box, Text } from '@chakra-ui/react'
 import { ReactNode } from 'react'
 
 export type TableProps<TRows extends unknown[]> = {
   columns: Array<{
     id: string
-    width?: number
     textAlign?: 'left' | 'right' | 'center'
     headingCell: {
-      props?: TableColumnHeaderProps
+      skeleton: () => ReactNode
       content: (rows: TRows) => ReactNode
     }
     rowCell: {
-      props?: TableCellProps
+      skeleton: () => ReactNode
       content: (row: TRows[0]) => ReactNode
     }
-    rowCellSkeleton: () => ReactNode
   }>
   rows: TRows
+  skeletonRows: number
   isLoading: boolean
-  emptyRowsMessage?: string
+  errorMessage: string | undefined
+  noDataMessage?: string
 }
 
 export function Table<T extends unknown[]>({
   columns,
   rows,
+  skeletonRows,
   isLoading,
-  emptyRowsMessage
+  errorMessage,
+  noDataMessage
 }: TableProps<T>) {
-  if (!isLoading && !rows.length) return <Text>{emptyRowsMessage}</Text>
+  if (!isLoading && errorMessage) return <Text>{errorMessage}</Text>
+
+  if (!isLoading && !rows.length) return <Text>{noDataMessage}</Text>
 
   const renderContent = () => {
     if (isLoading) {
       return (
         <>
-          <Thead>
-            <Tr>
-              {columns.map(column => {
+          <Box>
+            <Box display="flex" gap={2}>
+              {columns.map((column, index) => {
                 return (
-                  <Th
-                    {...column.headingCell.props}
+                  <Box
                     key={column.id}
-                    width={column.width}
                     textAlign={column.textAlign}
+                    flex={1}
+                    mb={2}
                   >
-                    <Box width={column.width} textTransform="none">
-                      {column.headingCell.content(rows)}
-                    </Box>
-                  </Th>
+                    {column.headingCell.skeleton()}
+                  </Box>
                 )
               })}
-            </Tr>
-          </Thead>
-          <Tbody>
-            {new Array(10).fill(null).map((_, index) => {
+            </Box>
+          </Box>
+          <Box>
+            {new Array(skeletonRows).fill(null).map((_, index) => {
               return (
-                <Tr key={index}>
+                <Box display="flex" key={index} gap={2}>
                   {columns.map(column => {
                     return (
-                      <Td
-                        {...column.rowCell.props}
+                      <Box
                         key={column.id}
-                        width={column.width}
                         textAlign={column.textAlign}
+                        flex={1}
+                        mb={2}
                       >
-                        <Box width={column.width}>
-                          {column.rowCellSkeleton()}
-                        </Box>
-                      </Td>
+                        {column.rowCell.skeleton()}
+                      </Box>
                     )
                   })}
-                </Tr>
+                </Box>
               )
             })}
-          </Tbody>
+          </Box>
         </>
       )
     }
 
     return (
       <>
-        <Thead>
-          <Tr>
-            {columns.map(column => {
+        <Box>
+          <Box display="flex" gap={2}>
+            {columns.map((column, index) => {
               return (
-                <Th
-                  {...column.headingCell.props}
+                <Box
                   key={column.id}
-                  width={column.width}
                   textAlign={column.textAlign}
+                  flex={1}
+                  mb={2}
                 >
-                  <Box width={column.width} textTransform="none">
-                    {column.headingCell.content(rows)}
-                  </Box>
-                </Th>
+                  {column.headingCell.content(rows)}
+                </Box>
               )
             })}
-          </Tr>
-        </Thead>
-        <Tbody>
+          </Box>
+        </Box>
+        <Box>
           {rows.map((row, index) => {
             return (
-              <Tr key={index}>
-                {columns.map(column => {
+              <Box key={index} display="flex" gap={2}>
+                {columns.map((column, index) => {
                   return (
-                    <Td
-                      {...column.rowCell.props}
+                    <Box
                       key={column.id}
-                      width={column.width}
                       textAlign={column.textAlign}
+                      flex={1}
+                      mb={2}
                     >
-                      <Box width={column.width}>
-                        {column.rowCell.content(row)}
-                      </Box>
-                    </Td>
+                      {column.rowCell.content(row)}
+                    </Box>
                   )
                 })}
-              </Tr>
+              </Box>
             )
           })}
-        </Tbody>
+        </Box>
       </>
     )
   }
 
-  return (
-    <TableContainer>
-      <TableComponent variant="simple">{renderContent()}</TableComponent>
-    </TableContainer>
-  )
+  return <Box>{renderContent()}</Box>
 }

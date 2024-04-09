@@ -61,9 +61,14 @@ export class WarningsRepoService {
       )
 
       const { files = [], commits: rawCommits = [] } = compareData?.data || {}
-      const commits = rawCommits.filter(
-        rawCommit => rawCommit.commit.committer?.name !== 'Github'
-      )
+      const commits = rawCommits.filter(rawCommit => {
+        const commiterName = (
+          rawCommit.commit.committer?.name || ''
+        ).toLowerCase()
+
+        return commiterName !== 'github'
+      })
+
       const allAuthors = commits
         .map(commit => commit?.commit.author?.email)
         .filter(isTruthy)
