@@ -28,7 +28,7 @@ export function ViewWarningsSection() {
       <Card>
         <CardBody>
           {isLoadingWarnings && (
-            <DetailsGrid details={detailsForLoading} isLoading />
+            <SpinnerWithLabel size="md" label="Loading warnings" />
           )}
 
           {errorForWarnings && <Text>{errorForWarnings.message}</Text>}
