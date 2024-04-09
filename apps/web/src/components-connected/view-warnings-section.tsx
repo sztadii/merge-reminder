@@ -121,7 +121,7 @@ export function ViewWarningsSection() {
           <Table
             columns={tableColumns}
             rows={warnings}
-            skeletonRows={5}
+            skeletonRows={4}
             isLoading={isLoadingWarnings}
             errorMessage={errorForWarnings?.message}
             noDataMessage="All your repos are looking well. Good job team!"

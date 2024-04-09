@@ -184,7 +184,7 @@ export function ViewUsersSection() {
           <Table
             columns={tableColumns}
             rows={users}
-            skeletonRows={15}
+            skeletonRows={8}
             isLoading={isFetchingUserList}
             errorMessage={errorForUserList?.message}
             noDataMessage="No users"

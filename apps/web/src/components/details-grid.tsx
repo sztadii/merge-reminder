@@ -18,12 +18,12 @@ export function DetailsGrid({ details, isLoading, error }: DetailsGridProps) {
   }
 
   return (
-    <SimpleGrid columns={{ sm: 1, lg: 2, xl: 4 }} spacing={8}>
+    <SimpleGrid columns={{ sm: 1, lg: 2, xl: 4 }} spacing={4}>
       {details.map(detail => {
         return (
           <Box key={detail.heading}>
             <Box mb={1}>
-              <Text fontSize="xs" color="gray.400">
+              <Text fontWeight="bold" fontSize="xs" color="gray.400">
                 {isLoading ? (
                   <Skeleton display="inline-block" width={100}>
                     Loading

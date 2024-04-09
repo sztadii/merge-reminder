@@ -38,14 +38,14 @@ export function Table<T extends unknown[]>({
       return (
         <>
           <Box>
-            <Box display="flex" gap={2}>
+            <Box display="flex" gap={4}>
               {columns.map((column, index) => {
                 return (
                   <Box
                     key={column.id}
                     textAlign={column.textAlign}
                     flex={1}
-                    mb={2}
+                    mb={4}
                   >
                     {column.headingCell.skeleton()}
                   </Box>
@@ -56,14 +56,14 @@ export function Table<T extends unknown[]>({
           <Box>
             {new Array(skeletonRows).fill(null).map((_, index) => {
               return (
-                <Box display="flex" key={index} gap={2}>
+                <Box display="flex" key={index} gap={4}>
                   {columns.map(column => {
                     return (
                       <Box
                         key={column.id}
                         textAlign={column.textAlign}
                         flex={1}
-                        mb={2}
+                        mb={4}
                       >
                         {column.rowCell.skeleton()}
                       </Box>
@@ -80,16 +80,18 @@ export function Table<T extends unknown[]>({
     return (
       <>
         <Box>
-          <Box display="flex" gap={2}>
+          <Box display="flex" gap={4}>
             {columns.map((column, index) => {
               return (
                 <Box
                   key={column.id}
                   textAlign={column.textAlign}
                   flex={1}
-                  mb={2}
+                  mb={4}
                 >
-                  {column.headingCell.content(rows)}
+                  <Text fontWeight="bold">
+                    {column.headingCell.content(rows)}
+                  </Text>
                 </Box>
               )
             })}
@@ -98,14 +100,14 @@ export function Table<T extends unknown[]>({
         <Box>
           {rows.map((row, index) => {
             return (
-              <Box key={index} display="flex" gap={2}>
+              <Box key={index} display="flex" gap={4}>
                 {columns.map((column, index) => {
                   return (
                     <Box
                       key={column.id}
                       textAlign={column.textAlign}
                       flex={1}
-                      mb={2}
+                      mb={4}
                     >
                       {column.rowCell.content(row)}
                     </Box>

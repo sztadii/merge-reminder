@@ -70,7 +70,7 @@ export function DeleteUserConfirmation({
             <FormLabel>
               If you are sure about deletion, <br />
               then please type{' '}
-              <Text fontWeight={700}>{user?.userOrOrganizationName}</Text>{' '}
+              <Text fontWeight="bold">{user?.userOrOrganizationName}</Text>{' '}
               below.
             </FormLabel>
             <Input
