@@ -26,13 +26,6 @@ export function ViewWarningsSection() {
     isFetching: isFetchingWarnings
   } = trpc.warnings.getWarnings.useQuery(params.id)
 
-  const detailsForLoading = new Array(4).fill(null).map(() => {
-    return {
-      heading: '',
-      text: ''
-    }
-  })
-
   return (
     <>
       <Card>
