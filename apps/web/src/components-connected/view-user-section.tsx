@@ -7,7 +7,7 @@ import {
   useColorModeValue
 } from '@chakra-ui/react'
 
-import { DetailsGrid } from 'src/components/details-grid'
+import { DetailsGrid, DetailsGridProps } from 'src/components/details-grid'
 import { useUserFromUrl } from 'src/hooks/use-user-from-url'
 
 export function ViewUserSection() {
@@ -15,7 +15,7 @@ export function ViewUserSection() {
 
   const colorForLink = useColorModeValue('yellow.600', 'yellow.400')
 
-  const details = [
+  const details: DetailsGridProps['details'] = [
     {
       heading: 'Role',
       text: user?.role

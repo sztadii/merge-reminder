@@ -2,7 +2,7 @@ import { Box, SimpleGrid, Skeleton } from '@chakra-ui/react'
 
 import { Text } from 'src/components/text'
 
-type DetailsGridProps = {
+export type DetailsGridProps = {
   details: Array<{
     heading: string
     text?: string
