@@ -32,7 +32,9 @@ export function ViewWarningsSection() {
           {warnings && (
             <Text>
               {isFetchingWarnings && (
-                <SpinnerWithLabel label="Fetching the latest warnings" />
+                <Box mb={2}>
+                  <SpinnerWithLabel label="Fetching the latest warnings" />
+                </Box>
               )}
 
               {warnings.length === 0 && (
@@ -42,10 +44,41 @@ export function ViewWarningsSection() {
               {warnings.map(e => {
                 return (
                   <Box key={e.repo}>
-                    <div>{e.repo}</div>
-                    <div>{e.delayInHours}</div>
-                    <div>{e.commits.length}</div>
-                    <div>{e.authors.toString()}</div>
+                    <Box mb={2}>
+                      <Box mb={1}>
+                        <Text fontSize="xs" color="gray.400">
+                          Repo:
+                        </Text>
+                      </Box>
+                      <Text>{e.repo}</Text>
+                    </Box>
+
+                    <Box mb={2}>
+                      <Box mb={1}>
+                        <Text fontSize="xs" color="gray.400">
+                          Delay ( hours ):
+                        </Text>
+                      </Box>
+                      <Text>{e.delayInHours}</Text>
+                    </Box>
+
+                    <Box mb={2}>
+                      <Box mb={1}>
+                        <Text fontSize="xs" color="gray.400">
+                          Commits:
+                        </Text>
+                      </Box>
+                      <Text>{e.commits.toString()}</Text>
+                    </Box>
+
+                    <Box mb={2}>
+                      <Box mb={1}>
+                        <Text fontSize="xs" color="gray.400">
+                          Authors:
+                        </Text>
+                      </Box>
+                      <Text>{e.authors.toString()}</Text>
+                    </Box>
                   </Box>
                 )
               })}
