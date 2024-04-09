@@ -1,9 +1,9 @@
 import {
   Box,
-  Button,
   Card,
   CardBody,
   CardHeader,
+  Flex,
   Heading,
   Link,
   Skeleton
@@ -75,17 +75,21 @@ export function ViewWarningsSection() {
                   {
                     heading: 'Commits',
                     text: (
-                      <Button
-                        as={Link}
-                        href={warning.compareLink}
-                        variant="link"
-                        rightIcon={<Icon variant="externalLink" />}
-                        isActive
-                        isExternal
-                      >
-                        {/* TODO Fix truncation */}
-                        {warning.commits.join(', ')}
-                      </Button>
+                      <Flex gap={2} alignItems="center">
+                        <Link
+                          href={warning.compareLink}
+                          isExternal
+                          display="flex"
+                          alignItems="center"
+                          gap={2}
+                        >
+                          <Text noOfLines={1}>
+                            {warning.commits.join(', ')}
+                          </Text>
+
+                          <Icon variant="externalLink" />
+                        </Link>
+                      </Flex>
                     )
                   },
                   {

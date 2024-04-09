@@ -1,7 +1,7 @@
 import {
-  Button,
   Card,
   CardBody,
+  Link as ChakraLink,
   Flex,
   Menu,
   MenuButton,
@@ -61,16 +61,18 @@ export function ViewUsersSection() {
             )
 
             return (
-              <Flex gap={2}>
-                <Button
+              <Flex gap={2} alignItems="center">
+                <ChakraLink
                   as={Link}
                   to={routerPaths.user.generateURL(user.id)}
-                  variant="link"
-                  rightIcon={<Icon variant="chevronRight" />}
-                  isActive
+                  display="flex"
+                  alignItems="center"
+                  gap={2}
                 >
                   {user.userOrOrganizationName}
-                </Button>
+
+                  <Icon variant="chevronRight" />
+                </ChakraLink>
 
                 {isCurrentUserDeleting && (
                   <SpinnerWithLabel label="Deleting" color="red.400" />
