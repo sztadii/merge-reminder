@@ -11,7 +11,7 @@ export function Navigation() {
     <Box>
       <Flex p={4} alignItems="center" justifyContent="space-between">
         <Flex alignItems="center" gap={8}>
-          <NavLink href={routerPaths.users.path}>Users</NavLink>
+          <NavLink href={routerPaths.users.path}>Merge Reminder</NavLink>
         </Flex>
 
         <IconButton
