@@ -82,7 +82,7 @@ export function CreateUpdateUserDrawer({
       await queryClient.invalidateQueries(getQueryKey(trpc.users.findAll))
       await queryClient.invalidateQueries(getQueryKey(trpc.users.getById))
       queryClient
-        .invalidateQueries(getQueryKey(trpc.reminders.getReminder))
+        .invalidateQueries(getQueryKey(trpc.warnings.getWarnings))
         .then()
 
       onClose()

@@ -4,7 +4,6 @@ import { WarningsService } from '../services/warnings-service'
 import { publicProcedure, router } from '../trpc'
 
 export const warningsRouter = router({
-  // TODO Rename getReminder
   getWarnings: publicProcedure
     .input(UserResponseSchema.shape.id)
     .output(WarningsSchema)

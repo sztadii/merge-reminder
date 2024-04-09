@@ -2,6 +2,7 @@ import {
   AddIcon,
   ChevronDownIcon,
   ChevronRightIcon,
+  ExternalLinkIcon,
   MoonIcon,
   SunIcon
 } from '@chakra-ui/icons'
@@ -11,7 +12,8 @@ const icons = {
   chevronRight: ChevronRightIcon,
   add: AddIcon,
   moon: MoonIcon,
-  sun: SunIcon
+  sun: SunIcon,
+  externalLink: ExternalLinkIcon
 }
 
 const sizes = {

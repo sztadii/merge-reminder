@@ -137,9 +137,7 @@ export function Table<T extends unknown[]>({
 
   return (
     <TableContainer>
-      <TableComponent size="sm" variant="simple">
-        {renderContent()}
-      </TableComponent>
+      <TableComponent variant="simple">{renderContent()}</TableComponent>
     </TableContainer>
   )
 }

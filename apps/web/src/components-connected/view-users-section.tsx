@@ -68,7 +68,6 @@ export function ViewUsersSection() {
                   variant="link"
                   rightIcon={<Icon variant="chevronRight" />}
                   isActive
-                  size="sm"
                 >
                   {user.userOrOrganizationName}
                 </Button>

@@ -6,6 +6,7 @@ import { GithubService, Repo } from './github-service'
 type RepoWarning = {
   repo: string
   commits: string[]
+  compareLink: string
   authors: string[]
   delayInHours: number
 }
@@ -78,6 +79,7 @@ export class WarningsRepoService {
       return {
         repo: repo.name,
         commits: commits.map(commit => commit.commit.message),
+        compareLink: `https://github.com/${this.config.userOrOrganizationName}/${repo.name}/compare/${this.config.baseBranch}...${this.config.headBranch}`,
         authors,
         delayInHours: firstCommitDelayInHours
       }

@@ -18,6 +18,7 @@ export const UserResponseSchema = ResponseSchema.extend({
 export const WarningSchema = z.object({
   repo: z.string(),
   commits: z.array(z.string()),
+  compareLink: z.string(),
   authors: z.array(z.string()),
   delayInHours: z.number()
 })

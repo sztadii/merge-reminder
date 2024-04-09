@@ -3,7 +3,10 @@ import {
   AlertIcon,
   Card,
   CardBody,
+  CardHeader,
+  Heading,
   Link,
+  Skeleton,
   useColorModeValue
 } from '@chakra-ui/react'
 
@@ -82,6 +85,16 @@ export function ViewUserSection() {
       )}
 
       <Card>
+        <CardHeader>
+          <Heading size="sm">
+            {isLoading ? (
+              <Skeleton display="inline-block">Basic information</Skeleton>
+            ) : (
+              'Basic information'
+            )}
+          </Heading>
+        </CardHeader>
+
         <CardBody>
           <DetailsGrid
             details={details}

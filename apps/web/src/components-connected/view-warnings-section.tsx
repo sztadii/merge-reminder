@@ -1,6 +1,16 @@
-import { Box, Card, CardBody } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  Card,
+  CardBody,
+  CardHeader,
+  Heading,
+  Link,
+  Skeleton
+} from '@chakra-ui/react'
 
 import { DetailsGrid, DetailsGridProps } from 'src/components/details-grid'
+import { Icon } from 'src/components/icon'
 import { SpinnerWithLabel } from 'src/components/spinner-with-label'
 import { Text } from 'src/components/text'
 import { routerPaths } from 'src/router'
@@ -26,10 +36,17 @@ export function ViewWarningsSection() {
   return (
     <>
       <Card>
+        <CardHeader>
+          <Heading size="sm">
+            {isLoadingWarnings ? (
+              <Skeleton display="inline-block">Warnings</Skeleton>
+            ) : (
+              'Warnings'
+            )}
+          </Heading>
+        </CardHeader>
         <CardBody>
-          {isLoadingWarnings && (
-            <SpinnerWithLabel size="md" label="Loading warnings" />
-          )}
+          {isLoadingWarnings && <Skeleton height={100} />}
 
           {errorForWarnings && <Text>{errorForWarnings.message}</Text>}
 
@@ -57,11 +74,27 @@ export function ViewWarningsSection() {
                   },
                   {
                     heading: 'Commits',
-                    text: warning.commits.toString()
+                    text: (
+                      <Button
+                        as={Link}
+                        href={warning.compareLink}
+                        variant="link"
+                        rightIcon={<Icon variant="externalLink" />}
+                        isActive
+                        isExternal
+                      >
+                        {/* TODO Fix truncation */}
+                        {warning.commits.join(', ')}
+                      </Button>
+                    )
                   },
                   {
                     heading: 'Authors',
-                    text: warning.authors.toString()
+                    text: (
+                      <Text noOfLines={1} isTruncated>
+                        {warning.authors.join(', ')}
+                      </Text>
+                    )
                   }
                 ]
 
