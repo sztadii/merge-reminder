@@ -1,11 +1,12 @@
 import { Box, SimpleGrid, Skeleton } from '@chakra-ui/react'
+import { ReactNode } from 'react'
 
 import { Text } from 'src/components/text'
 
 export type DetailsGridProps = {
   details: Array<{
     heading: string
-    text?: string
+    text?: ReactNode
   }>
   isLoading?: boolean
   error?: string
