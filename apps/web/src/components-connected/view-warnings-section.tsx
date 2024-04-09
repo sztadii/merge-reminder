@@ -1,4 +1,4 @@
-import { Box, Card, CardBody, Skeleton } from '@chakra-ui/react'
+import { Box, Card, CardBody } from '@chakra-ui/react'
 
 import { DetailsGrid, DetailsGridProps } from 'src/components/details-grid'
 import { SpinnerWithLabel } from 'src/components/spinner-with-label'
@@ -16,14 +16,19 @@ export function ViewWarningsSection() {
     isFetching: isFetchingWarnings
   } = trpc.warnings.getWarnings.useQuery(params.id)
 
+  const detailsForLoading = new Array(4).fill(null).map(() => {
+    return {
+      heading: '',
+      text: ''
+    }
+  })
+
   return (
     <>
       <Card>
         <CardBody>
           {isLoadingWarnings && (
-            <Text>
-              <Skeleton height={200}>Loading</Skeleton>
-            </Text>
+            <DetailsGrid details={detailsForLoading} isLoading />
           )}
 
           {errorForWarnings && <Text>{errorForWarnings.message}</Text>}
