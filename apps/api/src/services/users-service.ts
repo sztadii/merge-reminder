@@ -21,7 +21,7 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
     if (!record) {
       throw new TRPCError({
         code: 'UNAUTHORIZED',
-        message: `User with id ${id} was deleted or token!`
+        message: `The user with ID ${id} has been deleted.`
       })
     }
 
@@ -63,7 +63,7 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
     } catch (e) {
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
-        message: 'Something went wrong during user create.'
+        message: 'Something went wrong during user creation.'
       })
     }
   }

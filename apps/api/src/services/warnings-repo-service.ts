@@ -37,24 +37,31 @@ export class WarningsRepoService {
       )
     )
 
+    if (error?.status === 404) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: `We could not find your repositories. Are you sure you've filled in the correct organization name?`
+      })
+    }
+
     if (error?.status === 401) {
       throw new TRPCError({
         code: 'UNAUTHORIZED',
-        message: `Your access token is wrong or get expired.`
+        message: `Your access token is incorrect or has expired.`
       })
     }
 
     if (error) {
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
-        message: 'Something went wrong during fetching repos.'
+        message: 'Something went wrong while fetching repositories.'
       })
     }
 
     if (!allRepos || allRepos.length === 0) {
       throw new TRPCError({
         code: 'NOT_FOUND',
-        message: `You do not have any repos.`
+        message: `You don't have any repositories.`
       })
     }
 

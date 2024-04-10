@@ -14,7 +14,7 @@ export class WarningsService {
     if (!user.githubAccessToken) {
       throw new TRPCError({
         code: 'FORBIDDEN',
-        message: `User did not set Github access token yet!`
+        message: `The user has not set their GitHub access token yet.`
       })
     }
 
