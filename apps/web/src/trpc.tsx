@@ -2,8 +2,10 @@ import { HTTPHeaders, TRPCClientErrorLike, httpLink } from '@trpc/client'
 import { createTRPCReact } from '@trpc/react-query'
 import { ReactNode } from 'react'
 
+import { queryClient } from 'src/react-query'
+import { storage } from 'src/storage'
+
 import type { AppRouter } from '../../api'
-import { queryClient } from './react-query'
 
 export type TRPCError = TRPCClientErrorLike<AppRouter>
 
@@ -24,7 +26,7 @@ const trpcClient = trpc.createClient({
       async headers() {
         const headers: HTTPHeaders = {}
 
-        const token = localStorage.getItem('token')
+        const token = storage.auth.getToken()
 
         if (token) {
           headers.authorization = `Bearer ${token}`

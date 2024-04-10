@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 
 import { config } from 'src/config'
 import { routerPaths } from 'src/router'
+import { storage } from 'src/storage'
 import { showErrorToast } from 'src/toasts'
 import { TRPCError, trpc } from 'src/trpc'
 
@@ -23,7 +24,7 @@ export function Login() {
       try {
         const loginResponse = await loginMutation({ code })
 
-        localStorage.setItem('token', loginResponse.token)
+        storage.auth.setToken(loginResponse.token)
 
         routerPaths.users.navigate()
       } catch (e) {
