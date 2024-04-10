@@ -25,7 +25,12 @@ export function ViewUserSection() {
     },
     {
       heading: 'Email',
-      text: user?.email
+      text: user?.email || (
+        <Alert status="warning">
+          <AlertIcon />
+          No email
+        </Alert>
+      )
     },
     {
       heading: 'User / organization name',
@@ -45,7 +50,12 @@ export function ViewUserSection() {
     },
     {
       heading: 'Github access token',
-      text: user?.githubAccessToken
+      text: user?.githubAccessToken || (
+        <Alert status="warning">
+          <AlertIcon />
+          No token
+        </Alert>
+      )
     }
   ]
 
