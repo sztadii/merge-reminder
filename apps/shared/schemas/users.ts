@@ -28,7 +28,6 @@ export const WarningsSchema = z.array(WarningSchema)
 export const UsersListResponseSchema = z.array(UserResponseSchema)
 
 export const UserCreateRequestSchema = UserResponseSchema.pick({
-  id: true,
   userOrOrganizationName: true,
   role: true,
   email: true,

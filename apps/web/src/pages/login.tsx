@@ -1,3 +1,4 @@
+import { Button, Flex } from '@chakra-ui/react'
 import { useEffect } from 'react'
 
 import { config } from 'src/config'
@@ -30,6 +31,7 @@ export function Login() {
       } catch (e) {
         const error = e as TRPCError
         showErrorToast(error.message)
+        routerPaths.login.navigate() // To remove code from URL
       }
     }
 
@@ -37,8 +39,13 @@ export function Login() {
   }, [])
 
   return (
-    <>
-      <button onClick={redirectToGithub}>Login</button>
-    </>
+    <Flex
+      height="100vh"
+      width="100vw"
+      alignItems="center"
+      justifyContent="center"
+    >
+      <Button onClick={redirectToGithub}>Login by GitHub</Button>
+    </Flex>
   )
 }

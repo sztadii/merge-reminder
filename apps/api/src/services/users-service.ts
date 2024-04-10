@@ -48,7 +48,6 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
         createdAt: new Date(),
         userOrOrganizationName: userCreateRequest.userOrOrganizationName,
         role: userCreateRequest.role,
-        email: userCreateRequest.email || undefined,
         headBranch: userCreateRequest.headBranch,
         baseBranch: userCreateRequest.baseBranch,
         isOrganization: userCreateRequest.isOrganization

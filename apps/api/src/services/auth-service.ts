@@ -30,15 +30,15 @@ export class AuthService {
       )
       const githubUserResponse = await githubService.users.getAuthenticated()
       const githubUser = githubUserResponse.data
-      const githubUserId = githubUser.id.toString()
 
-      const user = await this.userService
-        .getById(githubUserId)
-        .catch(() => undefined)
+      // TODO Find more performant way to get user
+      const users = await this.userService.findAll()
+      const user = users.find(
+        user => user.userOrOrganizationName === githubUser.login
+      )
 
       if (!user) {
         const createdUser = await this.userService.create({
-          id: githubUserId,
           userOrOrganizationName: githubUser.login,
           role: 'CLIENT',
           headBranch: 'master',
@@ -49,10 +49,12 @@ export class AuthService {
       }
 
       return this.getTokenFromUser(user)
-    } catch {
+    } catch (e) {
+      const error = e as Error
+
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
-        message: 'Something went wrong during user login'
+        message: error.message
       })
     }
   }
