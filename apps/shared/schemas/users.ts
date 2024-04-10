@@ -28,9 +28,8 @@ export const WarningsSchema = z.array(WarningSchema)
 export const UsersListResponseSchema = z.array(UserResponseSchema)
 
 export const UserCreateRequestSchema = UserResponseSchema.pick({
-  userOrOrganizationName: true,
   role: true,
-  email: true,
+  userOrOrganizationName: true,
   headBranch: true,
   baseBranch: true,
   isOrganization: true
@@ -39,10 +38,20 @@ export const UserCreateRequestSchema = UserResponseSchema.pick({
 export const UserUpdateRequestSchema = UpdateRequestSchema.merge(
   UserResponseSchema.pick({
     id: true,
-    userOrOrganizationName: true,
-    githubAccessToken: true,
     role: true,
     email: true,
+    userOrOrganizationName: true,
+    githubAccessToken: true,
+    headBranch: true,
+    baseBranch: true,
+    isOrganization: true
+  })
+)
+
+export const UserUpdateRequestForClientSchema = UpdateRequestSchema.merge(
+  UserResponseSchema.pick({
+    email: true,
+    userOrOrganizationName: true,
     headBranch: true,
     baseBranch: true,
     isOrganization: true
@@ -53,3 +62,6 @@ export type UserResponse = z.infer<typeof UserResponseSchema>
 export type Warning = z.infer<typeof WarningSchema>
 export type UserCreateRequest = z.infer<typeof UserCreateRequestSchema>
 export type UserUpdateRequest = z.infer<typeof UserUpdateRequestSchema>
+export type UserUpdateRequestForClient = z.infer<
+  typeof UserUpdateRequestForClientSchema
+>

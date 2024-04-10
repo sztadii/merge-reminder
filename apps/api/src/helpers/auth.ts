@@ -11,9 +11,7 @@ export function convertJSONToToken(
   }
 }
 
-export function convertTokenToJSON(
-  token: string
-): Record<string, string> | undefined {
+export function convertTokenToJSON<T>(token: string): T | undefined {
   try {
     const jsonString = Buffer.from(token, 'base64').toString('utf-8')
     return JSON.parse(jsonString)
