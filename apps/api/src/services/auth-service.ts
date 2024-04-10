@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { addMinutes } from 'date-fns'
+import { addHours } from 'date-fns'
 
 import { config } from '../config'
 import { convertJSONToToken } from '../helpers'
@@ -33,7 +33,8 @@ export class AuthService {
       email: userData.email,
       userName: userData.login,
       githubId: userData.id,
-      expiredAt: addMinutes(new Date(), 30).toString()
+      // Github token is expiring in 8h
+      expiredAt: addHours(new Date(), 6).toString()
     })!
 
     return {
