@@ -1,3 +1,4 @@
+import { TRPCError } from '@trpc/server'
 import { differenceInHours } from 'date-fns'
 
 import {
@@ -37,15 +38,24 @@ export class WarningsRepoService {
     )
 
     if (error?.status === 401) {
-      throw new Error('Your access token is wrong or get expired.')
+      throw new TRPCError({
+        code: 'UNAUTHORIZED',
+        message: `Your access token is wrong or get expired.`
+      })
     }
 
     if (error) {
-      throw new Error('Something went wrong during fetching repos.')
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Something went wrong during fetching repos.'
+      })
     }
 
     if (!allRepos || allRepos.length === 0) {
-      throw new Error('You do not have any repos.')
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: `ou do not have any repos.`
+      })
     }
 
     return this.getWarningsFromAffectedBranches(allRepos)

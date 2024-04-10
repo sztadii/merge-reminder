@@ -1,3 +1,5 @@
+import { TRPCError } from '@trpc/server'
+
 import { Database, DatabaseId, UserDatabaseRecord } from '../database'
 import { UserCreateRequest, UserResponse, UserUpdateRequest } from '../schemas'
 import { DatabaseService } from './database-service'
@@ -13,7 +15,10 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
 
       return records.map(this.mapRecordToResponse)
     } catch {
-      throw new Error('Something went wrong during fetching users')
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Something went wrong during fetching users'
+      })
     }
   }
 
@@ -27,7 +32,10 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
     } catch {}
 
     if (!record) {
-      throw new Error(`User with ${id} not found!`)
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: `User with ${id} not found!`
+      })
     }
 
     return this.mapRecordToResponse(record)
@@ -49,7 +57,10 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
 
       return this.getById(insertedUser.insertedId.toString())
     } catch (e) {
-      throw new Error('Something went wrong during user create')
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Something went wrong during user create'
+      })
     }
   }
 
@@ -75,7 +86,10 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
 
       return this.getById(user.id)
     } catch {
-      throw new Error('Something went wrong during user update')
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Something went wrong during user update'
+      })
     }
   }
 
@@ -83,7 +97,10 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
     try {
       await this.collection.deleteOne({ _id: new DatabaseId(id) })
     } catch {
-      throw new Error('Something went wrong during user delete')
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Something went wrong during user delete'
+      })
     }
   }
 
