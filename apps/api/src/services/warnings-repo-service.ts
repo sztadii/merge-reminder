@@ -65,6 +65,27 @@ export class WarningsRepoService {
     repos: Repo[]
   ): Promise<RepoWarning[]> {
     const allBranchesResponses = repos.map(async repo => {
+      const listBranchesResponse = await this.githubService.repos.listBranches({
+        owner: repo.owner.login,
+        repo: repo.name
+      })
+
+      const allBranchNames = listBranchesResponse.data.map(
+        branch => branch.name
+      )
+
+      const missingBranch = [
+        this.config.baseBranch,
+        this.config.headBranch
+      ].find(requiredBranch => !allBranchNames.includes(requiredBranch))
+
+      if (missingBranch) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: `The ${missingBranch} branch is missing`
+        })
+      }
+
       const [compareData] = await handlePromise(
         this.githubService.repos.compareCommits({
           owner: repo.owner.login,
