@@ -41,7 +41,7 @@ export class AuthService {
         const createdUser = await this.userService.create({
           userOrOrganizationName: githubUser.login,
           role: 'CLIENT',
-          headBranch: 'master',
+          headBranch: 'main',
           baseBranch: 'develop',
           isOrganization: true
         })
