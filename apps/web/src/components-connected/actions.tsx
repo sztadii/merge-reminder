@@ -6,7 +6,7 @@ import { routerPaths } from 'src/router'
 import { storage } from 'src/storage'
 import { trpc } from 'src/trpc'
 
-export function UserOptions() {
+export function Actions() {
   const {
     isOpen: isOpenUpdateDrawer,
     onOpen: onOpenUpdateDrawer,

@@ -1,15 +1,15 @@
 import { Box, Divider } from '@chakra-ui/react'
 
-import { UserOptions } from 'src/components-connected/user-options'
-import { ViewUserSection } from 'src/components-connected/view-user-section'
+import { Actions } from 'src/components-connected/actions'
+import { ViewUserDetails } from 'src/components-connected/view-user-details'
 import { ViewWarningsSection } from 'src/components-connected/view-warnings-section'
 
 export function User() {
   return (
     <>
-      <UserOptions />
+      <Actions />
       <Divider my={4} />
-      <ViewUserSection />
+      <ViewUserDetails />
       <Box mt={4}>
         <ViewWarningsSection />
       </Box>

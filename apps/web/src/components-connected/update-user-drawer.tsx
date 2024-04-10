@@ -12,7 +12,8 @@ import {
   FormHelperText,
   FormLabel,
   Input,
-  Switch
+  Switch,
+  Textarea
 } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { getQueryKey } from '@trpc/react-query'
@@ -47,7 +48,6 @@ export function UpdateUserDrawer({
     !formValues?.email ||
     !formValues?.githubAccessToken ||
     !formValues?.userOrOrganizationName ||
-    !formValues?.isOrganization ||
     !formValues?.headBranch ||
     !formValues?.baseBranch
 
@@ -109,10 +109,11 @@ export function UpdateUserDrawer({
             />
           </FormControl>
 
-          <FormControl mt={4}>
+          <FormControl mt={8}>
             <FormLabel>Github access token</FormLabel>
-            <Input
+            <Textarea
               value={formValues?.githubAccessToken}
+              resize="none"
               placeholder="Type..."
               onChange={e =>
                 setFormValues({
@@ -123,7 +124,7 @@ export function UpdateUserDrawer({
             />
           </FormControl>
 
-          <FormControl mt={4}>
+          <FormControl mt={8}>
             <FormLabel>User / organization name</FormLabel>
             <Input
               value={formValues?.userOrOrganizationName}
@@ -137,7 +138,7 @@ export function UpdateUserDrawer({
             />
           </FormControl>
 
-          <FormControl mt={4}>
+          <FormControl mt={8}>
             <FormLabel>Is organization</FormLabel>
             <Switch
               size="lg"
@@ -151,7 +152,7 @@ export function UpdateUserDrawer({
             />
           </FormControl>
 
-          <FormControl mt={4}>
+          <FormControl mt={8}>
             <FormLabel>Head branch</FormLabel>
             <Input
               value={formValues?.headBranch}
@@ -192,7 +193,7 @@ export function UpdateUserDrawer({
             </Flex>
           </FormControl>
 
-          <FormControl mt={4}>
+          <FormControl mt={8}>
             <FormLabel>Base branch</FormLabel>
             <Input
               value={formValues?.baseBranch}

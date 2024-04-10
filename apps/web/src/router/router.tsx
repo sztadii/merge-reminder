@@ -48,7 +48,7 @@ function PublicLayout({ children }: { children: ReactNode }) {
     }
   }, [])
 
-  return children
+  return <>{children}</>
 }
 
 function PrivateLayout({ children }: { children: ReactNode }) {

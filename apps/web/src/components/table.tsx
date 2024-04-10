@@ -38,15 +38,10 @@ export function Table<T extends unknown[]>({
       return (
         <>
           <Box>
-            <Box display="flex" gap={4}>
+            <Box display="flex" gap={4} mb={4}>
               {columns.map((column, index) => {
                 return (
-                  <Box
-                    key={column.id}
-                    textAlign={column.textAlign}
-                    flex={1}
-                    mb={4}
-                  >
+                  <Box key={column.id} textAlign={column.textAlign} flex={1}>
                     {column.headingCell.skeleton()}
                   </Box>
                 )
@@ -56,14 +51,13 @@ export function Table<T extends unknown[]>({
           <Box>
             {new Array(skeletonRows).fill(null).map((_, index) => {
               return (
-                <Box display="flex" key={index} gap={4}>
+                <Box display="flex" key={index} gap={4} mb={4}>
                   {columns.map(column => {
                     return (
                       <Box
                         key={column.id}
                         textAlign={column.textAlign}
                         flex={1}
-                        mb={4}
                       >
                         {column.rowCell.skeleton()}
                       </Box>
@@ -80,15 +74,10 @@ export function Table<T extends unknown[]>({
     return (
       <>
         <Box>
-          <Box display="flex" gap={4}>
+          <Box display="flex" gap={4} mb={4}>
             {columns.map((column, index) => {
               return (
-                <Box
-                  key={column.id}
-                  textAlign={column.textAlign}
-                  flex={1}
-                  mb={4}
-                >
+                <Box key={column.id} textAlign={column.textAlign} flex={1}>
                   <Text fontWeight="bold">
                     {column.headingCell.content(rows)}
                   </Text>
@@ -99,16 +88,12 @@ export function Table<T extends unknown[]>({
         </Box>
         <Box>
           {rows.map((row, index) => {
+            const isLast = rows.length - 1 === index
             return (
-              <Box key={index} display="flex" gap={4}>
+              <Box key={index} display="flex" gap={4} mb={isLast ? 0 : 4}>
                 {columns.map((column, index) => {
                   return (
-                    <Box
-                      key={column.id}
-                      textAlign={column.textAlign}
-                      flex={1}
-                      mb={4}
-                    >
+                    <Box key={column.id} textAlign={column.textAlign} flex={1}>
                       {column.rowCell.content(row)}
                     </Box>
                   )

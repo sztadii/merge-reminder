@@ -23,7 +23,7 @@ import {
 import { DetailsGrid, DetailsGridProps } from 'src/components/details-grid'
 import { trpc } from 'src/trpc'
 
-export function ViewUserSection() {
+export function ViewUserDetails() {
   const { data: user, isLoading, error } = trpc.users.getCurrentUser.useQuery()
   const { isOpen, onOpen, onClose } = useDisclosure()
 
