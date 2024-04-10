@@ -81,6 +81,7 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
           $set: {
             updatedAt: new Date(),
             email: userData.email,
+            githubAccessToken: userData.githubAccessToken,
             headBranch: userData.headBranch,
             baseBranch: userData.baseBranch
           }

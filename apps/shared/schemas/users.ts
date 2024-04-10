@@ -32,6 +32,7 @@ export const UserCreateRequestSchema = UserResponseSchema.pick({
 
 export const UserUpdateRequestSchema = UserResponseSchema.pick({
   email: true,
+  githubAccessToken: true,
   headBranch: true,
   baseBranch: true
 })

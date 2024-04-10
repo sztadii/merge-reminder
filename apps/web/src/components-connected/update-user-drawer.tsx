@@ -43,7 +43,10 @@ export function UpdateUserDrawer({
     trpc.users.updateCurrentUser.useMutation()
 
   const hasMissingFormValues =
-    !formValues?.email || !formValues?.headBranch || !formValues?.baseBranch
+    !formValues?.email ||
+    !formValues?.headBranch ||
+    !formValues?.baseBranch ||
+    !formValues?.githubAccessToken
 
   useEffect(() => {
     if (!user) return
@@ -70,8 +73,7 @@ export function UpdateUserDrawer({
       onClose()
       setFormValues(undefined)
     } catch {
-      const message = user ? 'Can not update user' : 'Can not create user'
-      showErrorToast(message)
+      showErrorToast('Can not update user')
     } finally {
       setIsPending(false)
     }
@@ -85,7 +87,7 @@ export function UpdateUserDrawer({
         <DrawerHeader>Update user</DrawerHeader>
 
         <DrawerBody>
-          <FormControl mt={4}>
+          <FormControl>
             <FormLabel>User email</FormLabel>
             <Input
               value={formValues?.email}
@@ -99,7 +101,21 @@ export function UpdateUserDrawer({
             />
           </FormControl>
 
-          <FormControl mt={4}>
+          <FormControl mt={8}>
+            <FormLabel>Github access token</FormLabel>
+            <Input
+              value={formValues?.githubAccessToken}
+              placeholder="Type..."
+              onChange={e =>
+                setFormValues({
+                  ...formValues,
+                  githubAccessToken: e.target.value
+                })
+              }
+            />
+          </FormControl>
+
+          <FormControl mt={8}>
             <FormLabel>Head branch</FormLabel>
             <Input
               value={formValues?.headBranch}
@@ -140,7 +156,7 @@ export function UpdateUserDrawer({
             </Flex>
           </FormControl>
 
-          <FormControl mt={4}>
+          <FormControl mt={8}>
             <FormLabel>Base branch</FormLabel>
             <Input
               value={formValues?.baseBranch}
