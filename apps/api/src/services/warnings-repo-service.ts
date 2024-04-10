@@ -82,7 +82,7 @@ export class WarningsRepoService {
       if (missingBranch) {
         throw new TRPCError({
           code: 'NOT_FOUND',
-          message: `The ${missingBranch} branch is missing`
+          message: `The ${missingBranch} branch is missing.`
         })
       }
 

@@ -24,7 +24,7 @@ export function ViewUserSection() {
       text: user?.email || (
         <Alert status="warning">
           <AlertIcon />
-          No email
+          Please provide the email
         </Alert>
       )
     },
@@ -33,7 +33,15 @@ export function ViewUserSection() {
       text: user?.githubAccessToken || (
         <Alert status="warning">
           <AlertIcon />
-          No token
+          Create token
+          <Link
+            color={colorForLink}
+            ml={1}
+            href="https://github.com/settings/tokens/new"
+            isExternal
+          >
+            here
+          </Link>
         </Alert>
       )
     },

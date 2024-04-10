@@ -3,13 +3,13 @@ import * as z from 'zod'
 import { ResponseSchema } from './base'
 
 export const UserResponseSchema = ResponseSchema.extend({
-  email: z.string().email().optional(),
-  userOrOrganizationName: z.string(),
   githubId: z.number(),
   githubAccessToken: z.string().optional(),
+  userOrOrganizationName: z.string(),
+  isOrganization: z.boolean(),
   headBranch: z.string(),
   baseBranch: z.string(),
-  isOrganization: z.boolean()
+  email: z.string().email().optional()
 })
 
 export const WarningSchema = z.object({
@@ -31,10 +31,12 @@ export const UserCreateRequestSchema = UserResponseSchema.pick({
 })
 
 export const UserUpdateRequestSchema = UserResponseSchema.pick({
-  email: true,
   githubAccessToken: true,
+  userOrOrganizationName: true,
+  isOrganization: true,
   headBranch: true,
-  baseBranch: true
+  baseBranch: true,
+  email: true
 })
 
 export type UserResponse = z.infer<typeof UserResponseSchema>

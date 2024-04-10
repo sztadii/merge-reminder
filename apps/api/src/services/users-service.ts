@@ -20,8 +20,8 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
 
     if (!record) {
       throw new TRPCError({
-        code: 'NOT_FOUND',
-        message: `User with id ${id} not found!`
+        code: 'UNAUTHORIZED',
+        message: `User with id ${id} was deleted or token!`
       })
     }
 
@@ -63,7 +63,7 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
     } catch (e) {
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
-        message: 'Something went wrong during user create'
+        message: 'Something went wrong during user create.'
       })
     }
   }
@@ -80,10 +80,12 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
         {
           $set: {
             updatedAt: new Date(),
-            email: userData.email,
             githubAccessToken: userData.githubAccessToken,
+            userOrOrganizationName: userData.userOrOrganizationName,
+            isOrganization: userData.isOrganization,
             headBranch: userData.headBranch,
-            baseBranch: userData.baseBranch
+            baseBranch: userData.baseBranch,
+            email: userData.email
           }
         }
       )
@@ -92,7 +94,7 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
     } catch {
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
-        message: 'Something went wrong during user update'
+        message: 'Something went wrong during user update.'
       })
     }
   }
@@ -103,7 +105,7 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
     } catch {
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
-        message: 'Something went wrong during user delete'
+        message: 'Something went wrong during user delete.'
       })
     }
   }

@@ -11,7 +11,8 @@ import {
   FormControl,
   FormHelperText,
   FormLabel,
-  Input
+  Input,
+  Switch
 } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { getQueryKey } from '@trpc/react-query'
@@ -44,9 +45,11 @@ export function UpdateUserDrawer({
 
   const hasMissingFormValues =
     !formValues?.email ||
+    !formValues?.githubAccessToken ||
+    !formValues?.userOrOrganizationName ||
+    !formValues?.isOrganization ||
     !formValues?.headBranch ||
-    !formValues?.baseBranch ||
-    !formValues?.githubAccessToken
+    !formValues?.baseBranch
 
   useEffect(() => {
     if (!user) return
@@ -61,7 +64,12 @@ export function UpdateUserDrawer({
     try {
       setIsPending(true)
 
-      await updateUserMutation(formValues as FormValuesRequired)
+      const formValuesToSend = {
+        ...formValues,
+        isOrganization: !!formValues?.isOrganization
+      } as FormValuesRequired
+
+      await updateUserMutation(formValuesToSend)
 
       await queryClient.invalidateQueries(
         getQueryKey(trpc.users.getCurrentUser)
@@ -88,7 +96,7 @@ export function UpdateUserDrawer({
 
         <DrawerBody>
           <FormControl>
-            <FormLabel>User email</FormLabel>
+            <FormLabel>Email</FormLabel>
             <Input
               value={formValues?.email}
               placeholder="Type..."
@@ -101,7 +109,7 @@ export function UpdateUserDrawer({
             />
           </FormControl>
 
-          <FormControl mt={8}>
+          <FormControl mt={4}>
             <FormLabel>Github access token</FormLabel>
             <Input
               value={formValues?.githubAccessToken}
@@ -115,7 +123,35 @@ export function UpdateUserDrawer({
             />
           </FormControl>
 
-          <FormControl mt={8}>
+          <FormControl mt={4}>
+            <FormLabel>User / organization name</FormLabel>
+            <Input
+              value={formValues?.userOrOrganizationName}
+              placeholder="Type..."
+              onChange={e =>
+                setFormValues({
+                  ...formValues,
+                  userOrOrganizationName: e.target.value
+                })
+              }
+            />
+          </FormControl>
+
+          <FormControl mt={4}>
+            <FormLabel>Is organization</FormLabel>
+            <Switch
+              size="lg"
+              isChecked={formValues?.isOrganization}
+              onChange={e =>
+                setFormValues({
+                  ...formValues,
+                  isOrganization: e.target.checked
+                })
+              }
+            />
+          </FormControl>
+
+          <FormControl mt={4}>
             <FormLabel>Head branch</FormLabel>
             <Input
               value={formValues?.headBranch}
@@ -156,7 +192,7 @@ export function UpdateUserDrawer({
             </Flex>
           </FormControl>
 
-          <FormControl mt={8}>
+          <FormControl mt={4}>
             <FormLabel>Base branch</FormLabel>
             <Input
               value={formValues?.baseBranch}
@@ -186,6 +222,7 @@ export function UpdateUserDrawer({
             </Flex>
           </FormControl>
         </DrawerBody>
+
         <DrawerFooter>
           <Button variant="outline" mr={2} onClick={onClose}>
             Cancel
