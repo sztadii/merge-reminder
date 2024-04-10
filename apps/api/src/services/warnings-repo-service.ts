@@ -66,7 +66,7 @@ export class WarningsRepoService {
   ): Promise<RepoWarning[]> {
     const allBranchesResponses = repos.map(async repo => {
       const [compareData] = await handlePromise(
-        this.githubService.compareTwoBranches({
+        this.githubService.repos.compareCommits({
           owner: repo.owner.login,
           repo: repo.name,
           base: this.config.baseBranch,

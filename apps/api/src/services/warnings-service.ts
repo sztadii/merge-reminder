@@ -1,3 +1,5 @@
+import { TRPCError } from '@trpc/server'
+
 import { UserResponse, Warning } from '../schemas'
 import { GithubService } from './github-service'
 import { UsersService } from './users-service'
@@ -8,6 +10,13 @@ export class WarningsService {
 
   async getWarnings(userId: UserResponse['id']): Promise<Warning[]> {
     const user = await this.usersService.getById(userId)
+
+    if (!user.githubAccessToken) {
+      throw new TRPCError({
+        code: 'FORBIDDEN',
+        message: `User did not set Github access token yet!`
+      })
+    }
 
     const warningsRepoService = new WarningsRepoService(
       {

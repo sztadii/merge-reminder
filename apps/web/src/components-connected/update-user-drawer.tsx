@@ -33,7 +33,7 @@ type UpdateUserDrawerProps = {
 type FormValuesRequired = Omit<UserResponse, 'id' | 'createdAt' | 'updatedAt'>
 type FormValuesInitial = Partial<FormValuesRequired>
 
-export function CreateUpdateUserDrawer({
+export function UpdateUserDrawer({
   user,
   isOpen,
   onClose
@@ -42,7 +42,6 @@ export function CreateUpdateUserDrawer({
   const [formValues, setFormValues] = useState<FormValuesInitial | undefined>()
   const queryClient = useQueryClient()
   const { mutateAsync: updateUserMutation } = trpc.users.update.useMutation()
-  const { mutateAsync: createUserMutation } = trpc.users.create.useMutation()
 
   const hasMissingFormValues =
     !formValues?.userOrOrganizationName ||
@@ -58,7 +57,8 @@ export function CreateUpdateUserDrawer({
     setFormValues(user)
   }, [user])
 
-  const createUpdateUser = async () => {
+  const updateUser = async () => {
+    if (!user) return
     if (hasMissingFormValues) return
 
     const formValuesToSend = {
@@ -69,12 +69,10 @@ export function CreateUpdateUserDrawer({
     try {
       setIsPending(true)
 
-      user
-        ? await updateUserMutation({
-            ...formValuesToSend,
-            id: user.id
-          })
-        : await createUserMutation(formValuesToSend)
+      await updateUserMutation({
+        ...formValuesToSend,
+        id: user.id
+      })
 
       // TODO Maybe move it outside
       await queryClient.invalidateQueries(getQueryKey(trpc.users.findAll))
@@ -269,7 +267,7 @@ export function CreateUpdateUserDrawer({
           <Button
             isLoading={isPending}
             isDisabled={hasMissingFormValues}
-            onClick={createUpdateUser}
+            onClick={updateUser}
           >
             Save
           </Button>

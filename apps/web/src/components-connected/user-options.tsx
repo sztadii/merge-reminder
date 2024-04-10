@@ -1,7 +1,7 @@
 import { Button, Flex, Skeleton, useDisclosure } from '@chakra-ui/react'
 
-import { CreateUpdateUserDrawer } from 'src/components-connected/create-update-user-drawer'
 import { DeleteUserConfirmation } from 'src/components-connected/delete-user-confirmation'
+import { UpdateUserDrawer } from 'src/components-connected/update-user-drawer'
 import { useUserFromUrl } from 'src/hooks/use-user-from-url'
 import { routerPaths } from 'src/router'
 
@@ -45,7 +45,7 @@ export function UserOptions() {
           </Button>
         </Flex>
       )}
-      <CreateUpdateUserDrawer
+      <UpdateUserDrawer
         user={user}
         isOpen={isOpenUpdateDrawer}
         onClose={onCloseUpdateDrawer}

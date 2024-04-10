@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { config } from 'src/config'
 import { routerPaths } from 'src/router'
 import { showErrorToast } from 'src/toasts'
-import { trpc } from 'src/trpc'
+import { TRPCError, trpc } from 'src/trpc'
 
 export function Login() {
   const { mutateAsync: loginMutation } = trpc.auth.login.useMutation()
@@ -26,8 +26,9 @@ export function Login() {
         localStorage.setItem('token', loginResponse.token)
 
         routerPaths.users.navigate()
-      } catch {
-        showErrorToast('Can not login')
+      } catch (e) {
+        const error = e as TRPCError
+        showErrorToast(error.message)
       }
     }
 

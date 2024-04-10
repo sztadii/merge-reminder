@@ -3,11 +3,9 @@ import { Octokit, RestEndpointMethodTypes } from '@octokit/rest'
 export type Repo =
   RestEndpointMethodTypes['repos']['listForOrg']['response']['data'][0]
 
-export class GithubService {
-  private githubService: Octokit
-
+export class GithubService extends Octokit {
   constructor(accessToken: string) {
-    this.githubService = new Octokit({ auth: accessToken })
+    super({ auth: accessToken })
   }
 
   async getAllRepos(
@@ -21,12 +19,12 @@ export class GithubService {
       console.log(`Fetching repos from page nr ${i}`)
 
       const responseWithRepos = isOrganization
-        ? await this.githubService.repos.listForOrg({
+        ? await this.repos.listForOrg({
             org: userOrOrganizationName,
             page: i,
             per_page: 100
           })
-        : await this.githubService.repos.listForUser({
+        : await this.repos.listForUser({
             username: userOrOrganizationName,
             page: i,
             per_page: 100
@@ -41,11 +39,5 @@ export class GithubService {
     console.log(`Fetched ${allRepos.length} repos \n`)
 
     return allRepos
-  }
-
-  compareTwoBranches(
-    params: RestEndpointMethodTypes['repos']['compareCommits']['parameters']
-  ): Promise<RestEndpointMethodTypes['repos']['compareCommits']['response']> {
-    return this.githubService.repos.compareCommits(params)
   }
 }

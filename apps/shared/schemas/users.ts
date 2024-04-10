@@ -7,9 +7,9 @@ export type UserRole = z.infer<typeof UserRoleSchema>
 
 export const UserResponseSchema = ResponseSchema.extend({
   role: UserRoleSchema,
-  email: z.string().email(),
+  email: z.string().email().optional(),
   userOrOrganizationName: z.string(),
-  githubAccessToken: z.string(),
+  githubAccessToken: z.string().optional(),
   headBranch: z.string(),
   baseBranch: z.string(),
   isOrganization: z.boolean()
@@ -28,17 +28,26 @@ export const WarningsSchema = z.array(WarningSchema)
 export const UsersListResponseSchema = z.array(UserResponseSchema)
 
 export const UserCreateRequestSchema = UserResponseSchema.pick({
+  id: true,
   userOrOrganizationName: true,
   role: true,
   email: true,
-  githubAccessToken: true,
   headBranch: true,
   baseBranch: true,
   isOrganization: true
 })
 
 export const UserUpdateRequestSchema = UpdateRequestSchema.merge(
-  UserCreateRequestSchema
+  UserResponseSchema.pick({
+    id: true,
+    userOrOrganizationName: true,
+    githubAccessToken: true,
+    role: true,
+    email: true,
+    headBranch: true,
+    baseBranch: true,
+    isOrganization: true
+  })
 )
 
 export type UserResponse = z.infer<typeof UserResponseSchema>

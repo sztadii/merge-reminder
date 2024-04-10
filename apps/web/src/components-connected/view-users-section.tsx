@@ -22,8 +22,8 @@ import { routerPaths } from 'src/router'
 import { UserResponse } from 'src/schemas'
 import { trpc } from 'src/trpc'
 
-import { CreateUpdateUserDrawer } from './create-update-user-drawer'
 import { DeleteUserConfirmation } from './delete-user-confirmation'
+import { UpdateUserDrawer } from './update-user-drawer'
 
 export function ViewUsersSection() {
   const [user, setUser] = useState<UserResponse | undefined>()
@@ -157,7 +157,7 @@ export function ViewUsersSection() {
 
   return (
     <>
-      <CreateUpdateUserDrawer
+      <UpdateUserDrawer
         user={user}
         isOpen={isOpenCreateUpdateDrawer}
         onClose={() => {
