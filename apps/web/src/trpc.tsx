@@ -1,11 +1,23 @@
-import { HTTPHeaders, httpLink } from '@trpc/client'
+import { HTTPHeaders, TRPCClientErrorLike, httpLink } from '@trpc/client'
 import { createTRPCReact } from '@trpc/react-query'
+import { ReactNode } from 'react'
 
 import type { AppRouter } from '../../api'
+import { queryClient } from './react-query'
+
+export type TRPCError = TRPCClientErrorLike<AppRouter>
 
 export const trpc = createTRPCReact<AppRouter>()
 
-export const trpcClient = trpc.createClient({
+export function TRPCProvider({ children }: { children: ReactNode }) {
+  return (
+    <trpc.Provider client={trpcClient} queryClient={queryClient}>
+      {children}
+    </trpc.Provider>
+  )
+}
+
+const trpcClient = trpc.createClient({
   links: [
     httpLink({
       url: process.env.TRPC_URL || 'http://localhost:3000/trpc',
