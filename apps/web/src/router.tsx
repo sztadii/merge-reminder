@@ -1,4 +1,5 @@
 import { Box } from '@chakra-ui/react'
+import { ReactNode } from 'react'
 import { Redirect, Route, Switch, useParams } from 'wouter'
 import { navigate as wouterNavigate } from 'wouter/use-browser-location'
 
@@ -9,20 +10,42 @@ import { Users } from 'src/pages/users'
 
 export function Router() {
   return (
-    <>
-      <Box>
-        <Navigation />
-      </Box>
+    <Switch>
+      <Route
+        path={routerPaths.login.path}
+        component={() => {
+          return (
+            <PublicLayout>
+              <Login />
+            </PublicLayout>
+          )
+        }}
+      />
 
-      <Box p={4}>
-        <Switch>
-          <Route path={routerPaths.login.path} component={Login} />
-          <Route path={routerPaths.user.path} component={User} />
-          <Route path={routerPaths.users.path} component={Users} />
-          <Redirect to={routerPaths.login.path} />
-        </Switch>
-      </Box>
-    </>
+      <Route
+        path={routerPaths.user.path}
+        component={() => {
+          return (
+            <PrivateLayout>
+              <User />
+            </PrivateLayout>
+          )
+        }}
+      />
+
+      <Route
+        path={routerPaths.users.path}
+        component={() => {
+          return (
+            <PrivateLayout>
+              <Users />
+            </PrivateLayout>
+          )
+        }}
+      />
+
+      <Redirect to={routerPaths.login.path} />
+    </Switch>
   )
 }
 
@@ -51,6 +74,22 @@ export const routerPaths = {
       wouterNavigate(this.path)
     }
   }
+}
+
+function PublicLayout({ children }: { children: ReactNode }) {
+  return children
+}
+
+function PrivateLayout({ children }: { children: ReactNode }) {
+  return (
+    <>
+      <Box>
+        <Navigation />
+      </Box>
+
+      <Box p={4}>{children}</Box>
+    </>
+  )
 }
 
 function replacePathWithParam(path: string, params: Record<string, string>) {
