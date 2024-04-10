@@ -79,7 +79,6 @@ export function ViewUserDetails() {
       color={colorForLink}
       href="https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#list-repositories-for-a-user"
       isExternal
-      ml={1}
     >
       normal users
     </Link>
@@ -90,7 +89,6 @@ export function ViewUserDetails() {
       color={colorForLink}
       href="https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#list-organization-repositories"
       isExternal
-      ml={1}
     >
       organizations
     </Link>
@@ -103,7 +101,7 @@ export function ViewUserDetails() {
           <AlertIcon />
           <div>
             For {usersLink}, we can only fetch public repositories. However, we
-            can retrieve all repositories from all repositories from
+            can retrieve all repositories from all repositories from{' '}
             {organizationsLink}.
           </div>
         </Alert>
