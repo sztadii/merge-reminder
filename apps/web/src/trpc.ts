@@ -18,8 +18,6 @@ export const trpcClient = trpc.createClient({
           headers.authorization = `Bearer ${token}`
         }
 
-        console.log('aaa')
-
         return headers
       }
     })
