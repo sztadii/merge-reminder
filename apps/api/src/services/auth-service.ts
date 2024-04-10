@@ -4,8 +4,11 @@ import { addHours } from 'date-fns'
 import { config } from '../config'
 import { convertJSONToToken } from '../helpers'
 import { LoginRequest, LoginResponse } from '../schemas'
+import { UsersService } from './users-service'
 
 export class AuthService {
+  constructor(private userService: UsersService) {}
+
   async login(request: LoginRequest): Promise<LoginResponse> {
     const params = `?client_id=${config.github.clientId}&client_secret=${config.github.secret}&code=${request.code}`
 
@@ -21,19 +24,18 @@ export class AuthService {
 
     const accessToken = accessTokenResponse.data.access_token
 
-    const userResponse = await axios.get('https://api.github.com/user', {
+    const githubUserResponse = await axios.get('https://api.github.com/user', {
       headers: {
         Authorization: `Bearer ${accessToken}`
       }
     })
 
-    const userData = userResponse.data
+    // const user = this.userService.getById()
 
     const token = convertJSONToToken({
-      email: userData.email,
-      userName: userData.login,
-      githubId: userData.id,
-      // Github token is expiring in 8h
+      email: githubUserResponse.data.email,
+      userName: githubUserResponse.data.login,
+      // Github token expires in 8h
       expiredAt: addHours(new Date(), 6).toString()
     })!
 
