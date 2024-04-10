@@ -3,6 +3,7 @@ import { Redirect, Route, Switch, useParams } from 'wouter'
 import { navigate as wouterNavigate } from 'wouter/use-browser-location'
 
 import { Navigation } from 'src/components/navigation'
+import { Login } from 'src/pages/login'
 import { User } from 'src/pages/user'
 import { Users } from 'src/pages/users'
 
@@ -15,9 +16,10 @@ export function Router() {
 
       <Box p={4}>
         <Switch>
+          <Route path={routerPaths.login.path} component={Login} />
           <Route path={routerPaths.user.path} component={User} />
           <Route path={routerPaths.users.path} component={Users} />
-          <Redirect to={routerPaths.users.path} />
+          <Redirect to={routerPaths.login.path} />
         </Switch>
       </Box>
     </>
@@ -25,6 +27,12 @@ export function Router() {
 }
 
 export const routerPaths = {
+  login: {
+    path: '/',
+    navigate() {
+      wouterNavigate(this.path)
+    }
+  },
   users: {
     path: '/users',
     navigate() {
