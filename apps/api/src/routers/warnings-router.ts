@@ -1,10 +1,10 @@
 import { UserResponseSchema, WarningsSchema } from '../schemas'
 import { UsersService } from '../services/users-service'
 import { WarningsService } from '../services/warnings-service'
-import { publicProcedure, router } from '../trpc'
+import { protectedProcedure, router } from '../trpc'
 
 export const warningsRouter = router({
-  getWarnings: publicProcedure
+  getWarnings: protectedProcedure
     .input(UserResponseSchema.shape.id)
     .output(WarningsSchema)
     .query(opts => {

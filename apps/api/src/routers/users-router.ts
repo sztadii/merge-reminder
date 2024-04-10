@@ -6,35 +6,35 @@ import {
   UsersListResponseSchema
 } from '../schemas'
 import { UsersService } from '../services/users-service'
-import { publicProcedure, router } from '../trpc'
+import { protectedProcedure, router } from '../trpc'
 
 export const usersRouter = router({
-  findAll: publicProcedure.output(UsersListResponseSchema).query(opts => {
+  findAll: protectedProcedure.output(UsersListResponseSchema).query(opts => {
     const usersService = new UsersService(opts.ctx.database)
     return usersService.findAll()
   }),
-  getById: publicProcedure
+  getById: protectedProcedure
     .input(UserResponseSchema.shape.id)
     .output(UserResponseSchema)
     .query(opts => {
       const usersService = new UsersService(opts.ctx.database)
       return usersService.getById(opts.input)
     }),
-  create: publicProcedure
+  create: protectedProcedure
     .input(UserCreateRequestSchema)
     .output(UserResponseSchema)
     .mutation(opts => {
       const usersService = new UsersService(opts.ctx.database)
       return usersService.create(opts.input)
     }),
-  update: publicProcedure
+  update: protectedProcedure
     .input(UserUpdateRequestSchema)
     .output(UserResponseSchema)
     .mutation(opts => {
       const usersService = new UsersService(opts.ctx.database)
       return usersService.update(opts.input)
     }),
-  deleteById: publicProcedure
+  deleteById: protectedProcedure
     .input(UserResponseSchema.shape.id)
     .output(EmptyResponseSchema)
     .mutation(opts => {

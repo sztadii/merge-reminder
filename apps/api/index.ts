@@ -22,12 +22,6 @@ async function init() {
     })
   )
 
-  app.get('/login', (req, res) => {
-    const { code } = req.query
-    const params = `?client_id=1bf5c9f2d119138043ab`
-    return 'dupa'
-  })
-
   const port = process.env.PORT || 3000
 
   app.listen(port, () => {
