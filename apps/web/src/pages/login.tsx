@@ -21,7 +21,9 @@ export function Login() {
       if (!code) return
 
       try {
-        const token = await loginMutation({ code })
+        const loginResponse = await loginMutation({ code })
+
+        localStorage.setItem('token', loginResponse.token)
 
         routerPaths.users.navigate()
       } catch {

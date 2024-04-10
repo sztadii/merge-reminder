@@ -1,6 +1,7 @@
 import axios from 'axios'
 
 import { config } from '../config'
+import { convertJSONToToken } from '../helpers'
 import { LoginRequest, LoginResponse } from '../schemas'
 
 export class AuthService {
@@ -27,14 +28,14 @@ export class AuthService {
 
     const userData = userResponse.data
 
-    const user = {
+    const token = convertJSONToToken({
       email: userData.email,
       userName: userData.login,
-      githubId: userData.id
-    }
+      githubId: userData.idww
+    })
 
     return {
-      token: 'token'
+      token
     }
   }
 }

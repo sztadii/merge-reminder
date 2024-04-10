@@ -1,3 +1,16 @@
+// TODO Make convertJSONToToken and convertTokenToJSON decrypted
+
+export function convertJSONToToken(json: Record<string, string>): string {
+  const jsonString = JSON.stringify(json)
+  const base64String = Buffer.from(jsonString).toString('base64')
+  return base64String
+}
+
+export function convertTokenToJSON(token: string): Record<string, string> {
+  const jsonString = Buffer.from(token, 'base64').toString('utf-8')
+  return JSON.parse(jsonString)
+}
+
 export async function wait(delay: number) {
   return new Promise(resolve => setTimeout(resolve, delay))
 }
