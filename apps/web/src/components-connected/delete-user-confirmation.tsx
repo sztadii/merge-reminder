@@ -1,6 +1,4 @@
 import { FormControl, FormLabel, Input } from '@chakra-ui/react'
-import { useQueryClient } from '@tanstack/react-query'
-import { getQueryKey } from '@trpc/react-query'
 import { useState } from 'react'
 
 import { Confirmation } from 'src/components/confirmation'
@@ -28,10 +26,9 @@ export function DeleteUserConfirmation({
 
   const isDeletionConfirmed =
     userOrOrganizationName === user?.userOrOrganizationName
-  const queryClient = useQueryClient()
 
   const { mutateAsync: deleteUserMutation } =
-    trpc.users.deleteById.useMutation()
+    trpc.users.deleteCurrentUser.useMutation()
 
   function handleClose() {
     setUserOrOrganizationName(undefined)
@@ -49,11 +46,7 @@ export function DeleteUserConfirmation({
     handleConfirm()
 
     try {
-      await deleteUserMutation(user.id)
-      await queryClient.invalidateQueries(getQueryKey(trpc.users.findAll))
-      await queryClient.invalidateQueries(
-        getQueryKey(trpc.users.getById, user.id)
-      )
+      await deleteUserMutation()
     } catch {
       showErrorToast('Can not delete user')
     }

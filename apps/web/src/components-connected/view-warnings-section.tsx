@@ -13,18 +13,15 @@ import { Icon } from 'src/components/icon'
 import { SpinnerWithLabel } from 'src/components/spinner-with-label'
 import { Table, TableProps } from 'src/components/table'
 import { Text } from 'src/components/text'
-import { routerPaths } from 'src/router'
 import { trpc } from 'src/trpc'
 
 export function ViewWarningsSection() {
-  const params = routerPaths.user.getParams()
-
   const {
     data: warningsData,
     isLoading: isLoadingWarnings,
     error: errorForWarnings,
     isFetching: isFetchingWarnings
-  } = trpc.warnings.getWarnings.useQuery(params.id)
+  } = trpc.warnings.getCurrentWarnings.useQuery()
 
   const warnings = warningsData || []
 

@@ -10,10 +10,10 @@ export type UserDatabaseRecord = DatabaseRecord &
   Pick<
     UserResponse,
     | 'userOrOrganizationName'
-    | 'role'
     | 'email'
     | 'githubAccessToken'
     | 'headBranch'
     | 'baseBranch'
     | 'isOrganization'
+    | 'githubId'
   >

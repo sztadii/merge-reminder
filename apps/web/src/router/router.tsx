@@ -5,7 +5,6 @@ import { Redirect, Route, Switch } from 'wouter'
 import { Navigation } from 'src/components/navigation'
 import { Login } from 'src/pages/login'
 import { User } from 'src/pages/user'
-import { Users } from 'src/pages/users'
 import { storage } from 'src/storage'
 
 import { routerPaths } from './router-paths'
@@ -25,22 +24,11 @@ export function Router() {
       />
 
       <Route
-        path={routerPaths.user.path}
+        path={routerPaths.profile.path}
         component={() => {
           return (
             <PrivateLayout>
               <User />
-            </PrivateLayout>
-          )
-        }}
-      />
-
-      <Route
-        path={routerPaths.users.path}
-        component={() => {
-          return (
-            <PrivateLayout>
-              <Users />
             </PrivateLayout>
           )
         }}
@@ -56,7 +44,7 @@ function PublicLayout({ children }: { children: ReactNode }) {
     const token = storage.auth.getToken()
 
     if (token) {
-      routerPaths.users.navigate()
+      routerPaths.profile.navigate()
     }
   }, [])
 

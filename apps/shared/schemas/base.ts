@@ -11,7 +11,3 @@ export const ResponseSchema = z.object({
 export type Response = z.infer<typeof ResponseSchema>
 
 export const EmptyResponseSchema = z.void()
-
-export const UpdateRequestSchema = z.object({
-  id: IdSchema
-})

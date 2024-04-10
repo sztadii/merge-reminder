@@ -34,11 +34,11 @@ export function LoginGithubButton() {
 
         storage.auth.setToken(loginResponse.token)
 
-        routerPaths.users.navigate()
+        routerPaths.profile.navigate()
       } catch (e) {
         const error = e as TRPCError
         showErrorToast(error.message)
-        routerPaths.login.navigate() // To remove code from URL
+        routerPaths.login.navigate() // To remove ?code="" from URL
       }
 
       setIsLoading(false)

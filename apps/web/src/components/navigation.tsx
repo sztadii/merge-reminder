@@ -8,7 +8,6 @@ import {
 } from '@chakra-ui/react'
 
 import { Icon } from 'src/components/icon'
-import { NavLink } from 'src/components/nav-link'
 import { routerPaths } from 'src/router'
 import { storage } from 'src/storage'
 
@@ -23,7 +22,7 @@ export function Navigation() {
   return (
     <Box>
       <Flex p={4} alignItems="center" justifyContent="space-between">
-        <NavLink href={routerPaths.users.path}>Merge Reminder</NavLink>
+        <div>Merge Reminder</div>
 
         <Flex alignItems="center" gap={4}>
           <Button size="sm" onClick={logout}>

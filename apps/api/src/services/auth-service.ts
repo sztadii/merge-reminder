@@ -5,6 +5,7 @@ import { addHours } from 'date-fns'
 import { config } from '../config'
 import { convertJSONToToken } from '../helpers'
 import { LoginRequest, LoginResponse, UserResponse } from '../schemas'
+import { UserFromToken } from '../types'
 import { GithubService } from './github-service'
 import { UsersService } from './users-service'
 
@@ -31,16 +32,14 @@ export class AuthService {
       const githubUserResponse = await githubService.users.getAuthenticated()
       const githubUser = githubUserResponse.data
 
-      // TODO Find more performant way to get user
-      const users = await this.userService.findAll()
-      const user = users.find(
-        user => user.userOrOrganizationName === githubUser.login
-      )
+      const user = await this.userService
+        .getByGithubId(githubUser.id)
+        .catch(() => undefined)
 
       if (!user) {
         const createdUser = await this.userService.create({
+          githubId: githubUser.id,
           userOrOrganizationName: githubUser.login,
-          role: 'CLIENT',
           headBranch: 'main',
           baseBranch: 'develop',
           isOrganization: true
@@ -60,11 +59,11 @@ export class AuthService {
   }
 
   private getTokenFromUser(user: UserResponse): LoginResponse {
-    const token = convertJSONToToken({
-      userName: user.userOrOrganizationName,
-      role: user.role,
+    const userFromToken: UserFromToken = {
+      id: user.id,
       expiredAt: addHours(new Date(), 6).toString() // Github token expires in 8h
-    })!
+    }
+    const token = convertJSONToToken(userFromToken)!
 
     return {
       token

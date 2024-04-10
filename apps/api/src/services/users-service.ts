@@ -9,20 +9,7 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
     super(database, 'users')
   }
 
-  async findAll(): Promise<UserResponse[]> {
-    try {
-      const records = await this.collection.find().toArray()
-
-      return records.map(this.mapRecordToResponse)
-    } catch {
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: 'Something went wrong during fetching users'
-      })
-    }
-  }
-
-  async getById(id: UserResponse['id']): Promise<UserResponse> {
+  async getById(id: string): Promise<UserResponse> {
     let record
 
     try {
@@ -34,23 +21,42 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
     if (!record) {
       throw new TRPCError({
         code: 'NOT_FOUND',
-        message: `User with ${id} not found!`
+        message: `User with id ${id} not found!`
       })
     }
 
     return this.mapRecordToResponse(record)
   }
 
-  async create(userCreateRequest: UserCreateRequest): Promise<UserResponse> {
+  async getByGithubId(githubId: number): Promise<UserResponse> {
+    let record
+
+    try {
+      record = await this.collection.findOne({
+        githubId
+      })
+    } catch {}
+
+    if (!record) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: `User with githubId ${githubId} not found!`
+      })
+    }
+
+    return this.mapRecordToResponse(record)
+  }
+
+  async create(userData: UserCreateRequest): Promise<UserResponse> {
     try {
       const insertedUser = await this.collection.insertOne({
         _id: new DatabaseId(),
         createdAt: new Date(),
-        userOrOrganizationName: userCreateRequest.userOrOrganizationName,
-        role: userCreateRequest.role,
-        headBranch: userCreateRequest.headBranch,
-        baseBranch: userCreateRequest.baseBranch,
-        isOrganization: userCreateRequest.isOrganization
+        githubId: userData.githubId,
+        userOrOrganizationName: userData.userOrOrganizationName,
+        headBranch: userData.headBranch,
+        baseBranch: userData.baseBranch,
+        isOrganization: userData.isOrganization
       })
 
       return this.getById(insertedUser.insertedId.toString())
@@ -62,22 +68,21 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
     }
   }
 
-  async update(userUpdateRequest: UserUpdateRequest): Promise<UserResponse> {
+  async updateById(
+    id: string,
+    userData: UserUpdateRequest
+  ): Promise<UserResponse> {
     try {
-      const user = await this.getById(userUpdateRequest.id)
+      const user = await this.getById(id)
 
       await this.collection.updateOne(
-        { _id: new DatabaseId(userUpdateRequest.id) },
+        { _id: new DatabaseId(id) },
         {
           $set: {
             updatedAt: new Date(),
-            userOrOrganizationName: userUpdateRequest.userOrOrganizationName,
-            email: userUpdateRequest.email,
-            role: userUpdateRequest.role,
-            githubAccessToken: userUpdateRequest.githubAccessToken,
-            headBranch: userUpdateRequest.headBranch,
-            baseBranch: userUpdateRequest.baseBranch,
-            isOrganization: userUpdateRequest.isOrganization
+            email: userData.email,
+            headBranch: userData.headBranch,
+            baseBranch: userData.baseBranch
           }
         }
       )
@@ -91,7 +96,7 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
     }
   }
 
-  async deleteById(id: UserResponse['id']): Promise<void> {
+  async deleteById(id: string): Promise<void> {
     try {
       await this.collection.deleteOne({ _id: new DatabaseId(id) })
     } catch {
@@ -105,8 +110,8 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
   protected mapRecordToResponse(user: UserDatabaseRecord): UserResponse {
     return {
       ...super.mapRecordToResponse(user),
+      githubId: user.githubId,
       userOrOrganizationName: user.userOrOrganizationName,
-      role: user.role,
       email: user.email,
       githubAccessToken: user.githubAccessToken,
       headBranch: user.headBranch,

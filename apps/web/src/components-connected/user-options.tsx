@@ -2,8 +2,9 @@ import { Button, Flex, Skeleton, useDisclosure } from '@chakra-ui/react'
 
 import { DeleteUserConfirmation } from 'src/components-connected/delete-user-confirmation'
 import { UpdateUserDrawer } from 'src/components-connected/update-user-drawer'
-import { useUserFromUrl } from 'src/hooks/use-user-from-url'
 import { routerPaths } from 'src/router'
+import { storage } from 'src/storage'
+import { trpc } from 'src/trpc'
 
 export function UserOptions() {
   const {
@@ -16,7 +17,8 @@ export function UserOptions() {
     onOpen: onOpenDeleteModal,
     onClose: onCloseDeleteModal
   } = useDisclosure()
-  const { data: user, isLoading: isLoadingUser } = useUserFromUrl()
+  const { data: user, isLoading: isLoadingUser } =
+    trpc.users.getCurrentUser.useQuery()
 
   return (
     <>
@@ -58,11 +60,8 @@ export function UserOptions() {
         }}
         onConfirm={() => {
           onCloseDeleteModal()
-
-          // TODO based on the user role we should redirect somewhere
-          // Admin should be redirected to routerPaths.users.path
-          // Other users should be redirected to login page
-          routerPaths.users.navigate()
+          storage.auth.removeToken()
+          routerPaths.login.navigate()
         }}
       />
     </>

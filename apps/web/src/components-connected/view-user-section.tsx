@@ -11,24 +11,29 @@ import {
 } from '@chakra-ui/react'
 
 import { DetailsGrid, DetailsGridProps } from 'src/components/details-grid'
-import { useUserFromUrl } from 'src/hooks/use-user-from-url'
+import { trpc } from 'src/trpc'
 
 export function ViewUserSection() {
-  const { data: user, isLoading, error } = useUserFromUrl()
+  const { data: user, isLoading, error } = trpc.users.getCurrentUser.useQuery()
 
   const colorForLink = useColorModeValue('yellow.600', 'yellow.400')
 
   const details: DetailsGridProps['details'] = [
-    {
-      heading: 'Role',
-      text: user?.role
-    },
     {
       heading: 'Email',
       text: user?.email || (
         <Alert status="warning">
           <AlertIcon />
           No email
+        </Alert>
+      )
+    },
+    {
+      heading: 'Github access token',
+      text: user?.githubAccessToken || (
+        <Alert status="warning">
+          <AlertIcon />
+          No token
         </Alert>
       )
     },
@@ -47,15 +52,6 @@ export function ViewUserSection() {
     {
       heading: 'Base branch',
       text: user?.baseBranch
-    },
-    {
-      heading: 'Github access token',
-      text: user?.githubAccessToken || (
-        <Alert status="warning">
-          <AlertIcon />
-          No token
-        </Alert>
-      )
     }
   ]
 
