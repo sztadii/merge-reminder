@@ -1,4 +1,4 @@
-import { Box, Text } from '@chakra-ui/react'
+import { Alert, AlertIcon, Box, Text } from '@chakra-ui/react'
 import { ReactNode } from 'react'
 
 export type TableProps<TRows extends unknown[]> = {
@@ -29,9 +29,20 @@ export function Table<T extends unknown[]>({
   errorMessage,
   noDataMessage
 }: TableProps<T>) {
-  if (!isLoading && errorMessage) return <Text>{errorMessage}</Text>
+  if (!isLoading && errorMessage)
+    return (
+      <Alert status="error">
+        <AlertIcon />
+        {errorMessage}
+      </Alert>
+    )
 
-  if (!isLoading && !rows.length) return <Text>{noDataMessage}</Text>
+  if (!isLoading && !rows.length)
+    return (
+      <Alert status="success">
+        <AlertIcon /> {noDataMessage}
+      </Alert>
+    )
 
   function renderContent() {
     if (isLoading) {
