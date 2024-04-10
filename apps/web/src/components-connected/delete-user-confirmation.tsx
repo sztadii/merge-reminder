@@ -30,23 +30,12 @@ export function DeleteUserConfirmation({
   const { mutateAsync: deleteUserMutation } =
     trpc.users.deleteCurrentUser.useMutation()
 
-  function handleClose() {
-    setUserOrOrganizationName(undefined)
-    onCancel()
-  }
-
-  function handleConfirm() {
-    setUserOrOrganizationName(undefined)
-    onConfirm()
-  }
-
   async function deleteUser() {
     if (!user || !isDeletionConfirmed) return
 
-    handleConfirm()
-
     try {
       await deleteUserMutation()
+      onConfirm()
     } catch {
       showErrorToast('Can not delete user')
     }
@@ -55,7 +44,7 @@ export function DeleteUserConfirmation({
   return (
     <Confirmation
       isOpen={isOpen}
-      onClose={handleClose}
+      onClose={onCancel}
       title="Delete user"
       description={
         <>
