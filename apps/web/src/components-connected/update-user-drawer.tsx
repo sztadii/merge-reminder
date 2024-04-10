@@ -81,7 +81,7 @@ export function UpdateUserDrawer({
       onClose()
       setFormValues(undefined)
     } catch {
-      showErrorToast('Can not update user')
+      showErrorToast('Can not update profile')
     } finally {
       setIsPending(false)
     }
@@ -92,7 +92,7 @@ export function UpdateUserDrawer({
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader>Update user</DrawerHeader>
+        <DrawerHeader>Update profile</DrawerHeader>
 
         <DrawerBody>
           <FormControl>

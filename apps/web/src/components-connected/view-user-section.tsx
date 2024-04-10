@@ -1,13 +1,23 @@
 import {
   Alert,
   AlertIcon,
+  Button,
   Card,
   CardBody,
   CardHeader,
   Heading,
   Link,
+  ListItem,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   Skeleton,
-  useColorModeValue
+  UnorderedList,
+  useColorModeValue,
+  useDisclosure
 } from '@chakra-ui/react'
 
 import { DetailsGrid, DetailsGridProps } from 'src/components/details-grid'
@@ -15,6 +25,7 @@ import { trpc } from 'src/trpc'
 
 export function ViewUserSection() {
   const { data: user, isLoading, error } = trpc.users.getCurrentUser.useQuery()
+  const { isOpen, onOpen, onClose } = useDisclosure()
 
   const colorForLink = useColorModeValue('yellow.600', 'yellow.400')
 
@@ -34,14 +45,14 @@ export function ViewUserSection() {
         <Alert status="warning">
           <AlertIcon />
           Create token
-          <Link
+          <Button
+            onClick={onOpen}
             color={colorForLink}
-            ml={1}
-            href="https://github.com/settings/tokens/new"
-            isExternal
+            variant="link"
+            fontWeight={400}
           >
             here
-          </Link>
+          </Button>
         </Alert>
       )
     },
@@ -117,6 +128,39 @@ export function ViewUserSection() {
           />
         </CardBody>
       </Card>
+
+      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>How to create the GitHub access token?</ModalHeader>
+
+          <ModalBody>
+            <UnorderedList>
+              <ListItem>
+                Visit
+                <Link
+                  ml={1}
+                  href="https://github.com/settings/tokens/new"
+                  isExternal
+                >
+                  https://github.com/settings/tokens/new
+                </Link>
+              </ListItem>
+              <ListItem>Provide a name for the token.</ListItem>
+              <ListItem>Set an expiration date. We recommend 90 days.</ListItem>
+              <ListItem>
+                Select scopes. Only select the "repo" checkbox.
+              </ListItem>
+            </UnorderedList>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button mr={3} onClick={onClose}>
+              Close
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   )
 }

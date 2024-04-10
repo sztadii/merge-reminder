@@ -25,17 +25,17 @@ export function UserOptions() {
       {isLoadingUser ? (
         <Flex gap={4}>
           <Skeleton display="inline-block">
-            <Button>Update user</Button>
+            <Button>Update profile</Button>
           </Skeleton>
 
           <Skeleton display="inline-block">
-            <Button>Delete user</Button>
+            <Button>Delete profile</Button>
           </Skeleton>
         </Flex>
       ) : (
         <Flex gap={4}>
           <Button isDisabled={!user} onClick={onOpenUpdateDrawer}>
-            Update user
+            Update profile
           </Button>
 
           <Button
@@ -43,7 +43,7 @@ export function UserOptions() {
             onClick={onOpenDeleteModal}
             colorScheme="red"
           >
-            Delete user
+            Delete profile
           </Button>
         </Flex>
       )}
