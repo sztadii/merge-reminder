@@ -8,7 +8,7 @@ export function usePendingMutationVariables() {
   >([])
 
   useEffect(() => {
-    const checkPendingMutations = () => {
+    function checkPendingMutations() {
       const mutations = queryClient.getMutationCache().getAll()
       if (!mutations.length) return
 

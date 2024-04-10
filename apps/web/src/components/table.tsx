@@ -33,7 +33,7 @@ export function Table<T extends unknown[]>({
 
   if (!isLoading && !rows.length) return <Text>{noDataMessage}</Text>
 
-  const renderContent = () => {
+  function renderContent() {
     if (isLoading) {
       return (
         <>

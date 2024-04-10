@@ -57,7 +57,7 @@ export function UpdateUserDrawer({
     setFormValues(user)
   }, [user])
 
-  const updateUser = async () => {
+  async function updateUser() {
     if (!user) return
     if (hasMissingFormValues) return
 

@@ -10,7 +10,7 @@ import { TRPCError, trpc } from 'src/trpc'
 export function Login() {
   const { mutateAsync: loginMutation } = trpc.auth.login.useMutation()
 
-  const redirectToGithub = () => {
+  function redirectToGithub() {
     const params = `?client_id=${config.github.clientId}`
     window.location.assign(`https://github.com/login/oauth/authorize${params}`)
   }

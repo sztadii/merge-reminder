@@ -33,17 +33,17 @@ export function DeleteUserConfirmation({
   const { mutateAsync: deleteUserMutation } =
     trpc.users.deleteById.useMutation()
 
-  const handleClose = () => {
+  function handleClose() {
     setUserOrOrganizationName(undefined)
     onCancel()
   }
 
-  const handleConfirm = () => {
+  function handleConfirm() {
     setUserOrOrganizationName(undefined)
     onConfirm()
   }
 
-  const deleteUser = async () => {
+  async function deleteUser() {
     if (!user || !isDeletionConfirmed) return
 
     handleConfirm()

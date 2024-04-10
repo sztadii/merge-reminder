@@ -2,7 +2,7 @@ import { createStandaloneToast } from '@chakra-ui/react'
 
 const { ToastContainer, toast } = createStandaloneToast()
 
-export const showErrorToast = (text: string) => {
+export function showErrorToast(text: string) {
   toast({
     status: 'error',
     title: 'Error',
@@ -10,7 +10,8 @@ export const showErrorToast = (text: string) => {
     position: 'top-right'
   })
 }
-export const showSuccessToast = (text: string) => {
+
+export function showSuccessToast(text: string) {
   toast({
     status: 'success',
     title: 'Success',
