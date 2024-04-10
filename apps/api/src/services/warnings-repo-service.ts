@@ -54,7 +54,7 @@ export class WarningsRepoService {
     if (!allRepos || allRepos.length === 0) {
       throw new TRPCError({
         code: 'NOT_FOUND',
-        message: `ou do not have any repos.`
+        message: `You do not have any repos.`
       })
     }
 
