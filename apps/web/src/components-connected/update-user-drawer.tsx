@@ -42,7 +42,7 @@ export function UpdateUserDrawer({
   const [formValues, setFormValues] = useState<FormValuesInitial | undefined>()
   const queryClient = useQueryClient()
   const { mutateAsync: updateUserMutation } =
-    trpc.users.updateCurrentUser.useMutation()
+    trpc.clientRole.updateCurrentUser.useMutation()
 
   const hasMissingFormValues =
     !formValues?.email ||
@@ -72,10 +72,10 @@ export function UpdateUserDrawer({
       await updateUserMutation(formValuesToSend)
 
       await queryClient.invalidateQueries(
-        getQueryKey(trpc.users.getCurrentUser)
+        getQueryKey(trpc.clientRole.getCurrentUser)
       )
       queryClient
-        .invalidateQueries(getQueryKey(trpc.warnings.getCurrentWarnings))
+        .invalidateQueries(getQueryKey(trpc.clientRole.getCurrentWarnings))
         .then()
 
       onClose()

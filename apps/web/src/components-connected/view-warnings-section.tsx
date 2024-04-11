@@ -21,7 +21,7 @@ export function ViewWarningsSection() {
     isLoading: isLoadingWarnings,
     error: errorForWarnings,
     isFetching: isFetchingWarnings
-  } = trpc.warnings.getCurrentWarnings.useQuery()
+  } = trpc.clientRole.getCurrentWarnings.useQuery()
 
   const warnings = warningsData || []
 

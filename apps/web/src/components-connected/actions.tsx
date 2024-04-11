@@ -17,7 +17,7 @@ export function Actions() {
     onClose: onCloseDeleteModal
   } = useDisclosure()
   const { data: user, isLoading: isLoadingUser } =
-    trpc.users.getCurrentUser.useQuery()
+    trpc.clientRole.getCurrentUser.useQuery()
 
   return (
     <>

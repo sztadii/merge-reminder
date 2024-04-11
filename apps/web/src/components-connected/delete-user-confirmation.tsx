@@ -31,7 +31,7 @@ export function DeleteUserConfirmation({
     userOrOrganizationName === user?.userOrOrganizationName
 
   const { mutateAsync: deleteUserMutation } =
-    trpc.users.deleteCurrentUser.useMutation()
+    trpc.clientRole.deleteCurrentUser.useMutation()
 
   const dangerColor = useColorModeValue('red.500', 'red.200')
 

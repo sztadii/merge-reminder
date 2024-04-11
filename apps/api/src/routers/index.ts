@@ -1,10 +1,8 @@
 import { router } from '../trpc'
 import { authRouter } from './auth-router'
-import { usersRouter } from './users-router'
-import { warningsRouter } from './warnings-router'
+import { clientRoleRouter } from './client-role-router'
 
 export const appRouter = router({
-  users: usersRouter,
-  warnings: warningsRouter,
+  clientRole: clientRoleRouter,
   auth: authRouter
 })
