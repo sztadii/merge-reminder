@@ -30,7 +30,7 @@ export class AuthService {
       .catch(() => {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
-          message: `Something went wrong when fetching GitHub access token.`
+          message: `An error occurred while fetching the GitHub access token.`
         })
       })
 
@@ -43,7 +43,7 @@ export class AuthService {
       .catch(() => {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
-          message: `Something went wrong when fetching GitHub auth token.`
+          message: `An error occurred while fetching the GitHub auth token.`
         })
       })
 
@@ -59,7 +59,7 @@ export class AuthService {
 
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
-          message: `Something went wrong when fetching the user.`
+          message: `An error occurred while fetching the user.`
         })
       })
 
@@ -74,7 +74,7 @@ export class AuthService {
       } as UserCreateRequest).catch(() => {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
-          message: `GitHub API send unexpected data. Please wait, we will fix it soon.`
+          message: `The GitHub API sent unexpected data. Please wait, we are working on fixing it soon.`
         })
       })
 
@@ -83,7 +83,7 @@ export class AuthService {
         .catch(() => {
           throw new TRPCError({
             code: 'INTERNAL_SERVER_ERROR',
-            message: `Something went wrong when creating the user.`
+            message: `An error occurred while creating the user.`
           })
         })
 

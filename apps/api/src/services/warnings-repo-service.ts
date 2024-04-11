@@ -57,7 +57,7 @@ export class WarningsRepoService {
     if (error) {
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
-        message: 'Something went wrong while fetching repositories.'
+        message: 'An error occurred while fetching repositories.'
       })
     }
 
