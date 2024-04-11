@@ -6,7 +6,7 @@ import {
 } from '@tanstack/react-query'
 import { ReactNode } from 'react'
 
-import { routerPaths } from 'src/router'
+import { logout } from 'src/helpers'
 import { TRPCError } from 'src/trpc'
 
 export const queryClient = new QueryClient({
@@ -34,6 +34,6 @@ function handleError(e: unknown) {
   const error = e as TRPCError
 
   if (error.data?.code === 'UNAUTHORIZED') {
-    routerPaths.login.navigate()
+    logout()
   }
 }

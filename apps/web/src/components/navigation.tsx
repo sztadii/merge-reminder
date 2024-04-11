@@ -8,16 +8,10 @@ import {
 } from '@chakra-ui/react'
 
 import { Icon } from 'src/components/icon'
-import { routerPaths } from 'src/router'
-import { storage } from 'src/storage'
+import { logout } from 'src/helpers'
 
 export function Navigation() {
   const { toggleColorMode, colorMode } = useColorMode()
-
-  function logout() {
-    storage.auth.removeToken()
-    routerPaths.login.navigate()
-  }
 
   return (
     <Box>

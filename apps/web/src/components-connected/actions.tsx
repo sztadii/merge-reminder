@@ -2,8 +2,7 @@ import { Button, Flex, Skeleton, useDisclosure } from '@chakra-ui/react'
 
 import { DeleteUserConfirmation } from 'src/components-connected/delete-user-confirmation'
 import { UpdateUserDrawer } from 'src/components-connected/update-user-drawer'
-import { routerPaths } from 'src/router'
-import { storage } from 'src/storage'
+import { logout } from 'src/helpers'
 import { trpc } from 'src/trpc'
 
 export function Actions() {
@@ -60,8 +59,7 @@ export function Actions() {
         }}
         onConfirm={() => {
           onCloseDeleteModal()
-          storage.auth.removeToken()
-          routerPaths.login.navigate()
+          logout()
         }}
       />
     </>
