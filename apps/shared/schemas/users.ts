@@ -21,7 +21,7 @@ export const WarningResponseSchema = z.object({
 
 export const WarningsResponseSchema = z.array(WarningResponseSchema)
 
-export const UserCreateRequestSchema = ResponseSchema.extend({
+export const UserCreateRequestSchema = z.object({
   githubId: z.number(),
   role: z.enum(['client', 'admin']),
   userOrOrganizationName: z.string(),
@@ -30,7 +30,7 @@ export const UserCreateRequestSchema = ResponseSchema.extend({
   baseBranch: z.string()
 })
 
-export const UserUpdateRequestSchema = ResponseSchema.extend({
+export const UserUpdateRequestSchema = z.object({
   githubAccessToken: z.string(),
   userOrOrganizationName: z.string(),
   isOrganization: z.boolean(),
