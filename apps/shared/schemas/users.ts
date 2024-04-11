@@ -13,7 +13,7 @@ export const UserResponseSchema = ResponseSchema.extend({
   role: z.enum(['client', 'admin'])
 })
 
-export const WarningSchema = z.object({
+export const WarningResponseSchema = z.object({
   repo: z.string(),
   commits: z.array(z.string()),
   compareLink: z.string(),
@@ -21,7 +21,7 @@ export const WarningSchema = z.object({
   delay: z.string()
 })
 
-export const WarningsSchema = z.array(WarningSchema)
+export const WarningsResponseSchema = z.array(WarningResponseSchema)
 
 export const UserCreateRequestSchema = UserResponseSchema.pick({
   role: true,
@@ -42,6 +42,6 @@ export const UserUpdateRequestSchema = UserResponseSchema.pick({
 })
 
 export type UserResponse = z.infer<typeof UserResponseSchema>
-export type Warning = z.infer<typeof WarningSchema>
+export type WarningResponse = z.infer<typeof WarningResponseSchema>
 export type UserCreateRequest = z.infer<typeof UserCreateRequestSchema>
 export type UserUpdateRequest = z.infer<typeof UserUpdateRequestSchema>

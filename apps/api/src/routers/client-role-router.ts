@@ -2,7 +2,7 @@ import {
   EmptyResponseSchema,
   UserResponseSchema,
   UserUpdateRequestSchema,
-  WarningsSchema
+  WarningsResponseSchema
 } from '../schemas'
 import { UsersService } from '../services/users-service'
 import { WarningsService } from '../services/warnings-service'
@@ -26,10 +26,12 @@ export const clientRoleRouter = router({
       const usersService = new UsersService(opts.ctx.database)
       return usersService.deleteById(opts.ctx.user.id)
     }),
-  getCurrentWarnings: protectedProcedure.output(WarningsSchema).query(opts => {
-    const warningsService = new WarningsService(
-      new UsersService(opts.ctx.database)
-    )
-    return warningsService.getWarnings(opts.ctx.user.id)
-  })
+  getCurrentWarnings: protectedProcedure
+    .output(WarningsResponseSchema)
+    .query(opts => {
+      const warningsService = new WarningsService(
+        new UsersService(opts.ctx.database)
+      )
+      return warningsService.getWarnings(opts.ctx.user.id)
+    })
 })
