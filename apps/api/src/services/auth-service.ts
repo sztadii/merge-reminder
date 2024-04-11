@@ -38,6 +38,7 @@ export class AuthService {
 
       if (!user) {
         const createdUser = await this.userService.create({
+          role: 'client',
           githubId: githubUser.id,
           userOrOrganizationName: githubUser.login,
           headBranch: 'main',

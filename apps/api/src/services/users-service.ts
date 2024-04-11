@@ -53,6 +53,7 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
         _id: new DatabaseId(),
         createdAt: new Date(),
         githubId: userData.githubId,
+        role: userData.role,
         userOrOrganizationName: userData.userOrOrganizationName,
         headBranch: userData.headBranch,
         baseBranch: userData.baseBranch,
@@ -114,6 +115,7 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
     return {
       ...super.mapRecordToResponse(user),
       githubId: user.githubId,
+      role: user.role,
       userOrOrganizationName: user.userOrOrganizationName,
       email: user.email,
       githubAccessToken: user.githubAccessToken,

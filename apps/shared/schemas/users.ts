@@ -9,7 +9,8 @@ export const UserResponseSchema = ResponseSchema.extend({
   isOrganization: z.boolean(),
   headBranch: z.string(),
   baseBranch: z.string(),
-  email: z.string().email().optional()
+  email: z.string().email().optional(),
+  role: z.enum(['client', 'admin'])
 })
 
 export const WarningSchema = z.object({
@@ -23,6 +24,7 @@ export const WarningSchema = z.object({
 export const WarningsSchema = z.array(WarningSchema)
 
 export const UserCreateRequestSchema = UserResponseSchema.pick({
+  role: true,
   githubId: true,
   userOrOrganizationName: true,
   isOrganization: true,
