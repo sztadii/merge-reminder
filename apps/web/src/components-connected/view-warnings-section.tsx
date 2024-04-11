@@ -25,8 +25,17 @@ export function ViewWarningsSection() {
     error: errorForWarnings
   } = trpc.clientRole.getCurrentWarnings.useQuery()
 
-  const { mutateAsync, isLoading: isSendingWarnings } =
+  const { mutateAsync: sendWarningsMutation, isLoading: isSendingWarnings } =
     trpc.clientRole.sendCurrentWarnings.useMutation()
+
+  async function sendWarnings() {
+    try {
+      await sendWarningsMutation()
+      showSuccessToast('Warnings has been send!')
+    } catch {
+      showErrorToast('Something went wrong when sending warnings!')
+    }
+  }
 
   const warnings = warningsData || []
 
@@ -108,7 +117,7 @@ export function ViewWarningsSection() {
     <>
       <Card>
         <CardHeader>
-          <Flex alignItems="center" gap={4}>
+          <Flex alignItems="center" justifyContent="space-between">
             <Heading size="md">
               {isLoadingWarnings ? (
                 <Skeleton display="inline-block">Warnings</Skeleton>
@@ -116,34 +125,25 @@ export function ViewWarningsSection() {
                 'Warnings'
               )}
             </Heading>
-          </Flex>
 
-          {isLoadingWarnings ? (
-            <Skeleton mt={4} display="inline-block">
-              <Button>Send warnings</Button>
-            </Skeleton>
-          ) : (
-            <Tooltip placement="right" hasArrow label={triggerMessage}>
-              <Button
-                mt={4}
-                isDisabled={!!errorForWarnings}
-                colorScheme="red"
-                isLoading={isSendingWarnings}
-                onClick={async () => {
-                  try {
-                    await mutateAsync()
-                    showSuccessToast('Warnings has been send!')
-                  } catch {
-                    showErrorToast(
-                      'Something went wrong when sending warnings!'
-                    )
-                  }
-                }}
-              >
-                Send warnings
-              </Button>
-            </Tooltip>
-          )}
+            {isLoadingWarnings ? (
+              <Skeleton display="inline-block">
+                <Button size="xs">Send warnings</Button>
+              </Skeleton>
+            ) : (
+              <Tooltip placement="left" hasArrow label={triggerMessage}>
+                <Button
+                  size="xs"
+                  colorScheme="red"
+                  isDisabled={!!errorForWarnings}
+                  isLoading={isSendingWarnings}
+                  onClick={sendWarnings}
+                >
+                  Send warnings
+                </Button>
+              </Tooltip>
+            )}
+          </Flex>
         </CardHeader>
         <CardBody>
           <Table
