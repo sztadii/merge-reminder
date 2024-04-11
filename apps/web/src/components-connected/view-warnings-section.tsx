@@ -1,27 +1,32 @@
 import {
+  Button,
   Card,
   CardBody,
   CardHeader,
   Flex,
   Heading,
   Link,
-  Skeleton
+  Skeleton,
+  Tooltip
 } from '@chakra-ui/react'
 import { useMemo } from 'react'
 
 import { Icon } from 'src/components/icon'
-import { SpinnerWithLabel } from 'src/components/spinner-with-label'
 import { Table, TableProps } from 'src/components/table'
 import { Text } from 'src/components/text'
 import { trpc } from 'src/trpc'
+
+import { showErrorToast, showSuccessToast } from '../toasts'
 
 export function ViewWarningsSection() {
   const {
     data: warningsData,
     isLoading: isLoadingWarnings,
-    error: errorForWarnings,
-    isFetching: isFetchingWarnings
+    error: errorForWarnings
   } = trpc.clientRole.getCurrentWarnings.useQuery()
+
+  const { mutateAsync, isLoading: isSendingWarnings } =
+    trpc.clientRole.sendCurrentWarnings.useMutation()
 
   const warnings = warningsData || []
 
@@ -96,6 +101,9 @@ export function ViewWarningsSection() {
     ]
   }, [])
 
+  const triggerMessage =
+    "You don't need to do this manually. Every day, we will automatically send emails. We've created it so you can test our app"
+
   return (
     <>
       <Card>
@@ -108,11 +116,34 @@ export function ViewWarningsSection() {
                 'Warnings'
               )}
             </Heading>
-
-            {warningsData && isFetchingWarnings && (
-              <SpinnerWithLabel label="Fetching the latest warnings" />
-            )}
           </Flex>
+
+          {isLoadingWarnings ? (
+            <Skeleton mt={4} display="inline-block">
+              <Button>Send warnings</Button>
+            </Skeleton>
+          ) : (
+            <Tooltip placement="right" hasArrow label={triggerMessage}>
+              <Button
+                mt={4}
+                isDisabled={!!errorForWarnings}
+                colorScheme="red"
+                isLoading={isSendingWarnings}
+                onClick={async () => {
+                  try {
+                    await mutateAsync()
+                    showSuccessToast('Warnings has been send!')
+                  } catch {
+                    showErrorToast(
+                      'Something went wrong when sending warnings!'
+                    )
+                  }
+                }}
+              >
+                Send warnings
+              </Button>
+            </Tooltip>
+          )}
         </CardHeader>
         <CardBody>
           <Table

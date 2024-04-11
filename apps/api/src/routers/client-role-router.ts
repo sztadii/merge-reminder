@@ -4,6 +4,7 @@ import {
   UserUpdateRequestSchema,
   WarningsResponseSchema
 } from '../schemas'
+import { EmailService } from '../services/email-service'
 import { UsersService } from '../services/users-service'
 import { WarningsService } from '../services/warnings-service'
 import { protectedProcedure, router } from '../trpc'
@@ -30,8 +31,18 @@ export const clientRoleRouter = router({
     .output(WarningsResponseSchema)
     .query(opts => {
       const warningsService = new WarningsService(
-        new UsersService(opts.ctx.database)
+        new UsersService(opts.ctx.database),
+        new EmailService()
       )
       return warningsService.getWarnings(opts.ctx.user.id)
+    }),
+  sendCurrentWarnings: protectedProcedure
+    .output(EmptyResponseSchema)
+    .mutation(opts => {
+      const warningsService = new WarningsService(
+        new UsersService(opts.ctx.database),
+        new EmailService()
+      )
+      return warningsService.sendWarnings(opts.ctx.user.id)
     })
 })
