@@ -5,7 +5,7 @@ import express from 'express'
 
 import { initDatabase } from './src/database'
 import { appRouter } from './src/routers'
-import { createContext } from './src/trpc/create-context'
+import { createContext } from './src/trpc'
 
 async function init() {
   await initDatabase(process.env.MONGO_URL)
