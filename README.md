@@ -1,7 +1,7 @@
 # merge-reminder
 
 ## How to start?
-Please install dependencies via
+Please install dependencies by
 ```
 npm install
 ```
