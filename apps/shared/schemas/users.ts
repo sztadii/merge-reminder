@@ -21,23 +21,22 @@ export const WarningResponseSchema = z.object({
 
 export const WarningsResponseSchema = z.array(WarningResponseSchema)
 
-export const UserCreateRequestSchema = UserResponseSchema.pick({
-  userOrOrganizationName: true,
-  isOrganization: true,
-  headBranch: true,
-  baseBranch: true
-}).extend({
+export const UserCreateRequestSchema = ResponseSchema.extend({
   githubId: z.number(),
-  role: z.enum(['client', 'admin'])
+  role: z.enum(['client', 'admin']),
+  userOrOrganizationName: z.string(),
+  isOrganization: z.boolean(),
+  headBranch: z.string(),
+  baseBranch: z.string()
 })
 
-export const UserUpdateRequestSchema = UserResponseSchema.pick({
-  githubAccessToken: true,
-  userOrOrganizationName: true,
-  isOrganization: true,
-  headBranch: true,
-  baseBranch: true,
-  email: true
+export const UserUpdateRequestSchema = ResponseSchema.extend({
+  githubAccessToken: z.string(),
+  userOrOrganizationName: z.string(),
+  isOrganization: z.boolean(),
+  headBranch: z.string(),
+  baseBranch: z.string(),
+  email: z.string().email()
 })
 
 export type UserResponse = z.infer<typeof UserResponseSchema>
