@@ -20,7 +20,7 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
 
     if (!record) {
       throw new TRPCError({
-        code: 'UNAUTHORIZED',
+        code: 'NOT_FOUND',
         message: `The user with ID ${id} has been deleted.`
       })
     }

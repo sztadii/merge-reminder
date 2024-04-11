@@ -51,7 +51,17 @@ export class AuthService {
 
     const user = await this.userService
       .getByGithubId(githubUser.id)
-      .catch(() => undefined)
+      .catch(e => {
+        const error = e as TRPCError
+        if (error.code === 'NOT_FOUND') {
+          return undefined
+        }
+
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: `Something went wrong when fetching the user.`
+        })
+      })
 
     if (!user) {
       const validatedUser = await UserCreateRequestSchema.parseAsync({
