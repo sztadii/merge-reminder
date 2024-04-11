@@ -44,9 +44,12 @@ export class WarningsRepoService {
       })
     }
 
+    // TODO We can not redirect user when we save a wrong token.
+    // Otherwise we will make our system unusable.
+    // Check if we can make it better.
     if (error?.status === 401) {
       throw new TRPCError({
-        code: 'UNAUTHORIZED',
+        code: 'NOT_FOUND',
         message: `Your access token is incorrect or has expired.`
       })
     }

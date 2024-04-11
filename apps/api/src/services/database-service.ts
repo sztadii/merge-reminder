@@ -11,7 +11,8 @@ export class DatabaseService<T extends DatabaseRecord> {
   protected mapRecordToResponse(record: T): Response {
     return {
       id: record._id.toString(),
-      createdAt: record.createdAt.toISOString()
+      createdAt: record.createdAt.toISOString(),
+      updatedAt: record.updatedAt?.toISOString()
     }
   }
 }

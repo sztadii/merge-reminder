@@ -114,8 +114,6 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
   protected mapRecordToResponse(user: UserDatabaseRecord): UserResponse {
     return {
       ...super.mapRecordToResponse(user),
-      githubId: user.githubId,
-      role: user.role,
       userOrOrganizationName: user.userOrOrganizationName,
       email: user.email,
       githubAccessToken: user.githubAccessToken,
