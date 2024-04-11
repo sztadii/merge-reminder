@@ -15,7 +15,7 @@ export type TableProps<TRows extends unknown[]> = {
     }
   }>
   rows: TRows
-  skeletonRows: number
+  numberOfSkeletonRows: number
   isLoading: boolean
   errorMessage: string | undefined
   noDataMessage?: string
@@ -24,7 +24,7 @@ export type TableProps<TRows extends unknown[]> = {
 export function Table<T extends unknown[]>({
   columns,
   rows,
-  skeletonRows,
+  numberOfSkeletonRows,
   isLoading,
   errorMessage,
   noDataMessage
@@ -46,6 +46,7 @@ export function Table<T extends unknown[]>({
 
   function renderContent() {
     if (isLoading) {
+      const skeletonRows = new Array(numberOfSkeletonRows).fill(null)
       return (
         <>
           <Box>
@@ -60,9 +61,10 @@ export function Table<T extends unknown[]>({
             </Box>
           </Box>
           <Box>
-            {new Array(skeletonRows).fill(null).map((_, index) => {
+            {skeletonRows.map((_, index) => {
+              const isLast = skeletonRows.length - 1 === index
               return (
-                <Box display="flex" key={index} gap={4} mb={4}>
+                <Box display="flex" key={index} gap={4} mb={isLast ? 0 : 4}>
                   {columns.map(column => {
                     return (
                       <Box
