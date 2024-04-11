@@ -21,7 +21,7 @@ export class AuthService {
         null,
         {
           headers: {
-            Accept: 'application/json'
+            accept: 'application/json'
           }
         }
       )
