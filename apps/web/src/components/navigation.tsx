@@ -3,6 +3,7 @@ import {
   Button,
   Divider,
   Flex,
+  Heading,
   IconButton,
   useColorMode
 } from '@chakra-ui/react'
@@ -16,7 +17,9 @@ export function Navigation() {
   return (
     <Box>
       <Flex p={4} alignItems="center" justifyContent="space-between">
-        <div>Merge Reminder</div>
+        <Heading size="sm" color="gray.500">
+          Merge Reminder
+        </Heading>
 
         <Flex alignItems="center" gap={4}>
           <Button size="sm" onClick={logout}>
