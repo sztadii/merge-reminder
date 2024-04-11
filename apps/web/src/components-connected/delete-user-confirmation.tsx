@@ -1,4 +1,9 @@
-import { FormControl, FormLabel, Input } from '@chakra-ui/react'
+import {
+  FormControl,
+  FormLabel,
+  Input,
+  useColorModeValue
+} from '@chakra-ui/react'
 import { useState } from 'react'
 
 import { Confirmation } from 'src/components/confirmation'
@@ -20,9 +25,7 @@ export function DeleteUserConfirmation({
   onCancel,
   onConfirm
 }: DeleteUserConfirmationProps) {
-  const [userOrOrganizationName, setUserOrOrganizationName] = useState<
-    string | undefined
-  >()
+  const [userOrOrganizationName, setUserOrOrganizationName] = useState('')
 
   const isDeletionConfirmed =
     userOrOrganizationName === user?.userOrOrganizationName
@@ -30,11 +33,19 @@ export function DeleteUserConfirmation({
   const { mutateAsync: deleteUserMutation } =
     trpc.users.deleteCurrentUser.useMutation()
 
+  const dangerColor = useColorModeValue('red.500', 'red.200')
+
+  function handleCancel() {
+    setUserOrOrganizationName('')
+    onCancel()
+  }
+
   async function deleteUser() {
     if (!user || !isDeletionConfirmed) return
 
     try {
       await deleteUserMutation()
+      setUserOrOrganizationName('')
       onConfirm()
     } catch {
       showErrorToast('Can not delete user')
@@ -44,7 +55,7 @@ export function DeleteUserConfirmation({
   return (
     <Confirmation
       isOpen={isOpen}
-      onClose={onCancel}
+      onClose={handleCancel}
       title="Delete user"
       description={
         <>
@@ -52,7 +63,9 @@ export function DeleteUserConfirmation({
             <FormLabel>
               If you are sure about deletion, <br />
               then please type{' '}
-              <Text fontWeight="bold">{user?.userOrOrganizationName}</Text>{' '}
+              <Text fontWeight="bold" color={dangerColor}>
+                {user?.userOrOrganizationName}
+              </Text>{' '}
               below.
             </FormLabel>
             <Input

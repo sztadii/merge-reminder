@@ -98,7 +98,7 @@ export function UpdateUserDrawer({
           <FormControl>
             <FormLabel>Email</FormLabel>
             <Input
-              value={formValues?.email}
+              value={formValues?.email || ''}
               placeholder="Type..."
               onChange={e =>
                 setFormValues({
@@ -112,7 +112,7 @@ export function UpdateUserDrawer({
           <FormControl mt={8}>
             <FormLabel>Github access token</FormLabel>
             <Textarea
-              value={formValues?.githubAccessToken}
+              value={formValues?.githubAccessToken || ''}
               resize="none"
               placeholder="Type..."
               onChange={e =>
@@ -127,7 +127,7 @@ export function UpdateUserDrawer({
           <FormControl mt={8}>
             <FormLabel>User / organization name</FormLabel>
             <Input
-              value={formValues?.userOrOrganizationName}
+              value={formValues?.userOrOrganizationName || ''}
               placeholder="Type..."
               onChange={e =>
                 setFormValues({
@@ -155,7 +155,7 @@ export function UpdateUserDrawer({
           <FormControl mt={8}>
             <FormLabel>Head branch</FormLabel>
             <Input
-              value={formValues?.headBranch}
+              value={formValues?.headBranch || ''}
               placeholder="Type..."
               onChange={e =>
                 setFormValues({
