@@ -14,9 +14,8 @@ import { useMemo } from 'react'
 import { Icon } from 'src/components/icon'
 import { Table, TableProps } from 'src/components/table'
 import { Text } from 'src/components/text'
+import { showErrorToast, showSuccessToast } from 'src/toasts'
 import { trpc } from 'src/trpc'
-
-import { showErrorToast, showSuccessToast } from '../toasts'
 
 export function ViewWarningsSection() {
   const {
