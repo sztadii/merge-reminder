@@ -7,21 +7,21 @@ import { trpc } from 'src/trpc'
 
 export function Actions() {
   const {
-    isOpen: isOpenUpdateDrawer,
-    onOpen: onOpenUpdateDrawer,
-    onClose: onCloseUpdateDrawer
+    isOpen: isOpenForUpdateDrawer,
+    onOpen: onOpenForUpdateDrawer,
+    onClose: onCloseForUpdateDrawer
   } = useDisclosure()
   const {
-    isOpen: isOpenDeleteModal,
-    onOpen: onOpenDeleteModal,
-    onClose: onCloseDeleteModal
+    isOpen: isOpenForDeleteModal,
+    onOpen: onOpenForDeleteModal,
+    onClose: onCloseForDeleteModal
   } = useDisclosure()
-  const { data: user, isLoading: isLoadingUser } =
+  const { data: user, isLoading: isLoadingForUser } =
     trpc.clientRole.getCurrentUser.useQuery()
 
   return (
     <>
-      {isLoadingUser ? (
+      {isLoadingForUser ? (
         <Flex gap={4}>
           <Skeleton display="inline-block">
             <Button>Update profile</Button>
@@ -33,13 +33,13 @@ export function Actions() {
         </Flex>
       ) : (
         <Flex gap={4}>
-          <Button isDisabled={!user} onClick={onOpenUpdateDrawer}>
+          <Button isDisabled={!user} onClick={onOpenForUpdateDrawer}>
             Update profile
           </Button>
 
           <Button
             isDisabled={!user}
-            onClick={onOpenDeleteModal}
+            onClick={onOpenForDeleteModal}
             colorScheme="red"
           >
             Delete profile
@@ -48,17 +48,17 @@ export function Actions() {
       )}
       <UpdateUserDrawer
         user={user}
-        isOpen={isOpenUpdateDrawer}
-        onClose={onCloseUpdateDrawer}
+        isOpen={isOpenForUpdateDrawer}
+        onClose={onCloseForUpdateDrawer}
       />
       <DeleteUserConfirmation
         user={user}
-        isOpen={isOpenDeleteModal}
+        isOpen={isOpenForDeleteModal}
         onCancel={() => {
-          onCloseDeleteModal()
+          onCloseForDeleteModal()
         }}
         onConfirm={() => {
-          onCloseDeleteModal()
+          onCloseForDeleteModal()
           logout()
         }}
       />
