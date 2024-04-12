@@ -48,7 +48,7 @@ export function DeleteUserConfirmation({
       setUserOrOrganizationName('')
       onConfirm()
     } catch {
-      showErrorToast('Can not delete user')
+      showErrorToast('Can not delete profile')
     }
   }
 
@@ -56,7 +56,7 @@ export function DeleteUserConfirmation({
     <Confirmation
       isOpen={isOpen}
       onClose={handleCancel}
-      title="Delete user"
+      title="Delete profile"
       description={
         <>
           <FormControl>
