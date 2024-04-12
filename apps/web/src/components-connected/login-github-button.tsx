@@ -1,13 +1,12 @@
 import { Button } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 
+import { Icon } from 'src/components/icon'
 import { config } from 'src/config'
 import { routerPaths } from 'src/router'
 import { storage } from 'src/storage'
 import { showErrorToast } from 'src/toasts'
 import { TRPCError, trpc } from 'src/trpc'
-
-import { Icon } from '../components/icon'
 
 export function LoginGithubButton() {
   const params = new URLSearchParams(window.location.search)
