@@ -43,10 +43,25 @@ export class WarningsService {
 
     await Promise.all(
       allAuthors.map(author => {
+        const reposTouchedByAuthor = warnings.filter(warning =>
+          warning.authors.includes(author)
+        )
+
+        const message = [
+          'You forgot to merge your changes.',
+          'Please visit the repositories below to see what is unmerged.',
+          '',
+          ...reposTouchedByAuthor.flatMap(repo => [
+            `Repository: ${repo.repo}`,
+            `Link: ${repo.compareLink}`,
+            ''
+          ])
+        ].join('\n')
+
         return this.emailService.sendEmail({
           to: author,
           subject: 'Reminder',
-          text: 'You forgot to merge your changes!'
+          text: message
         })
       })
     )
