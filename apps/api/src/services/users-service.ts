@@ -7,6 +7,19 @@ import { DatabaseService } from './database-service'
 export class UsersService extends DatabaseService<UserDatabaseRecord> {
   constructor(database: Database) {
     super(database, 'users')
+
+    this.init()
+  }
+
+  async init() {
+    try {
+      await this.collection.createIndex({ githubId: 1 }, { unique: true })
+    } catch {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: `Index for githubId could not be created!`
+      })
+    }
   }
 
   async getById(id: string): Promise<UserResponse> {
