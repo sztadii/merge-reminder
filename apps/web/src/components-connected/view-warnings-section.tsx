@@ -19,7 +19,7 @@ import { SendWarningsButton } from './send-warnings-button'
 export function ViewWarningsSection() {
   const {
     data: warningsData,
-    isLoading: isLoadingWarnings,
+    isFetching: isFetchingForWarnings,
     error: errorForWarnings
   } = trpc.clientRole.getCurrentWarnings.useQuery()
 
@@ -102,7 +102,7 @@ export function ViewWarningsSection() {
         <CardHeader>
           <Flex alignItems="center" justifyContent="space-between">
             <Heading size="md">
-              {isLoadingWarnings ? (
+              {isFetchingForWarnings ? (
                 <Skeleton display="inline-block">Warnings</Skeleton>
               ) : (
                 'Warnings'
@@ -117,7 +117,7 @@ export function ViewWarningsSection() {
             columns={tableColumns}
             rows={warnings}
             numberOfSkeletonRows={6}
-            isLoading={isLoadingWarnings}
+            isLoading={isFetchingForWarnings}
             errorMessage={errorForWarnings?.message}
             noDataMessage="All your repos are looking well. Good job team!"
           />

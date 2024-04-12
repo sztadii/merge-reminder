@@ -4,7 +4,7 @@ import { showErrorToast, showSuccessToast } from 'src/toasts'
 import { trpc } from 'src/trpc'
 
 export function SendWarningsButton() {
-  const { data: warnings, isLoading: isLoadingWarnings } =
+  const { isFetching: isFetchingForWarnings, error: errorForWarnings } =
     trpc.clientRole.getCurrentWarnings.useQuery()
 
   const { mutateAsync: sendWarningsMutation, isLoading: isSendingWarnings } =
@@ -19,14 +19,14 @@ export function SendWarningsButton() {
     }
   }
 
-  if (!isLoadingWarnings && !warnings) return null
+  if (errorForWarnings) return null
 
   const triggerMessage =
     "You don't need to do this manually. Every day, we will automatically send emails. We've created it so you can test our app"
 
   return (
     <>
-      {isLoadingWarnings ? (
+      {isFetchingForWarnings ? (
         <Skeleton display="inline-block">
           <Button size="xs">Send warnings</Button>
         </Skeleton>
