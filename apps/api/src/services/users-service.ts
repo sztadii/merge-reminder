@@ -11,7 +11,7 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
     this.init()
   }
 
-  async init() {
+  private async init() {
     try {
       await this.collection.createIndex({ githubId: 1 }, { unique: true })
     } catch {
