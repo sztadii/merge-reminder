@@ -63,9 +63,6 @@ export function UpdateUserDrawer({
       await queryClient.invalidateQueries(
         getQueryKey(trpc.client.getCurrentUser)
       )
-      queryClient
-        .invalidateQueries(getQueryKey(trpc.client.getCurrentWarnings))
-        .then()
 
       onClose()
       setFormValues(undefined)
