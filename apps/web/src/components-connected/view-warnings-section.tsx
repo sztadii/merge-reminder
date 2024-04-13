@@ -27,7 +27,9 @@ export function ViewWarningsSection() {
     data: warningsData,
     isFetching: isFetchingForWarnings,
     error: errorForWarnings
-  } = trpc.client.getCurrentWarnings.useQuery()
+  } = trpc.client.getCurrentWarnings.useQuery(undefined, {
+    enabled: user?.hasInstallationId === true
+  })
 
   const warnings = warningsData || []
 
@@ -129,19 +131,18 @@ export function ViewWarningsSection() {
           </Flex>
         </CardHeader>
         <CardBody>
-          {user?.hasInstallationId === false && (
-            <Box mb={4}>
-              <InstallReposButton />
-            </Box>
+          {user?.hasInstallationId === false && <InstallReposButton />}
+
+          {user?.hasInstallationId === true && (
+            <Table
+              columns={tableColumns}
+              rows={warnings}
+              numberOfSkeletonRows={2}
+              isLoading={isFetchingForWarnings}
+              errorMessage={errorForWarnings?.message}
+              noDataMessage="All your repos are looking well. Good job team!"
+            />
           )}
-          <Table
-            columns={tableColumns}
-            rows={warnings}
-            numberOfSkeletonRows={2}
-            isLoading={isFetchingForWarnings}
-            errorMessage={errorForWarnings?.message}
-            noDataMessage="All your repos are looking well. Good job team!"
-          />
         </CardBody>
       </Card>
     </>

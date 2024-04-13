@@ -17,8 +17,6 @@ export function InstallReposButton() {
   const { mutateAsync: updateInstallationIdMutation } =
     trpc.client.updateInstallationId.useMutation()
 
-  const { data: user } = trpc.client.getCurrentUser.useQuery()
-
   const queryClient = useQueryClient()
 
   function redirectToGithub() {
@@ -59,8 +57,6 @@ export function InstallReposButton() {
 
     installRepos()
   }, [])
-
-  if (user?.hasInstallationId) return
 
   return (
     <Button
