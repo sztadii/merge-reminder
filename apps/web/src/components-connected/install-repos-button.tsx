@@ -4,6 +4,7 @@ import { getQueryKey } from '@trpc/react-query'
 import { useEffect, useState } from 'react'
 
 import { Icon } from 'src/components/icon'
+import { config } from 'src/config'
 import { removeSearchParamsFromURL } from 'src/helpers'
 import { showErrorToast } from 'src/toasts'
 import { TRPCError, trpc } from 'src/trpc'
@@ -22,7 +23,8 @@ export function InstallReposButton() {
   function redirectToGithub() {
     setIsLoading(true)
 
-    const url = `https://github.com/apps/merge-reminder/installations/select_target`
+    const { appName } = config.github
+    const url = `https://github.com/apps/${appName}/installations/select_target`
     window.location.assign(url)
   }
 
