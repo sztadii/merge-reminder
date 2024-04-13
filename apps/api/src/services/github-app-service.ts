@@ -1,6 +1,8 @@
 import { RestEndpointMethodTypes } from '@octokit/rest'
 import { App, Octokit } from 'octokit'
 
+import { config } from '../config'
+
 export class GithubAppService {
   constructor(
     private app: App,
@@ -9,6 +11,7 @@ export class GithubAppService {
   ) {}
 
   public static async build(installationId: number) {
+    // TODO Pass privateKey via env variables
     const privateKey = `-----BEGIN RSA PRIVATE KEY-----
 MIIEowIBAAKCAQEAxagJbXPcZK8gkKy40eskNu5oACewBPH5YYifgIBhIYmv2X79
 m7gg46Pc2SnmdbCfgIty48gpjNgf6Qkty3VVH+lQZDmX69ee43hvU0V129t259r+
@@ -37,7 +40,7 @@ vppBAU0SDjfnqcT5kPA+tpMZCc2RDtR7s+CKFVjYbHDfXYoP6G83WTHGkK0Nvp1Q
 mBlwqN1FblKszX/kkqY5yDSNlf6RYByJdm9vRaMoNN+H1995nQra
 -----END RSA PRIVATE KEY-----`
     const app = new App({
-      appId: '875604',
+      appId: config.github.appId,
       privateKey: privateKey
     })
 
