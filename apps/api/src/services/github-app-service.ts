@@ -13,6 +13,8 @@ export class GithubAppService {
   public static async build(installationId: number) {
     const app = new App({
       appId: config.github.appId,
+      // There is a problem with multilines private keys.
+      // I found this solution on stackoverflow and seems working.
       privateKey: config.github.privateKey.replace(/\\n/g, '\n')
     })
 
