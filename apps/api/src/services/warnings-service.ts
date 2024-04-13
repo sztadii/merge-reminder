@@ -35,20 +35,10 @@ export class WarningsService {
       githubAppService
     )
 
-    const warnings = await warningsRepoService.getWarnings().catch(error => {
-      // TODO We can not redirect user when we save a wrong token.
-      // Otherwise we will make our system unusable.
-      // Check if we can make it better.
-      if (error?.status === 401) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: `Your access token is incorrect or has expired.`
-        })
-      }
-
+    const warnings = await warningsRepoService.getWarnings().catch(() => {
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
-        message: 'An error occurred while fetching repositories.'
+        message: 'An error occurred while fetching warnings.'
       })
     })
 
