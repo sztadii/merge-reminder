@@ -14,7 +14,7 @@ export function LoginGithubButton() {
 
   const [isLoading, setIsLoading] = useState(!!code)
 
-  const { mutateAsync: loginMutation } = trpc.auth.login.useMutation()
+  const { mutateAsync: loginMutation } = trpc.public.login.useMutation()
 
   function redirectToGithub() {
     setIsLoading(true)
@@ -37,6 +37,7 @@ export function LoginGithubButton() {
       } catch (e) {
         const error = e as TRPCError
         showErrorToast(error.message)
+        // TODO Create a function to remove query params from URL
         routerPaths.login.navigate() // To remove ?code="" from URL
       }
 

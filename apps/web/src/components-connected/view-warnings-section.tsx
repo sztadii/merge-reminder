@@ -1,4 +1,5 @@
 import {
+  Box,
   Card,
   CardBody,
   CardHeader,
@@ -14,6 +15,7 @@ import { Table, TableProps } from 'src/components/table'
 import { Text } from 'src/components/text'
 import { trpc } from 'src/trpc'
 
+import { InstallReposButton } from './install-repos-button'
 import { SendWarningsButton } from './send-warnings-button'
 
 export function ViewWarningsSection() {
@@ -21,7 +23,10 @@ export function ViewWarningsSection() {
     data: warningsData,
     isFetching: isFetchingForWarnings,
     error: errorForWarnings
-  } = trpc.clientRole.getCurrentWarnings.useQuery()
+  } = trpc.client.getCurrentWarnings.useQuery()
+
+  const { data: user, isLoading: isLoadingForUser } =
+    trpc.client.getCurrentUser.useQuery()
 
   const warnings = warningsData || []
 
@@ -96,6 +101,27 @@ export function ViewWarningsSection() {
     ]
   }, [])
 
+  function renderContent() {
+    if (isLoadingForUser) {
+      return <Skeleton height={264} />
+    }
+
+    if (user?.hasInstallationId === false) {
+      return <InstallReposButton />
+    }
+
+    return (
+      <Table
+        columns={tableColumns}
+        rows={warnings}
+        numberOfSkeletonRows={6}
+        isLoading={isFetchingForWarnings}
+        errorMessage={errorForWarnings?.message}
+        noDataMessage="All your repos are looking well. Good job team!"
+      />
+    )
+  }
+
   return (
     <>
       <Card>
@@ -112,16 +138,7 @@ export function ViewWarningsSection() {
             <SendWarningsButton />
           </Flex>
         </CardHeader>
-        <CardBody>
-          <Table
-            columns={tableColumns}
-            rows={warnings}
-            numberOfSkeletonRows={6}
-            isLoading={isFetchingForWarnings}
-            errorMessage={errorForWarnings?.message}
-            noDataMessage="All your repos are looking well. Good job team!"
-          />
-        </CardBody>
+        <CardBody>{renderContent()}</CardBody>
       </Card>
     </>
   )

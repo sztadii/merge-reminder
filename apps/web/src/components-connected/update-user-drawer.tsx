@@ -11,9 +11,7 @@ import {
   FormControl,
   FormHelperText,
   FormLabel,
-  Input,
-  Switch,
-  Textarea
+  Input
 } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { getQueryKey } from '@trpc/react-query'
@@ -42,14 +40,10 @@ export function UpdateUserDrawer({
   const [formValues, setFormValues] = useState<FormValuesInitial | undefined>()
   const queryClient = useQueryClient()
   const { mutateAsync: updateUserMutation } =
-    trpc.clientRole.updateCurrentUser.useMutation()
+    trpc.client.updateCurrentUser.useMutation()
 
   const hasMissingFormValues =
-    !formValues?.email ||
-    !formValues?.githubAccessToken ||
-    !formValues?.userOrOrganizationName ||
-    !formValues?.headBranch ||
-    !formValues?.baseBranch
+    !formValues?.email || !formValues?.headBranch || !formValues?.baseBranch
 
   useEffect(() => {
     if (!user) return
@@ -64,18 +58,13 @@ export function UpdateUserDrawer({
     try {
       setIsPending(true)
 
-      const formValuesToSend = {
-        ...formValues,
-        isOrganization: !!formValues?.isOrganization
-      } as FormValuesRequired
-
-      await updateUserMutation(formValuesToSend)
+      await updateUserMutation(formValues as FormValuesRequired)
 
       await queryClient.invalidateQueries(
-        getQueryKey(trpc.clientRole.getCurrentUser)
+        getQueryKey(trpc.client.getCurrentUser)
       )
       queryClient
-        .invalidateQueries(getQueryKey(trpc.clientRole.getCurrentWarnings))
+        .invalidateQueries(getQueryKey(trpc.client.getCurrentWarnings))
         .then()
 
       onClose()
@@ -104,49 +93,6 @@ export function UpdateUserDrawer({
                 setFormValues({
                   ...formValues,
                   email: e.target.value
-                })
-              }
-            />
-          </FormControl>
-
-          <FormControl mt={8}>
-            <FormLabel>Github access token</FormLabel>
-            <Textarea
-              value={formValues?.githubAccessToken || ''}
-              resize="none"
-              placeholder="Type..."
-              onChange={e =>
-                setFormValues({
-                  ...formValues,
-                  githubAccessToken: e.target.value
-                })
-              }
-            />
-          </FormControl>
-
-          <FormControl mt={8}>
-            <FormLabel>User / organization name</FormLabel>
-            <Input
-              value={formValues?.userOrOrganizationName || ''}
-              placeholder="Type..."
-              onChange={e =>
-                setFormValues({
-                  ...formValues,
-                  userOrOrganizationName: e.target.value
-                })
-              }
-            />
-          </FormControl>
-
-          <FormControl mt={8}>
-            <FormLabel>Is organization</FormLabel>
-            <Switch
-              size="lg"
-              isChecked={formValues?.isOrganization}
-              onChange={e =>
-                setFormValues({
-                  ...formValues,
-                  isOrganization: e.target.checked
                 })
               }
             />

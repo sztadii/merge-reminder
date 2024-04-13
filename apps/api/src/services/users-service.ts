@@ -8,18 +8,11 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
   constructor(database: Database) {
     super(database, 'users')
 
-    this.init()
+    this.onInit()
   }
 
-  private async init() {
-    try {
-      await this.collection.createIndex({ githubId: 1 }, { unique: true })
-    } catch {
-      throw new TRPCError({
-        code: 'NOT_FOUND',
-        message: `Index for githubId could not be created!`
-      })
-    }
+  private async onInit() {
+    await this.collection.createIndex({ githubId: 1 }, { unique: true })
   }
 
   async getById(id: string): Promise<UserResponse> {
@@ -60,6 +53,25 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
     return this.mapRecordToResponse(record)
   }
 
+  async getByIdWithSensitiveData(userId: string): Promise<UserDatabaseRecord> {
+    let record
+
+    try {
+      record = await this.collection.findOne({
+        _id: new DatabaseId(userId)
+      })
+    } catch {}
+
+    if (!record) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: `The user with ID ${userId} has been deleted.`
+      })
+    }
+
+    return record
+  }
+
   async create(userData: UserCreateRequest): Promise<UserResponse> {
     try {
       const insertedUser = await this.collection.insertOne({
@@ -67,10 +79,8 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
         createdAt: new Date(),
         githubId: userData.githubId,
         role: userData.role,
-        userOrOrganizationName: userData.userOrOrganizationName,
         headBranch: userData.headBranch,
-        baseBranch: userData.baseBranch,
-        isOrganization: userData.isOrganization
+        baseBranch: userData.baseBranch
       })
 
       return this.getById(insertedUser.insertedId.toString())
@@ -82,33 +92,45 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
     }
   }
 
-  async updateById(
-    id: string,
-    userData: UserUpdateRequest
-  ): Promise<UserResponse> {
+  async updateById(id: string, userData: UserUpdateRequest): Promise<void> {
     try {
-      const user = await this.getById(id)
-
       await this.collection.updateOne(
         { _id: new DatabaseId(id) },
         {
           $set: {
             updatedAt: new Date(),
-            githubAccessToken: userData.githubAccessToken,
-            userOrOrganizationName: userData.userOrOrganizationName,
-            isOrganization: userData.isOrganization,
             headBranch: userData.headBranch,
             baseBranch: userData.baseBranch,
             email: userData.email
           }
         }
       )
-
-      return this.getById(user.id)
     } catch {
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'Something went wrong during user update.'
+      })
+    }
+  }
+
+  async updateInstallationId(
+    id: string,
+    installationId: number
+  ): Promise<void> {
+    try {
+      await this.collection.updateOne(
+        { _id: new DatabaseId(id) },
+        {
+          $set: {
+            updatedAt: new Date(),
+            githubAppInstallationId: installationId
+          }
+        }
+      )
+    } catch {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'Something went wrong during installation id update.'
       })
     }
   }
@@ -127,12 +149,10 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
   protected mapRecordToResponse(user: UserDatabaseRecord): UserResponse {
     return {
       ...super.mapRecordToResponse(user),
-      userOrOrganizationName: user.userOrOrganizationName,
       email: user.email,
-      githubAccessToken: user.githubAccessToken,
       headBranch: user.headBranch,
       baseBranch: user.baseBranch,
-      isOrganization: user.isOrganization
+      hasInstallationId: !!user.githubAppInstallationId
     }
   }
 }

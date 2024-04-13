@@ -1,8 +1,6 @@
 import { TRPCError } from '@trpc/server'
-import axios from 'axios'
 import { addHours } from 'date-fns'
 
-import { config } from '../config'
 import { convertJSONToToken } from '../helpers'
 import {
   LoginRequest,
@@ -12,42 +10,24 @@ import {
   UserResponse
 } from '../schemas'
 import { UserFromToken } from '../types'
-import { GithubService } from './github-service'
+import { GithubAppService } from './github-app-service'
+import { GithubAuthService } from './github-auth-service'
 import { UsersService } from './users-service'
 
 export class AuthService {
   constructor(private userService: UsersService) {}
 
   async login(request: LoginRequest): Promise<LoginResponse> {
-    const params = `?client_id=${config.github.clientId}&client_secret=${config.github.secret}&code=${request.code}`
+    const githubAuthService = new GithubAuthService()
 
-    const accessTokenResponse = await axios
-      .post(`https://github.com/login/oauth/access_token${params}`, null, {
-        headers: {
-          accept: 'application/json'
-        }
-      })
+    const githubUser = await githubAuthService
+      .getAuthUser(request.code)
       .catch(() => {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
-          message: `An error occurred while fetching the GitHub access token.`
+          message: `An error occurred while fetching the GitHub user.`
         })
       })
-
-    const githubService = new GithubService(
-      accessTokenResponse.data.access_token
-    )
-
-    const githubUserResponse = await githubService.users
-      .getAuthenticated()
-      .catch(() => {
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: `An error occurred while fetching the GitHub auth token.`
-        })
-      })
-
-    const githubUser = githubUserResponse.data
 
     const user = await this.userService
       .getByGithubId(githubUser.id)
@@ -67,10 +47,8 @@ export class AuthService {
       const validatedUser = await UserCreateRequestSchema.parseAsync({
         role: 'client',
         githubId: githubUser.id,
-        userOrOrganizationName: githubUser.login,
         headBranch: 'main',
-        baseBranch: 'develop',
-        isOrganization: true
+        baseBranch: 'develop'
       } as UserCreateRequest).catch(() => {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
@@ -91,6 +69,19 @@ export class AuthService {
     }
 
     return this.getTokenFromUser(user)
+  }
+
+  async deleteCurrentUser(userId: string) {
+    const user = await this.userService.getByIdWithSensitiveData(userId)
+
+    if (user.githubAppInstallationId) {
+      const githubAppService = await GithubAppService.build(
+        user.githubAppInstallationId
+      )
+      await githubAppService.deleteApp()
+    }
+
+    await this.userService.deleteById(userId)
   }
 
   private getTokenFromUser(user: UserResponse): LoginResponse {

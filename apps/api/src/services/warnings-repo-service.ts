@@ -6,7 +6,7 @@ import {
   handlePromise,
   isTruthy
 } from '../helpers'
-import { GithubService, Repo } from './github-service'
+import { GithubAppService, Repo } from './github-app-service'
 
 type RepoWarning = {
   repo: string
@@ -19,55 +19,16 @@ type RepoWarning = {
 type Config = {
   baseBranch: string
   headBranch: string
-  userOrOrganizationName: string
-  isOrganization: boolean
 }
 
 export class WarningsRepoService {
   constructor(
     private config: Config,
-    private githubService: GithubService
+    private githubAppService: GithubAppService
   ) {}
 
   public async getWarnings(): Promise<RepoWarning[]> {
-    const [allRepos, error] = await handlePromise(
-      this.githubService.getAllRepos(
-        this.config.userOrOrganizationName,
-        this.config.isOrganization
-      )
-    )
-
-    if (error?.status === 404) {
-      throw new TRPCError({
-        code: 'NOT_FOUND',
-        message: `We could not find your repositories. Are you sure you've filled in the correct organization name?`
-      })
-    }
-
-    // TODO We can not redirect user when we save a wrong token.
-    // Otherwise we will make our system unusable.
-    // Check if we can make it better.
-    if (error?.status === 401) {
-      throw new TRPCError({
-        code: 'NOT_FOUND',
-        message: `Your access token is incorrect or has expired.`
-      })
-    }
-
-    if (error) {
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: 'An error occurred while fetching repositories.'
-      })
-    }
-
-    if (!allRepos || allRepos.length === 0) {
-      throw new TRPCError({
-        code: 'NOT_FOUND',
-        message: `You don't have any repositories.`
-      })
-    }
-
+    const allRepos = await this.githubAppService.getInstalledRepos()
     return this.getWarningsFromAffectedBranches(allRepos)
   }
 
@@ -75,14 +36,12 @@ export class WarningsRepoService {
     repos: Repo[]
   ): Promise<RepoWarning[]> {
     const allBranchesResponses = repos.map(async repo => {
-      const listBranchesResponse = await this.githubService.repos.listBranches({
+      const listBranches = await this.githubAppService.listBranches({
         owner: repo.owner.login,
         repo: repo.name
       })
 
-      const allBranchNames = listBranchesResponse.data.map(
-        branch => branch.name
-      )
+      const allBranchNames = listBranches.map(branch => branch.name)
 
       const missingBranch = [
         this.config.baseBranch,
@@ -96,8 +55,8 @@ export class WarningsRepoService {
         })
       }
 
-      const [compareData] = await handlePromise(
-        this.githubService.repos.compareCommits({
+      const [compareCommits] = await handlePromise(
+        this.githubAppService.compareCommits({
           owner: repo.owner.login,
           repo: repo.name,
           base: this.config.baseBranch,
@@ -105,7 +64,7 @@ export class WarningsRepoService {
         })
       )
 
-      const { files = [], commits: rawCommits = [] } = compareData?.data || {}
+      const { files = [], commits: rawCommits = [] } = compareCommits || {}
       const commits = rawCommits.filter(rawCommit => {
         const commiterName = (
           rawCommit.commit.committer?.name || ''
@@ -129,7 +88,7 @@ export class WarningsRepoService {
       return {
         repo: repo.name,
         commits: commits.map(commit => commit.commit.message),
-        compareLink: `https://github.com/${this.config.userOrOrganizationName}/${repo.name}/compare/${this.config.baseBranch}...${this.config.headBranch}`,
+        compareLink: `https://github.com/${repo.owner.login}/${repo.name}/compare/${this.config.baseBranch}...${this.config.headBranch}`,
         authors,
         delay: convertHoursToReadableFormat(firstCommitDelayInHours)
       }

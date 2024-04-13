@@ -10,10 +10,8 @@ export type DatabaseRecord = {
 export type UserDatabaseRecord = DatabaseRecord & {
   githubId: number
   role: 'admin' | 'client'
-  email?: string
-  githubAccessToken?: string
-  userOrOrganizationName: string
-  isOrganization: boolean
   headBranch: string
   baseBranch: string
+  email?: string
+  githubAppInstallationId?: number
 }

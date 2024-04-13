@@ -8,10 +8,10 @@ export function SendWarningsButton() {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const { isFetching: isFetchingForWarnings, error: errorForWarnings } =
-    trpc.clientRole.getCurrentWarnings.useQuery()
+    trpc.client.getCurrentWarnings.useQuery()
 
   const { mutateAsync: sendWarningsMutation, isLoading: isSendingWarnings } =
-    trpc.clientRole.sendCurrentWarnings.useMutation()
+    trpc.client.sendCurrentWarnings.useMutation()
 
   async function sendWarnings() {
     onClose()

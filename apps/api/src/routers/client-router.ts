@@ -1,31 +1,37 @@
 import {
   EmptyResponseSchema,
+  InstallationIdUpdateRequestSchema,
   UserResponseSchema,
   UserUpdateRequestSchema,
   WarningsResponseSchema
 } from '../schemas'
+import { AuthService } from '../services/auth-service'
 import { EmailService } from '../services/email-service'
 import { UsersService } from '../services/users-service'
 import { WarningsService } from '../services/warnings-service'
 import { protectedProcedure, router } from '../trpc'
 
-export const clientRoleRouter = router({
+export const clientRouter = router({
   getCurrentUser: protectedProcedure.output(UserResponseSchema).query(opts => {
     const usersService = new UsersService(opts.ctx.database)
     return usersService.getById(opts.ctx.user.id)
   }),
   updateCurrentUser: protectedProcedure
     .input(UserUpdateRequestSchema)
-    .output(UserResponseSchema)
+    .output(EmptyResponseSchema)
     .mutation(opts => {
       const usersService = new UsersService(opts.ctx.database)
       return usersService.updateById(opts.ctx.user.id, opts.input)
     }),
-  deleteCurrentUser: protectedProcedure
+  updateInstallationId: protectedProcedure
+    .input(InstallationIdUpdateRequestSchema)
     .output(EmptyResponseSchema)
     .mutation(opts => {
       const usersService = new UsersService(opts.ctx.database)
-      return usersService.deleteById(opts.ctx.user.id)
+      return usersService.updateInstallationId(
+        opts.ctx.user.id,
+        opts.input.installationId
+      )
     }),
   getCurrentWarnings: protectedProcedure
     .output(WarningsResponseSchema)
@@ -44,5 +50,11 @@ export const clientRoleRouter = router({
         new EmailService()
       )
       return warningsService.sendWarnings(opts.ctx.user.id)
+    }),
+  removeCurrentAccount: protectedProcedure
+    .output(EmptyResponseSchema)
+    .mutation(opts => {
+      const authService = new AuthService(new UsersService(opts.ctx.database))
+      return authService.deleteCurrentUser(opts.ctx.user.id)
     })
 })

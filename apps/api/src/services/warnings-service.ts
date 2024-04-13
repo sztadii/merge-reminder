@@ -3,7 +3,7 @@ import { uniq } from 'lodash'
 
 import { WarningResponse } from '../schemas'
 import { EmailService } from './email-service'
-import { GithubService } from './github-service'
+import { GithubAppService } from './github-app-service'
 import { UsersService } from './users-service'
 import { WarningsRepoService } from './warnings-repo-service'
 
@@ -14,26 +14,52 @@ export class WarningsService {
   ) {}
 
   async getWarnings(userId: string): Promise<WarningResponse[]> {
-    const user = await this.usersService.getById(userId)
+    const user = await this.usersService.getByIdWithSensitiveData(userId)
 
-    if (!user.githubAccessToken) {
+    if (!user.githubAppInstallationId) {
       throw new TRPCError({
         code: 'FORBIDDEN',
-        message: `The user has not set their GitHub access token yet.`
+        message: `The user has not given access to his repositories yet.`
       })
     }
+
+    const githubAppService = await GithubAppService.build(
+      user.githubAppInstallationId
+    )
 
     const warningsRepoService = new WarningsRepoService(
       {
         headBranch: user.headBranch,
-        baseBranch: user.baseBranch,
-        userOrOrganizationName: user.userOrOrganizationName,
-        isOrganization: user.isOrganization
+        baseBranch: user.baseBranch
       },
-      new GithubService(user.githubAccessToken)
+      githubAppService
     )
 
-    return warningsRepoService.getWarnings()
+    const warnings = await warningsRepoService.getWarnings().catch(error => {
+      // TODO We can not redirect user when we save a wrong token.
+      // Otherwise we will make our system unusable.
+      // Check if we can make it better.
+      if (error?.status === 401) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: `Your access token is incorrect or has expired.`
+        })
+      }
+
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'An error occurred while fetching repositories.'
+      })
+    })
+
+    if (warnings.length === 0) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: `You don't have any repositories.`
+      })
+    }
+
+    return warnings
   }
 
   async sendWarnings(userId: string): Promise<void> {

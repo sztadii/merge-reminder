@@ -3,7 +3,7 @@ import { AuthService } from '../services/auth-service'
 import { UsersService } from '../services/users-service'
 import { publicProcedure, router } from '../trpc'
 
-export const authRouter = router({
+export const publicRouter = router({
   login: publicProcedure
     .input(LoginRequestSchema)
     .output(LoginResponseSchema)

@@ -1,6 +1,4 @@
 import {
-  Alert,
-  AlertIcon,
   Button,
   Card,
   CardBody,
@@ -23,50 +21,20 @@ import {
 import { DetailsGrid, DetailsGridProps } from 'src/components/details-grid'
 import { trpc } from 'src/trpc'
 
+import { Text } from '../components/text'
+
 export function ViewUserDetails() {
-  const {
-    data: user,
-    isLoading,
-    error
-  } = trpc.clientRole.getCurrentUser.useQuery()
+  const { data: user, isLoading, error } = trpc.client.getCurrentUser.useQuery()
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const colorForLink = useColorModeValue('yellow.600', 'yellow.400')
+  const colorForWarning = useColorModeValue('yellow.600', 'yellow.400')
 
   const details: DetailsGridProps['details'] = [
     {
       heading: 'Email',
       text: user?.email || (
-        <Alert status="warning">
-          <AlertIcon />
-          Please provide the email
-        </Alert>
+        <Text color={colorForWarning}>Please provide the email</Text>
       )
-    },
-    {
-      heading: 'Github access token',
-      text: user?.githubAccessToken || (
-        <Alert status="warning">
-          <AlertIcon />
-          Create token
-          <Button
-            onClick={onOpen}
-            color={colorForLink}
-            variant="link"
-            fontWeight={400}
-          >
-            here
-          </Button>
-        </Alert>
-      )
-    },
-    {
-      heading: 'User / organization name',
-      text: user?.userOrOrganizationName
-    },
-    {
-      heading: 'Is organization',
-      text: user?.isOrganization ? 'Yes' : 'No'
     },
     {
       heading: 'Head branch',
@@ -78,39 +46,8 @@ export function ViewUserDetails() {
     }
   ]
 
-  const usersLink = (
-    <Link
-      color={colorForLink}
-      href="https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#list-repositories-for-a-user"
-      isExternal
-    >
-      normal users
-    </Link>
-  )
-
-  const organizationsLink = (
-    <Link
-      color={colorForLink}
-      href="https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#list-organization-repositories"
-      isExternal
-    >
-      organizations
-    </Link>
-  )
-
   return (
     <>
-      {user?.isOrganization === false && (
-        <Alert status="warning" mb={4}>
-          <AlertIcon />
-          <div>
-            For {usersLink}, we can only fetch public repositories. However, we
-            can retrieve all repositories from all repositories from{' '}
-            {organizationsLink}.
-          </div>
-        </Alert>
-      )}
-
       <Card>
         <CardHeader>
           <Heading size="md">

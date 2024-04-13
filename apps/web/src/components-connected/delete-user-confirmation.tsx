@@ -27,11 +27,10 @@ export function DeleteUserConfirmation({
 }: DeleteUserConfirmationProps) {
   const [userOrOrganizationName, setUserOrOrganizationName] = useState('')
 
-  const isDeletionConfirmed =
-    userOrOrganizationName === user?.userOrOrganizationName
+  const isDeletionConfirmed = userOrOrganizationName === 'delete'
 
-  const { mutateAsync: deleteUserMutation } =
-    trpc.clientRole.deleteCurrentUser.useMutation()
+  const { mutateAsync: removeCurrentAccountMutation } =
+    trpc.client.removeCurrentAccount.useMutation()
 
   const dangerColor = useColorModeValue('red.500', 'red.200')
 
@@ -44,7 +43,7 @@ export function DeleteUserConfirmation({
     if (!user || !isDeletionConfirmed) return
 
     try {
-      await deleteUserMutation()
+      await removeCurrentAccountMutation()
       setUserOrOrganizationName('')
       onConfirm()
     } catch {
@@ -64,7 +63,7 @@ export function DeleteUserConfirmation({
               If you are sure about deletion, <br />
               then please type{' '}
               <Text fontWeight="bold" color={dangerColor}>
-                {user?.userOrOrganizationName}
+                delete
               </Text>{' '}
               below.
             </FormLabel>
