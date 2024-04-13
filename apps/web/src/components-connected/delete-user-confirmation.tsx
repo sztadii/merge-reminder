@@ -27,7 +27,7 @@ export function DeleteUserConfirmation({
 }: DeleteUserConfirmationProps) {
   const [userOrOrganizationName, setUserOrOrganizationName] = useState('')
 
-  const isDeletionConfirmed = userOrOrganizationName === 'delete'
+  const isDeletionConfirmed = userOrOrganizationName === 'confirm'
 
   const { mutateAsync: removeCurrentAccountMutation } =
     trpc.client.removeCurrentAccount.useMutation()
@@ -63,7 +63,7 @@ export function DeleteUserConfirmation({
               If you are sure about deletion, <br />
               then please type{' '}
               <Text fontWeight="bold" color={dangerColor}>
-                delete
+                confirm
               </Text>{' '}
               below.
             </FormLabel>

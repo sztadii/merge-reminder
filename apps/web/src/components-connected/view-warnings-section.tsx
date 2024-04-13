@@ -6,7 +6,8 @@ import {
   Flex,
   Heading,
   Link,
-  Skeleton
+  Skeleton,
+  Spinner
 } from '@chakra-ui/react'
 import { useMemo } from 'react'
 
@@ -19,14 +20,14 @@ import { InstallReposButton } from './install-repos-button'
 import { SendWarningsButton } from './send-warnings-button'
 
 export function ViewWarningsSection() {
+  const { data: user, isLoading: isLoadingForUser } =
+    trpc.client.getCurrentUser.useQuery()
+
   const {
     data: warningsData,
     isFetching: isFetchingForWarnings,
     error: errorForWarnings
   } = trpc.client.getCurrentWarnings.useQuery()
-
-  const { data: user, isLoading: isLoadingForUser } =
-    trpc.client.getCurrentUser.useQuery()
 
   const warnings = warningsData || []
 
@@ -101,24 +102,13 @@ export function ViewWarningsSection() {
     ]
   }, [])
 
-  function renderContent() {
-    if (isLoadingForUser) {
-      return <Skeleton height={264} />
-    }
-
-    if (user?.hasInstallationId === false) {
-      return <InstallReposButton />
-    }
-
+  if (isLoadingForUser) {
     return (
-      <Table
-        columns={tableColumns}
-        rows={warnings}
-        numberOfSkeletonRows={6}
-        isLoading={isFetchingForWarnings}
-        errorMessage={errorForWarnings?.message}
-        noDataMessage="All your repos are looking well. Good job team!"
-      />
+      <Card>
+        <CardBody>
+          <Spinner />
+        </CardBody>
+      </Card>
     )
   }
 
@@ -129,16 +119,30 @@ export function ViewWarningsSection() {
           <Flex alignItems="center" justifyContent="space-between">
             <Heading size="md">
               {isFetchingForWarnings ? (
-                <Skeleton display="inline-block">Warnings</Skeleton>
+                <Skeleton display="inline">Warnings</Skeleton>
               ) : (
                 'Warnings'
               )}
             </Heading>
 
-            <SendWarningsButton />
+            {!!warnings.length && <SendWarningsButton />}
           </Flex>
         </CardHeader>
-        <CardBody>{renderContent()}</CardBody>
+        <CardBody>
+          {user?.hasInstallationId === false && (
+            <Box mb={4}>
+              <InstallReposButton />
+            </Box>
+          )}
+          <Table
+            columns={tableColumns}
+            rows={warnings}
+            numberOfSkeletonRows={2}
+            isLoading={isFetchingForWarnings}
+            errorMessage={errorForWarnings?.message}
+            noDataMessage="All your repos are looking well. Good job team!"
+          />
+        </CardBody>
       </Card>
     </>
   )

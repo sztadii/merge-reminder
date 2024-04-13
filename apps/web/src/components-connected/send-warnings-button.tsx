@@ -1,4 +1,4 @@
-import { Button, Skeleton, useDisclosure } from '@chakra-ui/react'
+import { Button, useDisclosure } from '@chakra-ui/react'
 
 import { Confirmation } from 'src/components/confirmation'
 import { showErrorToast, showSuccessToast } from 'src/toasts'
@@ -6,9 +6,6 @@ import { trpc } from 'src/trpc'
 
 export function SendWarningsButton() {
   const { isOpen, onOpen, onClose } = useDisclosure()
-
-  const { isFetching: isFetchingForWarnings, error: errorForWarnings } =
-    trpc.client.getCurrentWarnings.useQuery()
 
   const { mutateAsync: sendWarningsMutation, isLoading: isSendingWarnings } =
     trpc.client.sendCurrentWarnings.useMutation()
@@ -24,24 +21,16 @@ export function SendWarningsButton() {
     }
   }
 
-  if (errorForWarnings) return null
-
   return (
     <>
-      {isFetchingForWarnings ? (
-        <Skeleton display="inline-block">
-          <Button size="xs">Send warnings</Button>
-        </Skeleton>
-      ) : (
-        <Button
-          size="xs"
-          colorScheme="red"
-          isLoading={isSendingWarnings}
-          onClick={onOpen}
-        >
-          Send warnings
-        </Button>
-      )}
+      <Button
+        size="xs"
+        colorScheme="red"
+        isLoading={isSendingWarnings}
+        onClick={onOpen}
+      >
+        Send warnings
+      </Button>
 
       <Confirmation
         isOpen={isOpen}
