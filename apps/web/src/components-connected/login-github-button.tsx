@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 
 import { Icon } from 'src/components/icon'
 import { config } from 'src/config'
+import { removeSearchParamsFromURL } from 'src/helpers'
 import { routerPaths } from 'src/router'
 import { storage } from 'src/storage'
 import { showErrorToast } from 'src/toasts'
@@ -37,8 +38,7 @@ export function LoginGithubButton() {
       } catch (e) {
         const error = e as TRPCError
         showErrorToast(error.message)
-        // TODO Create a function to remove query params from URL
-        routerPaths.login.navigate() // To remove ?code="" from URL
+        removeSearchParamsFromURL()
       }
 
       setIsLoading(false)

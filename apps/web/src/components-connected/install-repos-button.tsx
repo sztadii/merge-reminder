@@ -4,7 +4,7 @@ import { getQueryKey } from '@trpc/react-query'
 import { useEffect, useState } from 'react'
 
 import { Icon } from 'src/components/icon'
-import { routerPaths } from 'src/router'
+import { removeSearchParamsFromURL } from 'src/helpers'
 import { showErrorToast } from 'src/toasts'
 import { TRPCError, trpc } from 'src/trpc'
 
@@ -42,15 +42,12 @@ export function InstallReposButton() {
         queryClient
           .invalidateQueries(getQueryKey(trpc.client.getCurrentWarnings))
           .then()
-
-        // TODO Create a function to remove query params from URL
-        routerPaths.profile.navigate() // To remove ?installation_id="" from URL
       } catch (e) {
         const error = e as TRPCError
         showErrorToast(error.message)
-        // TODO Create a function to remove query params from URL
-        routerPaths.profile.navigate() // To remove ?installation_id="" from URL
       }
+
+      removeSearchParamsFromURL()
 
       setIsLoading(false)
     }
