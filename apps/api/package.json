@@ -4,7 +4,8 @@
   "scripts": {
     "build": "",
     "start": "tsx index.ts",
-    "dev": "tsx watch --clear-screen=false index.ts",
+    "dev": "npm run db && tsx watch --clear-screen=false index.ts",
+    "db": "docker-compose up -d",
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
