@@ -2,7 +2,7 @@
   "name": "web",
   "version": "1.0.0",
   "scripts": {
-    "build": "rm -rf dist && parcel build --no-cache",
+    "build": "rm -rf dist && parcel build --no-cache --no-source-maps",
     "dev": "parcel --port 4000 --open --no-cache --watch-dir ../../",
     "check-types": "tsc --noEmit"
   },
