@@ -6,6 +6,7 @@ import { queryClient } from 'src/react-query'
 import { storage } from 'src/storage'
 
 import type { AppRouter } from '../../api'
+import { config } from './config'
 
 export type TRPCError = TRPCClientErrorLike<AppRouter>
 
@@ -22,7 +23,7 @@ export function TRPCProvider({ children }: { children: ReactNode }) {
 const trpcClient = trpc.createClient({
   links: [
     httpLink({
-      url: process.env.TRPC_URL || 'http://localhost:3000/trpc',
+      url: config.trpc.url,
       async headers() {
         const headers: HTTPHeaders = {}
 
