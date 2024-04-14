@@ -54,9 +54,7 @@ export function Actions() {
       <DeleteUserConfirmation
         user={user}
         isOpen={isOpenForDeleteModal}
-        onCancel={() => {
-          onCloseForDeleteModal()
-        }}
+        onCancel={onCloseForDeleteModal}
         onConfirm={() => {
           onCloseForDeleteModal()
           logout()
