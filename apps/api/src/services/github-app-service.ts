@@ -15,7 +15,7 @@ export class GithubAppService {
       appId: config.github.appId,
       // There is a problem with multilines private keys.
       // I found this solution on stackoverflow and seems working.
-      privateKey: config.github.privateKey.replace(/\\n/g, '\n')
+      privateKey: config.github.appPrivateKey.replace(/\\n/g, '\n')
     })
 
     const octokit = await app.getInstallationOctokit(installationId)

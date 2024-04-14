@@ -23,8 +23,7 @@ export function InstallReposButton() {
   function redirectToGithub() {
     setIsLoading(true)
 
-    const { appName } = config.github
-    const url = `https://github.com/apps/${appName}/installations/select_target`
+    const url = `https://github.com/apps/${config.github.appName}/installations/select_target`
     window.location.assign(url)
   }
 

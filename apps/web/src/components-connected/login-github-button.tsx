@@ -20,7 +20,7 @@ export function LoginGithubButton() {
   function redirectToGithub() {
     setIsLoading(true)
 
-    const params = `?client_id=${config.github.clientId}`
+    const params = `?client_id=${config.github.authClientId}`
     const url = `https://github.com/login/oauth/authorize${params}`
     window.location.assign(url)
   }

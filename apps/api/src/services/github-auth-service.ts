@@ -14,7 +14,7 @@ export class GithubAuthService {
   }
 
   private async getAccessToken(code: string): Promise<string> {
-    const params = `?client_id=${config.github.clientId}&client_secret=${config.github.secret}&code=${code}`
+    const params = `?client_id=${config.github.authClientId}&client_secret=${config.github.authClientSecret}&code=${code}`
 
     const accessTokenResponse = await axios.post(
       `https://github.com/login/oauth/access_token${params}`,
