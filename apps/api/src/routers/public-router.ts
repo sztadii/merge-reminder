@@ -1,6 +1,12 @@
-import { LoginRequestSchema, LoginResponseSchema } from '../schemas'
+import {
+  EmptyResponseSchema,
+  LoginRequestSchema,
+  LoginResponseSchema
+} from '../schemas'
 import { AuthService } from '../services/auth-service'
+import { EmailService } from '../services/email-service'
 import { UsersService } from '../services/users-service'
+import { WarningsService } from '../services/warnings-service'
 import { publicProcedure, router } from '../trpc'
 
 export const publicRouter = router({
@@ -10,5 +16,15 @@ export const publicRouter = router({
     .mutation(opts => {
       const authService = new AuthService(new UsersService(opts.ctx.database))
       return authService.login(opts.input)
+    }),
+  // TODO Add apiKey to prevent random triggers
+  sendWarningsForAllUsers: publicProcedure
+    .output(EmptyResponseSchema)
+    .mutation(opts => {
+      const warningsService = new WarningsService(
+        new UsersService(opts.ctx.database),
+        new EmailService()
+      )
+      return warningsService.sendWarningsForAllUsers()
     })
 })

@@ -82,4 +82,22 @@ export class WarningsService {
       })
     )
   }
+
+  async sendWarningsForAllUsers(): Promise<void> {
+    const users = await this.usersService.findAll().catch(() => {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: `We could not fetch users list.`
+      })
+    })
+
+    await Promise.all(users.map(user => this.sendWarnings(user.id))).catch(
+      () => {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: `We could not send warnings to all users.`
+        })
+      }
+    )
+  }
 }

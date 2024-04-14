@@ -15,6 +15,11 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
     await this.collection.createIndex({ githubId: 1 }, { unique: true })
   }
 
+  async findAll(): Promise<UserResponse[]> {
+    const records = await this.collection.find().toArray()
+    return records.map(this.mapRecordToResponse)
+  }
+
   async getById(id: string): Promise<UserResponse> {
     let record
 
