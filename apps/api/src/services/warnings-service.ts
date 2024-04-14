@@ -1,4 +1,5 @@
 import { TRPCError } from '@trpc/server'
+import { format } from 'date-fns'
 import { uniq } from 'lodash'
 
 import { WarningResponse } from '../schemas'
@@ -73,10 +74,12 @@ export class WarningsService {
             ''
           ])
         ].join('\n')
+        const date = new Date()
+        const formattedDate = format(date, 'MMMM d')
 
         return this.emailService.sendEmail({
           to: author,
-          subject: 'Reminder',
+          subject: `Reminder - ${formattedDate}`,
           text: message
         })
       })
