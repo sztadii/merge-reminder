@@ -22,12 +22,15 @@ export function ViewWarningsSection() {
   const { data: user, isLoading: isLoadingForUser } =
     trpc.client.getCurrentUser.useQuery()
 
+  const hasInstallationId = user?.hasInstallationId === true
+  const hasNoInstallationId = user?.hasInstallationId === false
+
   const {
     data: warningsData,
     isFetching: isFetchingForWarnings,
     error: errorForWarnings
   } = trpc.client.getCurrentWarnings.useQuery(undefined, {
-    enabled: user?.hasInstallationId === true
+    enabled: hasInstallationId
   })
 
   const warnings = warningsData || []
@@ -130,9 +133,9 @@ export function ViewWarningsSection() {
           </Flex>
         </CardHeader>
         <CardBody>
-          {user?.hasInstallationId === false && <InstallReposButton />}
+          {hasNoInstallationId && <InstallReposButton />}
 
-          {user?.hasInstallationId === true && (
+          {hasInstallationId && (
             <Table
               columns={tableColumns}
               rows={warnings}
