@@ -12,7 +12,7 @@
     "check-types": "run-s --silent check-types:*",
     "check-types:web": "npm run check-types --prefix apps/web",
     "check-types:api": "npm run check-types --prefix apps/api",
-    "format": "prettier --ignore-path .gitignore --write \"**/*.{ts,tsx,js,json}\"",
+    "format": "prettier --ignore-path .gitignore --write \"**/*.{ts,tsx,js,json,html}\"",
     "lint": "run-s lint:*",
     "lint:format": "prettier --ignore-path .gitignore --check \"**/*.{ts,tsx,js,json}\"",
     "lint:file-names": "file-naming-enforcer type=kebabCase ignore=[.parcel-cache]",

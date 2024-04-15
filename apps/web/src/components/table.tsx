@@ -1,10 +1,26 @@
-import { Alert, AlertIcon, Box, Text } from '@chakra-ui/react'
+import {
+  Alert,
+  AlertIcon,
+  Box,
+  Text,
+  useBreakpointValue
+} from '@chakra-ui/react'
 import { ReactNode } from 'react'
+
+type Breakpoints = {
+  base: string
+  xs?: string
+  sm?: string
+  md?: string
+  lg?: string
+  xl?: string
+}
 
 export type TableProps<TRows extends unknown[]> = {
   columns: Array<{
     id: string
     textAlign?: 'left' | 'right' | 'center'
+    width?: Breakpoints
     headingCell: {
       skeleton: () => ReactNode
       content: (rows: TRows) => ReactNode
@@ -29,6 +45,14 @@ export function Table<T extends unknown[]>({
   errorMessage,
   noDataMessage
 }: TableProps<T>) {
+  // On the phones, where table has a scroll we do not want to hide the content.
+  // So we need a small padding.
+  // For larger devices we do not need it.
+  const paddingBottomValue = useBreakpointValue({
+    base: '20px',
+    lg: undefined
+  })
+
   if (!isLoading && errorMessage)
     return (
       <Alert status="error">
@@ -53,7 +77,12 @@ export function Table<T extends unknown[]>({
             <Box display="flex" gap={4} mb={4}>
               {columns.map((column, index) => {
                 return (
-                  <Box key={column.id} textAlign={column.textAlign} flex={1}>
+                  <Box
+                    key={column.id}
+                    textAlign={column.textAlign}
+                    flex={1}
+                    minWidth={column.width}
+                  >
                     {column.headingCell.skeleton()}
                   </Box>
                 )
@@ -71,6 +100,7 @@ export function Table<T extends unknown[]>({
                         key={column.id}
                         textAlign={column.textAlign}
                         flex={1}
+                        minWidth={column.width}
                       >
                         {column.rowCell.skeleton()}
                       </Box>
@@ -90,7 +120,12 @@ export function Table<T extends unknown[]>({
           <Box display="flex" gap={4} mb={4}>
             {columns.map((column, index) => {
               return (
-                <Box key={column.id} textAlign={column.textAlign} flex={1}>
+                <Box
+                  key={column.id}
+                  textAlign={column.textAlign}
+                  flex={1}
+                  minWidth={column.width}
+                >
                   <Text fontWeight="bold">
                     {column.headingCell.content(rows)}
                   </Text>
@@ -106,7 +141,12 @@ export function Table<T extends unknown[]>({
               <Box key={index} display="flex" gap={4} mb={isLast ? 0 : 4}>
                 {columns.map((column, index) => {
                   return (
-                    <Box key={column.id} textAlign={column.textAlign} flex={1}>
+                    <Box
+                      key={column.id}
+                      textAlign={column.textAlign}
+                      flex={1}
+                      minWidth={column.width}
+                    >
                       {column.rowCell.content(row)}
                     </Box>
                   )
@@ -119,5 +159,9 @@ export function Table<T extends unknown[]>({
     )
   }
 
-  return <Box>{renderContent()}</Box>
+  return (
+    <Box overflow="auto" pb={paddingBottomValue}>
+      {renderContent()}
+    </Box>
+  )
 }

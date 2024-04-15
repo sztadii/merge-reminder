@@ -39,6 +39,10 @@ export function ViewWarningsSection() {
     return [
       {
         id: 'repo',
+        width: {
+          base: '150px',
+          lg: 'auto'
+        },
         headingCell: {
           skeleton: () => <Skeleton>Loading</Skeleton>,
           content: () => 'Repo'
@@ -50,6 +54,10 @@ export function ViewWarningsSection() {
       },
       {
         id: 'delayInHours',
+        width: {
+          base: '100px',
+          lg: 'auto'
+        },
         headingCell: {
           skeleton: () => <Skeleton>Loading</Skeleton>,
           content: () => 'Delay'
@@ -61,6 +69,10 @@ export function ViewWarningsSection() {
       },
       {
         id: 'commits',
+        width: {
+          base: '200px',
+          lg: 'auto'
+        },
         headingCell: {
           skeleton: () => <Skeleton>Loading</Skeleton>,
           content: () => 'Unmerged commits'
@@ -88,6 +100,10 @@ export function ViewWarningsSection() {
       },
       {
         id: 'authors',
+        width: {
+          base: '200px',
+          lg: 'auto'
+        },
         headingCell: {
           skeleton: () => <Skeleton>Loading</Skeleton>,
           content: () => 'Authors'
