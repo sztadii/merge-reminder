@@ -1,8 +1,14 @@
 import { navigate as wouterNavigate } from 'wouter/use-browser-location'
 
 export const routerPaths = {
-  login: {
+  landing: {
     path: '/',
+    navigate() {
+      wouterNavigate(this.path)
+    }
+  },
+  login: {
+    path: '/login',
     navigate() {
       wouterNavigate(this.path)
     }

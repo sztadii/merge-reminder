@@ -3,6 +3,7 @@ import { ReactNode, useLayoutEffect } from 'react'
 import { Redirect, Route, Switch } from 'wouter'
 
 import { Navigation } from 'src/components/navigation'
+import { Landing } from 'src/pages/landing'
 import { Login } from 'src/pages/login'
 import { User } from 'src/pages/user'
 import { storage } from 'src/storage'
@@ -12,6 +13,17 @@ import { routerPaths } from './router-paths'
 export function Router() {
   return (
     <Switch>
+      <Route
+        path={routerPaths.landing.path}
+        component={() => {
+          return (
+            <PublicLayout>
+              <Landing />
+            </PublicLayout>
+          )
+        }}
+      />
+
       <Route
         path={routerPaths.login.path}
         component={() => {
