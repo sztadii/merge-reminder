@@ -60,6 +60,7 @@ export class WarningsService {
 
     const allAuthors = uniq(warnings.flatMap(warning => warning.authors))
 
+    // TODO Check if number of concurrent promises will be not a problem
     await Promise.all(
       allAuthors.map(author => {
         const reposTouchedByAuthor = warnings.filter(warning =>
@@ -96,6 +97,7 @@ export class WarningsService {
       })
     })
 
+    // TODO Check if number of concurrent promises will be not a problem
     await Promise.all(users.map(user => this.sendWarnings(user.id))).catch(
       () => {
         throw new TRPCError({
