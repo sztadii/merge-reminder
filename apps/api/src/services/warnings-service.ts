@@ -36,7 +36,9 @@ export class WarningsService {
       githubAppService
     )
 
-    const warnings = await warningsRepoService.getWarnings().catch(() => {
+    const warnings = await warningsRepoService.getWarnings().catch(e => {
+      if (e instanceof TRPCError) throw e
+
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'An error occurred while fetching warnings.'
