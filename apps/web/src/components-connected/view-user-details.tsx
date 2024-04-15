@@ -19,9 +19,8 @@ import {
 } from '@chakra-ui/react'
 
 import { DetailsGrid, DetailsGridProps } from 'src/components/details-grid'
+import { Text } from 'src/components/text'
 import { trpc } from 'src/trpc'
-
-import { Text } from '../components/text'
 
 export function ViewUserDetails() {
   const { data: user, isLoading, error } = trpc.client.getCurrentUser.useQuery()
