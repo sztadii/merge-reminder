@@ -1,20 +1,19 @@
 import {
   Box,
+  Button,
   Card,
   CardBody,
   CardHeader,
   Heading,
   IconButton,
   Skeleton,
-  useColorModeValue,
   useDisclosure
 } from '@chakra-ui/react'
 
 import { DetailsGrid, DetailsGridProps } from 'src/components/details-grid'
-import { Text } from 'src/components/text'
+import { Icon } from 'src/components/icon'
 import { trpc } from 'src/trpc'
 
-import { Icon } from '../components/icon'
 import { UpdateUserDrawer } from './update-user-drawer'
 
 export function ViewUserDetails() {
@@ -26,19 +25,17 @@ export function ViewUserDetails() {
     onClose: onCloseForUpdateDrawer
   } = useDisclosure()
 
-  const colorForWarning = useColorModeValue('yellow.600', 'yellow.400')
-
   const details: DetailsGridProps['details'] = [
     {
       heading: 'Email',
       text: user?.email || (
-        <Text
-          cursor="pointer"
-          color={colorForWarning}
+        <Button
+          variant="link"
+          colorScheme="red"
           onClick={onOpenForUpdateDrawer}
         >
           Please provide the email
-        </Text>
+        </Button>
       )
     },
     {
