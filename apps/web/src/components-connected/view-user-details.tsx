@@ -39,6 +39,10 @@ export function ViewUserDetails() {
       )
     },
     {
+      heading: 'Exclude repos without required branches',
+      text: user?.excludeReposWithoutRequiredBranches ? 'Yes' : 'No'
+    },
+    {
       heading: 'Head branch',
       text: user?.headBranch
     },
