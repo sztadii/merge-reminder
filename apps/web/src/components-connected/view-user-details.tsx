@@ -2,6 +2,7 @@ import {
   Card,
   CardBody,
   CardHeader,
+  Flex,
   Heading,
   Skeleton,
   useColorModeValue
@@ -37,13 +38,15 @@ export function ViewUserDetails() {
     <>
       <Card>
         <CardHeader>
-          <Heading size="md">
-            {isLoading ? (
-              <Skeleton display="inline-block">Basic information</Skeleton>
-            ) : (
-              'Basic information'
-            )}
-          </Heading>
+          <Flex alignItems="center" justifyContent="space-between">
+            <Heading size="md">
+              {isLoading ? (
+                <Skeleton display="inline-block">Basic information</Skeleton>
+              ) : (
+                'Profile'
+              )}
+            </Heading>
+          </Flex>
         </CardHeader>
 
         <CardBody>
