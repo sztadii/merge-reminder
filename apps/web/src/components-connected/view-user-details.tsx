@@ -57,7 +57,7 @@ export function ViewUserDetails() {
         <CardHeader position="relative">
           <Heading size="md">
             {isLoading ? (
-              <Skeleton display="inline-block">Basic information</Skeleton>
+              <Skeleton display="inline-block">Profile</Skeleton>
             ) : (
               'Profile'
             )}
