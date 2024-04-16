@@ -31,7 +31,9 @@ export class WarningsService {
     const warningsRepoService = new WarningsRepoService(
       {
         headBranch: user.headBranch,
-        baseBranch: user.baseBranch
+        baseBranch: user.baseBranch,
+        excludeReposWithoutRequiredBranches:
+          !!user.excludeReposWithoutRequiredBranches
       },
       githubAppService
     )
@@ -46,9 +48,13 @@ export class WarningsService {
     })
 
     if (warnings.length === 0) {
+      const message = user.excludeReposWithoutRequiredBranches
+        ? `You have 0 repositories that we can check. Please add ${user.headBranch} and ${user.baseBranch} branches to your repositories.`
+        : "You don't have any repositories."
+
       throw new TRPCError({
         code: 'NOT_FOUND',
-        message: `You don't have any repositories.`
+        message: message
       })
     }
 

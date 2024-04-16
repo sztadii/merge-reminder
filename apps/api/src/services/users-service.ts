@@ -106,7 +106,9 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
             updatedAt: new Date(),
             headBranch: userData.headBranch,
             baseBranch: userData.baseBranch,
-            email: userData.email
+            email: userData.email,
+            excludeReposWithoutRequiredBranches:
+              userData.excludeReposWithoutRequiredBranches
           }
         }
       )
@@ -157,7 +159,9 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
       email: user.email,
       headBranch: user.headBranch,
       baseBranch: user.baseBranch,
-      hasInstallationId: !!user.githubAppInstallationId
+      hasInstallationId: !!user.githubAppInstallationId,
+      excludeReposWithoutRequiredBranches:
+        !!user.excludeReposWithoutRequiredBranches
     }
   }
 }

@@ -6,7 +6,8 @@ export const UserResponseSchema = ResponseSchema.extend({
   headBranch: z.string(),
   baseBranch: z.string(),
   email: z.string().email().optional(),
-  hasInstallationId: z.boolean()
+  hasInstallationId: z.boolean(),
+  excludeReposWithoutRequiredBranches: z.boolean()
 })
 
 export const WarningResponseSchema = z.object({
@@ -29,7 +30,8 @@ export const UserCreateRequestSchema = z.object({
 export const UserUpdateRequestSchema = z.object({
   headBranch: z.string(),
   baseBranch: z.string(),
-  email: z.string().email()
+  email: z.string().email(),
+  excludeReposWithoutRequiredBranches: z.boolean()
 })
 
 export const InstallationIdUpdateRequestSchema = z.object({
