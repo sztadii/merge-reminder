@@ -12,6 +12,7 @@ import {
 import { useMemo } from 'react'
 
 import { Icon } from 'src/components/icon'
+import { SpinnerWithLabel } from 'src/components/spinner-with-label'
 import { Table, TableProps } from 'src/components/table'
 import { Text } from 'src/components/text'
 import { trpc } from 'src/trpc'
@@ -26,8 +27,12 @@ export function ViewWarningsSection() {
   const hasInstallationId = user?.hasInstallationId === true
   const hasNoInstallationId = user?.hasInstallationId === false
 
+  // isLoading return true when "enabled" is false.
+  // It is a bit weird, so I used isInitialLoading instead.
+  // isInitialLoading works as expected.
   const {
     data: warningsData,
+    isInitialLoading: isLoadingForWarnings,
     isFetching: isFetchingForWarnings,
     error: errorForWarnings
   } = trpc.client.getCurrentWarnings.useQuery(undefined, {
@@ -137,13 +142,22 @@ export function ViewWarningsSection() {
     <>
       <Card>
         <CardHeader position="relative">
-          <Heading size="md">
-            {isFetchingForWarnings ? (
-              <Skeleton display="inline">Warnings</Skeleton>
-            ) : (
-              'Warnings'
+          <Flex alignItems="center" gap={4}>
+            <Heading size="md">
+              {isLoadingForWarnings ? (
+                <Skeleton display="inline">Warnings</Skeleton>
+              ) : (
+                'Warnings'
+              )}
+            </Heading>
+
+            {warningsData && isFetchingForWarnings && (
+              <SpinnerWithLabel
+                size="sm"
+                label="Fetching the latest warnings"
+              />
             )}
-          </Heading>
+          </Flex>
 
           {!!warnings.length && (
             <Box position="absolute" top={4} right={4}>
@@ -159,7 +173,7 @@ export function ViewWarningsSection() {
               columns={tableColumns}
               rows={warnings}
               numberOfSkeletonRows={6}
-              isLoading={isFetchingForWarnings}
+              isLoading={isLoadingForWarnings}
               errorMessage={errorForWarnings?.message}
               noDataMessage="All your repos are looking well. Good job team!"
             />
