@@ -7,7 +7,7 @@ export type DatabaseRecord = {
   updatedAt?: Date
 }
 
-export type UserDatabaseRecord = DatabaseRecord & {
+export type UserDatabaseValues = {
   githubId: number
   avatarUrl: string
   role: 'admin' | 'client'
@@ -17,3 +17,5 @@ export type UserDatabaseRecord = DatabaseRecord & {
   githubAppInstallationId?: number | null
   excludeReposWithoutRequiredBranches?: boolean
 }
+
+export type UserDatabaseRecord = DatabaseRecord & UserDatabaseValues

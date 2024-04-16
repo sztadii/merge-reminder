@@ -1,12 +1,14 @@
+import { AuthController } from '../controllers/auth-controller'
+import { WarningsController } from '../controllers/warnings-controller'
+import { GithubAuthRepository } from '../repositories/github-auth-repository'
+import { InstallationRepository } from '../repositories/installation-repository'
+import { UsersRepository } from '../repositories/users-repository'
 import {
   EmptyResponseSchema,
   LoginRequestSchema,
   LoginResponseSchema
 } from '../schemas'
-import { AuthService } from '../services/auth-service'
 import { EmailService } from '../services/email-service'
-import { UsersService } from '../services/users-service'
-import { WarningsService } from '../services/warnings-service'
 import { publicProcedure, router } from '../trpc'
 
 export const publicRouter = router({
@@ -14,16 +16,27 @@ export const publicRouter = router({
     .input(LoginRequestSchema)
     .output(LoginResponseSchema)
     .mutation(opts => {
-      const authService = new AuthService(new UsersService(opts.ctx.database))
-      return authService.login(opts.input)
+      const githubAuthRepository = new GithubAuthRepository()
+      const usersRepository = new UsersRepository(opts.ctx.database)
+      const installationRepository = new InstallationRepository(usersRepository)
+      const authController = new AuthController(
+        usersRepository,
+        githubAuthRepository,
+        installationRepository
+      )
+
+      return authController.login(opts.input)
     }),
   sendWarningsForAllUsers: publicProcedure
     .output(EmptyResponseSchema)
     .mutation(opts => {
-      const warningsService = new WarningsService(
-        new UsersService(opts.ctx.database),
-        new EmailService()
+      const usersRepository = new UsersRepository(opts.ctx.database)
+      const emailService = new EmailService()
+      const warningsController = new WarningsController(
+        usersRepository,
+        emailService
       )
-      return warningsService.sendWarningsForAllUsers()
+
+      return warningsController.sendWarningsForAllUsers()
     })
 })

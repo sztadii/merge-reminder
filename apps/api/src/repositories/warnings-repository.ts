@@ -6,7 +6,7 @@ import {
   handlePromise,
   isTruthy
 } from '../helpers'
-import { GithubAppService, Repo } from './github-app-service'
+import { GithubAppRepository, Repo } from './github-app-repository'
 
 type RepoWarning = {
   repo: string
@@ -22,14 +22,14 @@ type Config = {
   excludeReposWithoutRequiredBranches: boolean
 }
 
-export class WarningsRepoService {
+export class WarningsRepository {
   constructor(
     private config: Config,
-    private githubAppService: GithubAppService
+    private githubAppRepository: GithubAppRepository
   ) {}
 
   public async getWarnings(): Promise<RepoWarning[]> {
-    const allRepos = await this.githubAppService.getInstalledRepos()
+    const allRepos = await this.githubAppRepository.getInstalledRepos()
     return this.getWarningsFromAffectedBranches(allRepos)
   }
 
@@ -37,7 +37,7 @@ export class WarningsRepoService {
     repos: Repo[]
   ): Promise<RepoWarning[]> {
     const allBranchesResponses = repos.map(async repo => {
-      const listBranches = await this.githubAppService.listBranches({
+      const listBranches = await this.githubAppRepository.listBranches({
         owner: repo.owner.login,
         repo: repo.name
       })
@@ -59,7 +59,7 @@ export class WarningsRepoService {
       }
 
       const [compareCommits] = await handlePromise(
-        this.githubAppService.compareCommits({
+        this.githubAppRepository.compareCommits({
           owner: repo.owner.login,
           repo: repo.name,
           base: this.config.baseBranch,
