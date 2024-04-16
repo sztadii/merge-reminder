@@ -1,0 +1,36 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "",
+    "start": "tsx index.ts",
+    "dev": "npm run db && tsx watch --clear-screen=false index.ts",
+    "db": "docker-compose up -d",
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@octokit/rest": "^20.1.0",
+    "@trpc/server": "^10.45.1",
+    "@types/cors": "^2.8.17",
+    "@types/lodash": "^4.17.0",
+    "@types/nodemailer": "^6.4.14",
+    "axios": "^1.6.8",
+    "cors": "^2.8.5",
+    "date-fns": "^3.6.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.3",
+    "lodash": "^4.17.21",
+    "mongodb": "6.5",
+    "nodemailer": "^6.9.13",
+    "octokit": "^3.2.0",
+    "typescript": "^5.4.2",
+    "uuid": "^9.0.1",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.11.25",
+    "@types/uuid": "^9.0.8",
+    "tsx": "^4.7.1"
+  }
+}
