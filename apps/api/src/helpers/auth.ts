@@ -1,5 +1,3 @@
-// TODO Make convertJSONToToken and convertTokenToJSON decrypted
-
 export function convertJSONToToken(
   json: Record<string, string | number>
 ): string | undefined {
