@@ -2,43 +2,43 @@ import { TRPCError } from '@trpc/server'
 import { format } from 'date-fns'
 import { uniq } from 'lodash'
 
+import { GithubAppRepository } from '../repositories/github-app-repository'
+import { UsersRepository } from '../repositories/users-repository'
+import { WarningsRepository } from '../repositories/warnings-repository'
 import { WarningResponse } from '../schemas'
-import { EmailService } from './email-service'
-import { GithubAppService } from './github-app-service'
-import { UsersService } from './users-service'
-import { WarningsRepoService } from './warnings-repo-service'
+import { EmailService } from '../services/email-service'
 
-export class WarningsService {
+export class WarningsController {
   constructor(
-    private usersService: UsersService,
+    private usersRepository: UsersRepository,
     private emailService: EmailService
   ) {}
 
   async getWarnings(userId: string): Promise<WarningResponse[]> {
-    const user = await this.usersService.getByIdWithSensitiveData(userId)
+    const user = await this.usersRepository.getById(userId)
 
-    if (!user.githubAppInstallationId) {
+    if (!user?.githubAppInstallationId) {
       throw new TRPCError({
         code: 'FORBIDDEN',
         message: `The user has not given access to his repositories yet.`
       })
     }
 
-    const githubAppService = await GithubAppService.build(
+    const githubAppRepository = await GithubAppRepository.build(
       user.githubAppInstallationId
     )
 
-    const warningsRepoService = new WarningsRepoService(
+    const warningsRepository = new WarningsRepository(
       {
         headBranch: user.headBranch,
         baseBranch: user.baseBranch,
         excludeReposWithoutRequiredBranches:
           !!user.excludeReposWithoutRequiredBranches
       },
-      githubAppService
+      githubAppRepository
     )
 
-    const warnings = await warningsRepoService.getWarnings().catch(e => {
+    const warnings = await warningsRepository.getWarnings().catch(e => {
       if (e instanceof TRPCError) throw e
 
       throw new TRPCError({
@@ -95,20 +95,20 @@ export class WarningsService {
   }
 
   async sendWarningsForAllUsers(): Promise<void> {
-    const users = await this.usersService.findAll().catch(() => {
+    const users = await this.usersRepository.findAll().catch(() => {
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: `We could not fetch users list.`
       })
     })
 
-    await Promise.all(users.map(user => this.sendWarnings(user.id))).catch(
-      () => {
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: `We could not send warnings to all users.`
-        })
-      }
-    )
+    await Promise.all(
+      users.map(user => this.sendWarnings(user._id.toString()))
+    ).catch(() => {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: `We could not send warnings to all users.`
+      })
+    })
   }
 }

@@ -1,26 +1,28 @@
 import { TRPCError } from '@trpc/server'
 import { addHours } from 'date-fns'
 
+import { UserDatabaseRecord } from '../database'
 import { convertJSONToToken } from '../helpers'
+import { GithubAuthRepository } from '../repositories/github-auth-repository'
+import { InstallationRepository } from '../repositories/installation-repository'
+import { UsersRepository } from '../repositories/users-repository'
 import {
   LoginRequest,
   LoginResponse,
   UserCreateRequest,
-  UserCreateRequestSchema,
-  UserResponse
+  UserCreateRequestSchema
 } from '../schemas'
 import { UserFromToken } from '../types'
-import { GithubAppService } from './github-app-service'
-import { GithubAuthService } from './github-auth-service'
-import { UsersService } from './users-service'
 
-export class AuthService {
-  constructor(private userService: UsersService) {}
+export class AuthController {
+  constructor(
+    private usersRepository: UsersRepository,
+    private githubAuthRepository: GithubAuthRepository,
+    private installationRepository: InstallationRepository
+  ) {}
 
   async login(request: LoginRequest): Promise<LoginResponse> {
-    const githubAuthService = new GithubAuthService()
-
-    const githubUser = await githubAuthService
+    const githubUser = await this.githubAuthRepository
       .getAuthUser(request.code)
       .catch(() => {
         throw new TRPCError({
@@ -29,7 +31,7 @@ export class AuthService {
         })
       })
 
-    const user = await this.userService
+    const user = await this.usersRepository
       .getByGithubId(githubUser.id)
       .catch(e => {
         const error = e as TRPCError
@@ -57,7 +59,7 @@ export class AuthService {
         })
       })
 
-      const createdUser = await this.userService
+      const createdUserId = await this.usersRepository
         .create(validatedUser)
         .catch(() => {
           throw new TRPCError({
@@ -66,6 +68,15 @@ export class AuthService {
           })
         })
 
+      const createdUser = await this.usersRepository.getById(createdUserId)
+
+      if (!createdUser) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: `An error occurred while getting the user.`
+        })
+      }
+
       return this.getTokenFromUser(createdUser)
     }
 
@@ -73,21 +84,20 @@ export class AuthService {
   }
 
   async deleteCurrentUser(userId: string) {
-    const user = await this.userService.getByIdWithSensitiveData(userId)
-
-    if (user.githubAppInstallationId) {
-      const githubAppService = await GithubAppService.build(
-        user.githubAppInstallationId
-      )
-      await githubAppService.deleteApp()
+    try {
+      await this.installationRepository.disconnectRepositories(userId)
+      await this.usersRepository.deleteById(userId)
+    } catch {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: `An error occurred while deleting the user.`
+      })
     }
-
-    await this.userService.deleteById(userId)
   }
 
-  private getTokenFromUser(user: UserResponse): LoginResponse {
+  private getTokenFromUser(user: UserDatabaseRecord): LoginResponse {
     const userFromToken: UserFromToken = {
-      id: user.id,
+      id: user._id.toString(),
       expiredAt: addHours(new Date(), 6).toString() // Github token expires in 8h
     }
     const token = convertJSONToToken(userFromToken)!

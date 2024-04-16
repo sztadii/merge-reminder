@@ -3,7 +3,7 @@ import { App, Octokit } from 'octokit'
 
 import { config } from '../config'
 
-export class GithubAppService {
+export class GithubAppRepository {
   constructor(
     private app: App,
     private octokit: Octokit,
@@ -20,7 +20,7 @@ export class GithubAppService {
 
     const octokit = await app.getInstallationOctokit(installationId)
 
-    return new GithubAppService(app, octokit, installationId)
+    return new GithubAppRepository(app, octokit, installationId)
   }
 
   async listBranches(params: ListBranchesParams): Promise<Branch[]> {

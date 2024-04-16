@@ -4,7 +4,7 @@ import { Octokit } from 'octokit'
 
 import { config } from '../config'
 
-export class GithubAuthService {
+export class GithubAuthRepository {
   async getAuthUser(code: string): Promise<AuthUser> {
     const accessToken = await this.getAccessToken(code)
     const octokit = new Octokit({ auth: accessToken })
