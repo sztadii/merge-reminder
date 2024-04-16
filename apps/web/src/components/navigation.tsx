@@ -7,14 +7,18 @@ import {
   Menu,
   MenuButton,
   MenuItem,
-  MenuList
+  MenuList,
+  Skeleton
 } from '@chakra-ui/react'
 import { Link } from 'wouter'
 
 import { logout } from 'src/helpers'
 import { routerPaths } from 'src/router'
+import { trpc } from 'src/trpc'
 
 export function Navigation() {
+  const { data: user, isLoading } = trpc.client.getCurrentUser.useQuery()
+
   return (
     <Box>
       <Flex p={4} alignItems="center" justifyContent="space-between">
@@ -27,7 +31,13 @@ export function Navigation() {
         <Flex alignItems="center" gap={4}>
           <Menu>
             <MenuButton>
-              <Avatar size="sm" />
+              {isLoading ? (
+                <Skeleton borderRadius="50%">
+                  <Avatar size="sm" />
+                </Skeleton>
+              ) : (
+                <Avatar size="sm" src={user?.avatarUrl} />
+              )}
             </MenuButton>
             <MenuList>
               <MenuItem as={Link} to={routerPaths.settings.path}>

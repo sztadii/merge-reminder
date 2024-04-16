@@ -3,6 +3,7 @@ import * as z from 'zod'
 import { ResponseSchema } from './base'
 
 export const UserResponseSchema = ResponseSchema.extend({
+  avatarUrl: z.string(),
   headBranch: z.string(),
   baseBranch: z.string(),
   email: z.string().email().optional(),
@@ -22,6 +23,7 @@ export const WarningsResponseSchema = z.array(WarningResponseSchema)
 
 export const UserCreateRequestSchema = z.object({
   githubId: z.number(),
+  avatarUrl: z.string(),
   role: z.enum(['client', 'admin']),
   headBranch: z.string(),
   baseBranch: z.string()
