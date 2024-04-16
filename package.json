@@ -1,0 +1,59 @@
+{
+  "name": "merge-reminder",
+  "version": "1.0.0",
+  "scripts": {
+    "preinstall": "run-s install:*",
+    "install:web": "npm install --prefix apps/web",
+    "install:api": "npm install --prefix apps/api",
+    "install:shared": "npm install --prefix apps/shared",
+    "dev": "run-p --race --print-label dev:*",
+    "dev:web": "wait-on tcp:3000 && npm run dev --prefix apps/web",
+    "dev:api": "npm run dev --prefix apps/api",
+    "check-types": "run-s --silent check-types:*",
+    "check-types:web": "npm run check-types --prefix apps/web",
+    "check-types:api": "npm run check-types --prefix apps/api",
+    "format": "prettier --ignore-path .gitignore --write \"**/*.{ts,tsx,js,json,html}\"",
+    "lint": "run-s lint:*",
+    "lint:format": "prettier --ignore-path .gitignore --check \"**/*.{ts,tsx,js,json}\"",
+    "lint:file-names": "file-naming-enforcer type=kebabCase ignore=[.parcel-cache]",
+    "build": "run-s build:*",
+    "build:web": "npm run build --prefix apps/web",
+    "build:api": "npm run build --prefix apps/api",
+    "start:api": "npm run start --prefix apps/api"
+  },
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "file-naming-enforcer": "^1.6.0",
+    "husky": "^4.3.8",
+    "lint-staged": "^12.5.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^3.2.5",
+    "wait-on": "^7.2.0"
+  },
+  "prettier": {
+    "tabWidth": 2,
+    "singleQuote": true,
+    "trailingComma": "none",
+    "semi": false,
+    "arrowParens": "avoid",
+    "plugins": [
+      "@trivago/prettier-plugin-sort-imports"
+    ],
+    "importOrder": [
+      "^src/(.*)$",
+      "^[./]"
+    ],
+    "importOrderSeparation": true,
+    "importOrderSortSpecifiers": true
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,json}": [
+      "prettier --write --"
+    ]
+  }
+}
