@@ -1,37 +1,42 @@
 import {
+  Avatar,
   Box,
-  Button,
   Divider,
   Flex,
   Heading,
-  IconButton,
-  useColorMode
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList
 } from '@chakra-ui/react'
+import { Link } from 'wouter'
 
-import { Icon } from 'src/components/icon'
 import { logout } from 'src/helpers'
+import { routerPaths } from 'src/router'
 
 export function Navigation() {
-  const { toggleColorMode, colorMode } = useColorMode()
-
   return (
     <Box>
       <Flex p={4} alignItems="center" justifyContent="space-between">
-        <Heading size="sm" color="gray.500">
-          Merge Reminder
-        </Heading>
+        <Link to={routerPaths.profile.path}>
+          <Heading size="sm" color="gray.500">
+            Merge Reminder
+          </Heading>
+        </Link>
 
         <Flex alignItems="center" gap={4}>
-          <Button size="sm" onClick={logout}>
-            Logout
-          </Button>
+          <Menu>
+            <MenuButton>
+              <Avatar size="sm" />
+            </MenuButton>
+            <MenuList>
+              <MenuItem as={Link} to={routerPaths.settings.path}>
+                Settings
+              </MenuItem>
 
-          <IconButton
-            aria-label="toggle theme"
-            size="sm"
-            onClick={toggleColorMode}
-            icon={<Icon variant={colorMode === 'light' ? 'moon' : 'sun'} />}
-          />
+              <MenuItem onClick={logout}>Logout</MenuItem>
+            </MenuList>
+          </Menu>
         </Flex>
       </Flex>
 

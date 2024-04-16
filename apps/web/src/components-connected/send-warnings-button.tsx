@@ -23,12 +23,7 @@ export function SendWarningsButton() {
 
   return (
     <>
-      <Button
-        size="sm"
-        colorScheme="red"
-        isLoading={isSendingWarnings}
-        onClick={onOpen}
-      >
+      <Button colorScheme="red" isLoading={isSendingWarnings} onClick={onOpen}>
         Send warnings
       </Button>
 

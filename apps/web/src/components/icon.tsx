@@ -1,6 +1,7 @@
 import {
   AddIcon,
   ChevronDownIcon,
+  ChevronLeftIcon,
   ChevronRightIcon,
   EditIcon,
   ExternalLinkIcon,
@@ -11,6 +12,7 @@ import {
 const icons = {
   chevronDown: ChevronDownIcon,
   chevronRight: ChevronRightIcon,
+  chevronLeft: ChevronLeftIcon,
   add: AddIcon,
   moon: MoonIcon,
   sun: SunIcon,

@@ -47,6 +47,17 @@ export function Router() {
         }}
       />
 
+      <Route
+        path={routerPaths.settings.path}
+        component={() => {
+          return (
+            <PrivateLayout>
+              <Settings />
+            </PrivateLayout>
+          )
+        }}
+      />
+
       <Redirect to={routerPaths.landing.path} />
     </Switch>
   )
