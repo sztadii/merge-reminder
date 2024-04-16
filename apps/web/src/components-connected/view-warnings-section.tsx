@@ -1,5 +1,4 @@
 import {
-  Box,
   Card,
   CardBody,
   CardHeader,
@@ -18,6 +17,7 @@ import { Text } from 'src/components/text'
 import { trpc } from 'src/trpc'
 
 import { InstallReposButton } from './install-repos-button'
+import { RefreshWarningsButton } from './refresh-warnings-button'
 import { SendWarningsButton } from './send-warnings-button'
 
 export function ViewWarningsSection() {
@@ -160,9 +160,16 @@ export function ViewWarningsSection() {
           </Flex>
 
           {!!warnings.length && (
-            <Box position="absolute" top={4} right={4}>
+            <Flex
+              position="absolute"
+              top={4}
+              right={4}
+              gap={4}
+              alignItems="center"
+            >
+              <RefreshWarningsButton />
               <SendWarningsButton />
-            </Box>
+            </Flex>
           )}
         </CardHeader>
         <CardBody>
