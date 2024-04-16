@@ -1,38 +1,41 @@
 import {
+  Box,
   Button,
   Card,
   CardBody,
   CardHeader,
   Heading,
-  Link,
-  ListItem,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
+  IconButton,
   Skeleton,
-  UnorderedList,
-  useColorModeValue,
   useDisclosure
 } from '@chakra-ui/react'
 
 import { DetailsGrid, DetailsGridProps } from 'src/components/details-grid'
-import { Text } from 'src/components/text'
+import { Icon } from 'src/components/icon'
 import { trpc } from 'src/trpc'
+
+import { UpdateUserDrawer } from './update-user-drawer'
 
 export function ViewUserDetails() {
   const { data: user, isLoading, error } = trpc.client.getCurrentUser.useQuery()
-  const { isOpen, onOpen, onClose } = useDisclosure()
 
-  const colorForWarning = useColorModeValue('yellow.600', 'yellow.400')
+  const {
+    isOpen: isOpenForUpdateDrawer,
+    onOpen: onOpenForUpdateDrawer,
+    onClose: onCloseForUpdateDrawer
+  } = useDisclosure()
 
   const details: DetailsGridProps['details'] = [
     {
       heading: 'Email',
       text: user?.email || (
-        <Text color={colorForWarning}>Please provide the email</Text>
+        <Button
+          variant="link"
+          colorScheme="red"
+          onClick={onOpenForUpdateDrawer}
+        >
+          Please provide the email
+        </Button>
       )
     },
     {
@@ -48,14 +51,29 @@ export function ViewUserDetails() {
   return (
     <>
       <Card>
-        <CardHeader>
+        <CardHeader position="relative">
           <Heading size="md">
             {isLoading ? (
-              <Skeleton display="inline-block">Basic information</Skeleton>
+              <Skeleton display="inline-block">Profile</Skeleton>
             ) : (
-              'Basic information'
+              'Profile'
             )}
           </Heading>
+
+          <Box position="absolute" top={4} right={4}>
+            {isLoading ? (
+              <Skeleton>
+                <IconButton aria-label="update profile" />
+              </Skeleton>
+            ) : (
+              <IconButton
+                aria-label="update profile"
+                isDisabled={!user}
+                onClick={onOpenForUpdateDrawer}
+                icon={<Icon variant="edit" />}
+              />
+            )}
+          </Box>
         </CardHeader>
 
         <CardBody>
@@ -67,38 +85,11 @@ export function ViewUserDetails() {
         </CardBody>
       </Card>
 
-      <Modal isOpen={isOpen} onClose={onClose} isCentered>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>How to create the GitHub access token?</ModalHeader>
-
-          <ModalBody>
-            <UnorderedList>
-              <ListItem>
-                Visit
-                <Link
-                  ml={1}
-                  href="https://github.com/settings/tokens/new"
-                  isExternal
-                >
-                  https://github.com/settings/tokens/new
-                </Link>
-              </ListItem>
-              <ListItem>Provide a name for the token.</ListItem>
-              <ListItem>Set an expiration date. We recommend 90 days.</ListItem>
-              <ListItem>
-                Select scopes. Only select the "repo" checkbox.
-              </ListItem>
-            </UnorderedList>
-          </ModalBody>
-
-          <ModalFooter>
-            <Button mr={3} onClick={onClose}>
-              Close
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <UpdateUserDrawer
+        user={user}
+        isOpen={isOpenForUpdateDrawer}
+        onClose={onCloseForUpdateDrawer}
+      />
     </>
   )
 }

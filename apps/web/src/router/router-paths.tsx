@@ -18,5 +18,11 @@ export const routerPaths = {
     navigate() {
       wouterNavigate(this.path)
     }
+  },
+  settings: {
+    path: '/settings',
+    navigate() {
+      wouterNavigate(this.path)
+    }
   }
 }

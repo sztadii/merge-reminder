@@ -11,7 +11,8 @@ import {
   FormControl,
   FormHelperText,
   FormLabel,
-  Input
+  Input,
+  Switch
 } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { getQueryKey } from '@trpc/react-query'
@@ -63,6 +64,10 @@ export function UpdateUserDrawer({
       await queryClient.invalidateQueries(
         getQueryKey(trpc.client.getCurrentUser)
       )
+
+      queryClient
+        .invalidateQueries(getQueryKey(trpc.client.getCurrentWarnings))
+        .then()
 
       onClose()
       setFormValues(undefined)
@@ -164,6 +169,22 @@ export function UpdateUserDrawer({
                 develop
               </Button>
             </Flex>
+          </FormControl>
+
+          <FormControl mt={8}>
+            <FormLabel>Exclude repos without required branches</FormLabel>
+            <Switch
+              size="lg"
+              isChecked={formValues?.excludeReposWithoutRequiredBranches}
+              onChange={e =>
+                setFormValues({
+                  ...formValues,
+                  excludeReposWithoutRequiredBranches: e.target.checked
+                })
+              }
+            />
+
+            <FormHelperText>Helpful during the initial setup</FormHelperText>
           </FormControl>
         </DrawerBody>
 

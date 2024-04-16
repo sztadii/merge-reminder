@@ -83,6 +83,7 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
         _id: new DatabaseId(),
         createdAt: new Date(),
         githubId: userData.githubId,
+        avatarUrl: userData.avatarUrl,
         role: userData.role,
         headBranch: userData.headBranch,
         baseBranch: userData.baseBranch
@@ -106,7 +107,9 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
             updatedAt: new Date(),
             headBranch: userData.headBranch,
             baseBranch: userData.baseBranch,
-            email: userData.email
+            email: userData.email,
+            excludeReposWithoutRequiredBranches:
+              userData.excludeReposWithoutRequiredBranches
           }
         }
       )
@@ -154,10 +157,13 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
   protected mapRecordToResponse(user: UserDatabaseRecord): UserResponse {
     return {
       ...super.mapRecordToResponse(user),
+      avatarUrl: user.avatarUrl,
       email: user.email,
       headBranch: user.headBranch,
       baseBranch: user.baseBranch,
-      hasInstallationId: !!user.githubAppInstallationId
+      hasInstallationId: !!user.githubAppInstallationId,
+      excludeReposWithoutRequiredBranches:
+        !!user.excludeReposWithoutRequiredBranches
     }
   }
 }

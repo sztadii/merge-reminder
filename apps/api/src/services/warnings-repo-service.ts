@@ -19,6 +19,7 @@ type RepoWarning = {
 type Config = {
   baseBranch: string
   headBranch: string
+  excludeReposWithoutRequiredBranches: boolean
 }
 
 export class WarningsRepoService {
@@ -41,18 +42,20 @@ export class WarningsRepoService {
         repo: repo.name
       })
 
-      const allBranchNames = listBranches.map(branch => branch.name)
+      if (!this.config.excludeReposWithoutRequiredBranches) {
+        const allBranchNames = listBranches.map(branch => branch.name)
 
-      const missingBranch = [
-        this.config.baseBranch,
-        this.config.headBranch
-      ].find(requiredBranch => !allBranchNames.includes(requiredBranch))
+        const missingBranch = [
+          this.config.baseBranch,
+          this.config.headBranch
+        ].find(requiredBranch => !allBranchNames.includes(requiredBranch))
 
-      if (missingBranch) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: `The ${missingBranch} branch is missing in the ${repo.name} repo.`
-        })
+        if (missingBranch) {
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: `The ${missingBranch} branch is missing in the ${repo.name} repo.`
+          })
+        }
       }
 
       const [compareCommits] = await handlePromise(

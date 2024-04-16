@@ -46,6 +46,7 @@ export class AuthService {
     if (!user) {
       const validatedUser = await UserCreateRequestSchema.parseAsync({
         role: 'client',
+        avatarUrl: githubUser.avatar_url,
         githubId: githubUser.id,
         headBranch: 'main',
         baseBranch: 'develop'

@@ -17,7 +17,6 @@ export const publicRouter = router({
       const authService = new AuthService(new UsersService(opts.ctx.database))
       return authService.login(opts.input)
     }),
-  // TODO Add apiKey to prevent random triggers
   sendWarningsForAllUsers: publicProcedure
     .output(EmptyResponseSchema)
     .mutation(opts => {

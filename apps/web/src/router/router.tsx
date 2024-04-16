@@ -5,6 +5,7 @@ import { Redirect, Route, Switch } from 'wouter'
 import { Navigation } from 'src/components/navigation'
 import { Landing } from 'src/pages/landing'
 import { Login } from 'src/pages/login'
+import { Settings } from 'src/pages/settings'
 import { User } from 'src/pages/user'
 import { storage } from 'src/storage'
 
@@ -46,7 +47,18 @@ export function Router() {
         }}
       />
 
-      <Redirect to={routerPaths.login.path} />
+      <Route
+        path={routerPaths.settings.path}
+        component={() => {
+          return (
+            <PrivateLayout>
+              <Settings />
+            </PrivateLayout>
+          )
+        }}
+      />
+
+      <Redirect to={routerPaths.landing.path} />
     </Switch>
   )
 }
