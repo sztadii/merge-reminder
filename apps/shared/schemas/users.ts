@@ -36,7 +36,7 @@ export const UserUpdateRequestSchema = z.object({
   excludeReposWithoutRequiredBranches: z.boolean()
 })
 
-export const InstallationIdUpdateRequestSchema = z.object({
+export const ConnectRepositoriesRequestSchema = z.object({
   installationId: z.number()
 })
 

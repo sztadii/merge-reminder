@@ -16,7 +16,7 @@ import { Table, TableProps } from 'src/components/table'
 import { Text } from 'src/components/text'
 import { trpc } from 'src/trpc'
 
-import { InstallReposButton } from './install-repos-button'
+import { ConnectReposButton } from './connect-repos-button'
 import { RefreshWarningsButton } from './refresh-warnings-button'
 import { SendWarningsButton } from './send-warnings-button'
 
@@ -173,7 +173,7 @@ export function ViewWarningsSection() {
           )}
         </CardHeader>
         <CardBody>
-          {hasNoInstallationId && <InstallReposButton />}
+          {hasNoInstallationId && <ConnectReposButton />}
 
           {hasInstallationId && (
             <Table

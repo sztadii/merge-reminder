@@ -6,8 +6,8 @@ import { GithubAuthRepository } from '../repositories/github-auth-repository'
 import { InstallationRepository } from '../repositories/installation-repository'
 import { UsersRepository } from '../repositories/users-repository'
 import {
+  ConnectRepositoriesRequestSchema,
   EmptyResponseSchema,
-  InstallationIdUpdateRequestSchema,
   UserResponseSchema,
   UserUpdateRequestSchema,
   WarningsResponseSchema
@@ -31,8 +31,8 @@ export const clientRouter = router({
 
       return usersController.updateById(opts.ctx.user.id, opts.input)
     }),
-  updateInstallationId: protectedProcedure
-    .input(InstallationIdUpdateRequestSchema)
+  connectRepositories: protectedProcedure
+    .input(ConnectRepositoriesRequestSchema)
     .output(EmptyResponseSchema)
     .mutation(opts => {
       const usersRepository = new UsersRepository(opts.ctx.database)
