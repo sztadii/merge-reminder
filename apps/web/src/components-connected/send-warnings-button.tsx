@@ -1,6 +1,7 @@
-import { Button, useDisclosure } from '@chakra-ui/react'
+import { IconButton, Tooltip, useDisclosure } from '@chakra-ui/react'
 
 import { Confirmation } from 'src/components/confirmation'
+import { Icon } from 'src/components/icon'
 import { showErrorToast, showSuccessToast } from 'src/toasts'
 import { trpc } from 'src/trpc'
 
@@ -23,9 +24,15 @@ export function SendWarningsButton() {
 
   return (
     <>
-      <Button colorScheme="red" isLoading={isSendingWarnings} onClick={onOpen}>
-        Send warnings
-      </Button>
+      <Tooltip label="Send warnings">
+        <IconButton
+          aria-label="send warnings"
+          icon={<Icon variant="warning" />}
+          colorScheme="red"
+          isLoading={isSendingWarnings}
+          onClick={onOpen}
+        />
+      </Tooltip>
 
       <Confirmation
         isOpen={isOpen}

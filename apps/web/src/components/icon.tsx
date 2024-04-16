@@ -6,7 +6,9 @@ import {
   EditIcon,
   ExternalLinkIcon,
   MoonIcon,
-  SunIcon
+  RepeatIcon,
+  SunIcon,
+  WarningTwoIcon
 } from '@chakra-ui/icons'
 
 const icons = {
@@ -17,7 +19,9 @@ const icons = {
   moon: MoonIcon,
   sun: SunIcon,
   externalLink: ExternalLinkIcon,
-  edit: EditIcon
+  edit: EditIcon,
+  warning: WarningTwoIcon,
+  repeat: RepeatIcon
 }
 
 const sizes = {
