@@ -10,12 +10,15 @@ import {
   UserResponse
 } from '../schemas'
 import { UserFromToken } from '../types'
-import { GithubAppService } from './github-app-service'
 import { GithubAuthService } from './github-auth-service'
+import { InstallationService } from './installation-service'
 import { UsersService } from './users-service'
 
 export class AuthService {
-  constructor(private userService: UsersService) {}
+  constructor(
+    private userService: UsersService,
+    private installationService: InstallationService
+  ) {}
 
   async login(request: LoginRequest): Promise<LoginResponse> {
     const githubAuthService = new GithubAuthService()
@@ -73,15 +76,7 @@ export class AuthService {
   }
 
   async deleteCurrentUser(userId: string) {
-    const user = await this.userService.getByIdWithSensitiveData(userId)
-
-    if (user.githubAppInstallationId) {
-      const githubAppService = await GithubAppService.build(
-        user.githubAppInstallationId
-      )
-      await githubAppService.deleteApp()
-    }
-
+    await this.installationService.disconnectRepositories(userId)
     await this.userService.deleteById(userId)
   }
 

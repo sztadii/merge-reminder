@@ -123,7 +123,7 @@ export class UsersService extends DatabaseService<UserDatabaseRecord> {
 
   async updateInstallationId(
     id: string,
-    installationId: number
+    installationId: number | null
   ): Promise<void> {
     try {
       await this.collection.updateOne(

@@ -159,7 +159,7 @@ export function ViewWarningsSection() {
             )}
           </Flex>
 
-          {!!warnings.length && (
+          {hasInstallationId && !!warnings.length && (
             <Flex
               position="absolute"
               top={4}

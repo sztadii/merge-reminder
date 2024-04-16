@@ -14,6 +14,6 @@ export type UserDatabaseRecord = DatabaseRecord & {
   headBranch: string
   baseBranch: string
   email?: string
-  githubAppInstallationId?: number
+  githubAppInstallationId?: number | null
   excludeReposWithoutRequiredBranches?: boolean
 }

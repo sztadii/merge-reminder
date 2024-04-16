@@ -8,15 +8,24 @@ import {
   useColorMode,
   useDisclosure
 } from '@chakra-ui/react'
+import { useQueryClient } from '@tanstack/react-query'
+import { getQueryKey } from '@trpc/react-query'
 
 import { DeleteUserConfirmation } from 'src/components-connected/delete-user-confirmation'
 import { DetailsGrid, DetailsGridProps } from 'src/components/details-grid'
 import { Icon } from 'src/components/icon'
 import { logout } from 'src/helpers'
+import { showErrorToast, showSuccessToast } from 'src/toasts'
 import { trpc } from 'src/trpc'
 
 export function BasicSettingsSection() {
   const { data: user, isLoading, error } = trpc.client.getCurrentUser.useQuery()
+  const {
+    mutateAsync: disconnectRepositoriesMutation,
+    isLoading: isLoadingForDisconnecting
+  } = trpc.client.disconnectRepositories.useMutation()
+
+  const queryClient = useQueryClient()
 
   const {
     isOpen: isOpenForDeleteModal,
@@ -39,6 +48,29 @@ export function BasicSettingsSection() {
       )
     },
     {
+      heading: 'Disconnect repositories',
+      text: (
+        <Button
+          isDisabled={!user}
+          isLoading={isLoadingForDisconnecting}
+          onClick={async () => {
+            try {
+              await disconnectRepositoriesMutation()
+              await queryClient.invalidateQueries(
+                getQueryKey(trpc.client.getCurrentUser)
+              )
+              showSuccessToast('Successfully disconnected repositories')
+            } catch {
+              showErrorToast('Cannot disconnect repositories')
+            }
+          }}
+          colorScheme="red"
+        >
+          Disconnect
+        </Button>
+      )
+    },
+    {
       heading: 'Delete profile',
       text: (
         <Button
@@ -46,7 +78,7 @@ export function BasicSettingsSection() {
           onClick={onOpenForDeleteModal}
           colorScheme="red"
         >
-          Delete profile
+          Delete
         </Button>
       )
     }

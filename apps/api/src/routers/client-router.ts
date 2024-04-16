@@ -7,6 +7,7 @@ import {
 } from '../schemas'
 import { AuthService } from '../services/auth-service'
 import { EmailService } from '../services/email-service'
+import { InstallationService } from '../services/installation-service'
 import { UsersService } from '../services/users-service'
 import { WarningsService } from '../services/warnings-service'
 import { protectedProcedure, router } from '../trpc'
@@ -54,7 +55,16 @@ export const clientRouter = router({
   removeCurrentAccount: protectedProcedure
     .output(EmptyResponseSchema)
     .mutation(opts => {
-      const authService = new AuthService(new UsersService(opts.ctx.database))
+      const usersService = new UsersService(opts.ctx.database)
+      const installationService = new InstallationService(usersService)
+      const authService = new AuthService(usersService, installationService)
       return authService.deleteCurrentUser(opts.ctx.user.id)
+    }),
+  disconnectRepositories: protectedProcedure
+    .output(EmptyResponseSchema)
+    .mutation(opts => {
+      const usersService = new UsersService(opts.ctx.database)
+      const installationService = new InstallationService(usersService)
+      return installationService.disconnectRepositories(opts.ctx.user.id)
     })
 })
