@@ -1,4 +1,5 @@
 import {
+  Box,
   Card,
   CardBody,
   CardHeader,
@@ -135,18 +136,20 @@ export function ViewWarningsSection() {
   return (
     <>
       <Card>
-        <CardHeader>
-          <Flex alignItems="center" justifyContent="space-between">
-            <Heading size="md">
-              {isFetchingForWarnings ? (
-                <Skeleton display="inline">Warnings</Skeleton>
-              ) : (
-                'Warnings'
-              )}
-            </Heading>
+        <CardHeader position="relative">
+          <Heading size="md">
+            {isFetchingForWarnings ? (
+              <Skeleton display="inline">Warnings</Skeleton>
+            ) : (
+              'Warnings'
+            )}
+          </Heading>
 
-            {!!warnings.length && <SendWarningsButton />}
-          </Flex>
+          {!!warnings.length && (
+            <Box position="absolute" top={4} right={4}>
+              <SendWarningsButton />
+            </Box>
+          )}
         </CardHeader>
         <CardBody>
           {hasNoInstallationId && <InstallReposButton />}

@@ -24,7 +24,7 @@ export function SendWarningsButton() {
   return (
     <>
       <Button
-        size="xs"
+        size="sm"
         colorScheme="red"
         isLoading={isSendingWarnings}
         onClick={onOpen}

@@ -2,6 +2,7 @@ import {
   AddIcon,
   ChevronDownIcon,
   ChevronRightIcon,
+  EditIcon,
   ExternalLinkIcon,
   MoonIcon,
   SunIcon
@@ -13,7 +14,8 @@ const icons = {
   add: AddIcon,
   moon: MoonIcon,
   sun: SunIcon,
-  externalLink: ExternalLinkIcon
+  externalLink: ExternalLinkIcon,
+  edit: EditIcon
 }
 
 const sizes = {
