@@ -32,7 +32,13 @@ export function ViewUserDetails() {
     {
       heading: 'Email',
       text: user?.email || (
-        <Text color={colorForWarning}>Please provide the email</Text>
+        <Text
+          cursor="pointer"
+          color={colorForWarning}
+          onClick={onOpenForUpdateDrawer}
+        >
+          Please provide the email
+        </Text>
       )
     },
     {
