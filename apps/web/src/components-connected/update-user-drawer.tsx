@@ -74,7 +74,7 @@ export function UpdateUserDrawer({
       onClose()
       setFormValues(undefined)
     } catch {
-      showErrorToast('Can not update profile')
+      showErrorToast('Can not update profile.')
     } finally {
       setIsPending(false)
     }
