@@ -7,7 +7,6 @@ import {
   Heading,
   IconButton,
   Skeleton,
-  Tooltip,
   useDisclosure
 } from '@chakra-ui/react'
 
@@ -71,14 +70,12 @@ export function ViewUserDetails() {
                 <IconButton aria-label="update profile" />
               </Skeleton>
             ) : (
-              <Tooltip label="Update profile">
-                <IconButton
-                  aria-label="update profile"
-                  isDisabled={!user}
-                  onClick={onOpenForUpdateDrawer}
-                  icon={<Icon variant="edit" />}
-                />
-              </Tooltip>
+              <IconButton
+                aria-label="update profile"
+                isDisabled={!user}
+                onClick={onOpenForUpdateDrawer}
+                icon={<Icon variant="edit" />}
+              />
             )}
           </Box>
         </CardHeader>
