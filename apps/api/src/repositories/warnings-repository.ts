@@ -8,20 +8,6 @@ import {
 } from '../helpers'
 import { GithubAppRepository, Repo } from './github-app-repository'
 
-type RepoWarning = {
-  repo: string
-  commits: string[]
-  compareLink: string
-  authors: string[]
-  delay: string
-}
-
-type Config = {
-  baseBranch: string
-  headBranch: string
-  excludeReposWithoutRequiredBranches: boolean
-}
-
 export class WarningsRepository {
   constructor(
     private config: Config,
@@ -51,10 +37,9 @@ export class WarningsRepository {
         ].find(requiredBranch => !allBranchNames.includes(requiredBranch))
 
         if (missingBranch) {
-          throw new TRPCError({
-            code: 'NOT_FOUND',
-            message: `The ${missingBranch} branch is missing in the ${repo.name} repo.`
-          })
+          throw new MissingBranchError(
+            `The ${missingBranch} branch is missing in the ${repo.name} repo.`
+          )
         }
       }
 
@@ -102,3 +87,19 @@ export class WarningsRepository {
     return allBranchesInfos.filter(isTruthy)
   }
 }
+
+type RepoWarning = {
+  repo: string
+  commits: string[]
+  compareLink: string
+  authors: string[]
+  delay: string
+}
+
+type Config = {
+  baseBranch: string
+  headBranch: string
+  excludeReposWithoutRequiredBranches: boolean
+}
+
+export class MissingBranchError extends Error {}

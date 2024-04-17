@@ -9,14 +9,14 @@ import { removeSearchParamsFromURL } from 'src/helpers'
 import { showErrorToast } from 'src/toasts'
 import { TRPCError, trpc } from 'src/trpc'
 
-export function InstallReposButton() {
+export function ConnectReposButton() {
   const params = new URLSearchParams(window.location.search)
   const installationId = params.get('installation_id')
 
   const [isLoading, setIsLoading] = useState(!!installationId)
 
-  const { mutateAsync: updateInstallationIdMutation } =
-    trpc.client.updateInstallationId.useMutation()
+  const { mutateAsync: connectRepositoriesMutation } =
+    trpc.client.connectRepositories.useMutation()
 
   const queryClient = useQueryClient()
 
@@ -32,7 +32,7 @@ export function InstallReposButton() {
       if (!installationId) return
 
       try {
-        await updateInstallationIdMutation({
+        await connectRepositoriesMutation({
           installationId: Number(installationId)
         })
 
@@ -62,7 +62,7 @@ export function InstallReposButton() {
       onClick={redirectToGithub}
       rightIcon={<Icon variant="chevronRight" />}
     >
-      Install repositories
+      Connect repositories
     </Button>
   )
 }

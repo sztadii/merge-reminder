@@ -1,4 +1,4 @@
-import { IconButton, Tooltip } from '@chakra-ui/react'
+import { IconButton } from '@chakra-ui/react'
 
 import { Icon } from 'src/components/icon'
 import { trpc } from 'src/trpc'
@@ -10,13 +10,11 @@ export function RefreshWarningsButton() {
   )
 
   return (
-    <Tooltip label="Refresh warnings">
-      <IconButton
-        isDisabled={isFetching}
-        aria-label="refresh warning"
-        icon={<Icon variant="repeat" />}
-        onClick={() => refetch()}
-      />
-    </Tooltip>
+    <IconButton
+      isDisabled={isFetching}
+      aria-label="refresh warning"
+      icon={<Icon variant="repeat" />}
+      onClick={() => refetch()}
+    />
   )
 }

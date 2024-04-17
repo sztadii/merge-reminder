@@ -1,4 +1,6 @@
 import {
+  Alert,
+  AlertIcon,
   Card,
   CardBody,
   CardHeader,
@@ -16,13 +18,16 @@ import { Table, TableProps } from 'src/components/table'
 import { Text } from 'src/components/text'
 import { trpc } from 'src/trpc'
 
-import { InstallReposButton } from './install-repos-button'
+import { ConnectReposButton } from './connect-repos-button'
 import { RefreshWarningsButton } from './refresh-warnings-button'
 import { SendWarningsButton } from './send-warnings-button'
 
 export function ViewWarningsSection() {
-  const { data: user, isLoading: isLoadingForUser } =
-    trpc.client.getCurrentUser.useQuery()
+  const {
+    data: user,
+    isLoading: isLoadingForUser,
+    error: errorForUser
+  } = trpc.client.getCurrentUser.useQuery()
 
   const hasInstallationId = user?.hasInstallationId === true
   const hasNoInstallationId = user?.hasInstallationId === false
@@ -138,6 +143,31 @@ export function ViewWarningsSection() {
     )
   }
 
+  function renderContent() {
+    if (errorForUser) {
+      return (
+        <Alert status="error">
+          <AlertIcon /> {errorForUser.message}
+        </Alert>
+      )
+    }
+
+    if (hasNoInstallationId) {
+      return <ConnectReposButton />
+    }
+
+    return (
+      <Table
+        columns={tableColumns}
+        rows={warnings}
+        numberOfSkeletonRows={6}
+        isLoading={isLoadingForWarnings}
+        errorMessage={errorForWarnings?.message}
+        noDataMessage="All your repos are looking well. Good job team!"
+      />
+    )
+  }
+
   return (
     <>
       <Card>
@@ -172,20 +202,7 @@ export function ViewWarningsSection() {
             </Flex>
           )}
         </CardHeader>
-        <CardBody>
-          {hasNoInstallationId && <InstallReposButton />}
-
-          {hasInstallationId && (
-            <Table
-              columns={tableColumns}
-              rows={warnings}
-              numberOfSkeletonRows={6}
-              isLoading={isLoadingForWarnings}
-              errorMessage={errorForWarnings?.message}
-              noDataMessage="All your repos are looking well. Good job team!"
-            />
-          )}
-        </CardBody>
+        <CardBody>{renderContent()}</CardBody>
       </Card>
     </>
   )

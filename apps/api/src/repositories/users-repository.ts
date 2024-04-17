@@ -33,14 +33,15 @@ export class UsersRepository extends DatabaseRepository<UserDatabaseRecord> {
     })
   }
 
-  async create(data: UserDatabaseValues): Promise<string> {
+  async create(data: UserDatabaseValues): Promise<UserDatabaseRecord> {
     const inserted = await this.collection.insertOne({
       ...data,
       _id: new DatabaseId(),
       createdAt: new Date()
     })
 
-    return inserted.insertedId.toString()
+    const record = await this.getById(inserted.insertedId.toString())
+    return record!
   }
 
   async updateById(

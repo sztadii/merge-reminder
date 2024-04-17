@@ -6,8 +6,8 @@ import { GithubAuthRepository } from '../repositories/github-auth-repository'
 import { InstallationRepository } from '../repositories/installation-repository'
 import { UsersRepository } from '../repositories/users-repository'
 import {
+  ConnectRepositoriesRequestSchema,
   EmptyResponseSchema,
-  InstallationIdUpdateRequestSchema,
   UserResponseSchema,
   UserUpdateRequestSchema,
   WarningsResponseSchema
@@ -31,8 +31,8 @@ export const clientRouter = router({
 
       return usersController.updateById(opts.ctx.user.id, opts.input)
     }),
-  updateInstallationId: protectedProcedure
-    .input(InstallationIdUpdateRequestSchema)
+  connectRepositories: protectedProcedure
+    .input(ConnectRepositoriesRequestSchema)
     .output(EmptyResponseSchema)
     .mutation(opts => {
       const usersRepository = new UsersRepository(opts.ctx.database)
@@ -45,6 +45,17 @@ export const clientRouter = router({
         opts.ctx.user.id,
         opts.input.installationId
       )
+    }),
+  disconnectRepositories: protectedProcedure
+    .output(EmptyResponseSchema)
+    .mutation(opts => {
+      const usersRepository = new UsersRepository(opts.ctx.database)
+      const installationRepository = new InstallationRepository(usersRepository)
+      const installationController = new InstallationController(
+        installationRepository
+      )
+
+      return installationController.disconnectRepositories(opts.ctx.user.id)
     }),
   getCurrentWarnings: protectedProcedure
     .output(WarningsResponseSchema)
@@ -83,16 +94,5 @@ export const clientRouter = router({
       )
 
       return authController.deleteCurrentUser(opts.ctx.user.id)
-    }),
-  disconnectRepositories: protectedProcedure
-    .output(EmptyResponseSchema)
-    .mutation(opts => {
-      const usersRepository = new UsersRepository(opts.ctx.database)
-      const installationRepository = new InstallationRepository(usersRepository)
-      const installationController = new InstallationController(
-        installationRepository
-      )
-
-      return installationController.disconnectRepositories(opts.ctx.user.id)
     })
 })

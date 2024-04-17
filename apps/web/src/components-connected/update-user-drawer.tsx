@@ -18,6 +18,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { getQueryKey } from '@trpc/react-query'
 import { useEffect, useState } from 'react'
 
+import { trimObjectValues } from 'src/helpers'
 import { UserResponse, UserUpdateRequest } from 'src/schemas'
 import { showErrorToast } from 'src/toasts'
 import { trpc } from 'src/trpc'
@@ -59,7 +60,8 @@ export function UpdateUserDrawer({
     try {
       setIsPending(true)
 
-      await updateUserMutation(formValues as FormValuesRequired)
+      const trimmedValues = trimObjectValues(formValues)
+      await updateUserMutation(trimmedValues as FormValuesRequired)
 
       await queryClient.invalidateQueries(
         getQueryKey(trpc.client.getCurrentUser)

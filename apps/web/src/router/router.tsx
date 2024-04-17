@@ -65,9 +65,10 @@ export function Router() {
 
 function PublicLayout({ children }: { children: ReactNode }) {
   useLayoutEffect(() => {
+    const isLoginPage = routerPaths.login.isCurrentPage()
     const token = storage.auth.getToken()
 
-    if (token) {
+    if (isLoginPage && token) {
       routerPaths.profile.navigate()
     }
   }, [])

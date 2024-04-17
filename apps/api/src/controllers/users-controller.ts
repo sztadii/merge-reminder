@@ -8,16 +8,17 @@ export class UsersController {
   constructor(private usersRepository: UsersRepository) {}
 
   async getById(id: string): Promise<UserResponse> {
-    let record
-
-    try {
-      record = await this.usersRepository.getById(id)
-    } catch {}
+    const record = await this.usersRepository.getById(id).catch(() => {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'An error occurred while getting the user.'
+      })
+    })
 
     if (!record) {
       throw new TRPCError({
         code: 'NOT_FOUND',
-        message: `The user with ID ${id} has been deleted.`
+        message: `The user not found.`
       })
     }
 
@@ -36,7 +37,7 @@ export class UsersController {
     } catch {
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
-        message: 'Something went wrong during user update.'
+        message: 'An error occurred while updating the user.'
       })
     }
   }

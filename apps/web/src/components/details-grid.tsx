@@ -1,4 +1,4 @@
-import { Box, SimpleGrid, Skeleton } from '@chakra-ui/react'
+import { Alert, AlertIcon, Box, SimpleGrid, Skeleton } from '@chakra-ui/react'
 import { ReactNode } from 'react'
 
 import { Text } from 'src/components/text'
@@ -14,7 +14,12 @@ export type DetailsGridProps = {
 
 export function DetailsGrid({ details, isLoading, error }: DetailsGridProps) {
   if (error) {
-    return <Text>{error}</Text>
+    return (
+      <Alert status="error">
+        <AlertIcon />
+        {error}
+      </Alert>
+    )
   }
 
   return (
