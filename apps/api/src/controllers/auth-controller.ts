@@ -76,7 +76,7 @@ export class AuthController {
     return this.getTokenFromUser(user)
   }
 
-  async deleteCurrentUser(userId: string) {
+  async deleteCurrentUser(userId: string): Promise<void> {
     try {
       await this.installationRepository.disconnectRepositories(userId)
       await this.usersRepository.deleteById(userId)

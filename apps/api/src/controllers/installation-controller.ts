@@ -5,7 +5,10 @@ import { InstallationRepository } from '../repositories/installation-repository'
 export class InstallationController {
   constructor(private installationRepository: InstallationRepository) {}
 
-  async connectRepository(userId: string, installationId: number) {
+  async connectRepository(
+    userId: string,
+    installationId: number
+  ): Promise<void> {
     await this.installationRepository
       .connectRepositories(userId, installationId)
       .catch(() => {
@@ -16,7 +19,7 @@ export class InstallationController {
       })
   }
 
-  async disconnectRepositories(userId: string) {
+  async disconnectRepositories(userId: string): Promise<void> {
     await this.installationRepository
       .disconnectRepositories(userId)
       .catch(() => {

@@ -10,7 +10,9 @@ export class GithubAppRepository {
     private installationId: number
   ) {}
 
-  public static async build(installationId: number) {
+  public static async build(
+    installationId: number
+  ): Promise<GithubAppRepository> {
     const app = new App({
       appId: config.github.appId,
       // There is a problem with multilines private keys.
