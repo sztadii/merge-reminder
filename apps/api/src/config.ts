@@ -10,7 +10,8 @@ const configSchema = z.object({
   email: z.object({
     user: z.string(),
     password: z.string()
-  })
+  }),
+  isUnderMaintenance: z.boolean()
 })
 
 export const config = configSchema.parse({
@@ -23,5 +24,6 @@ export const config = configSchema.parse({
   email: {
     user: process.env.EMAIL_USER,
     password: process.env.EMAIL_PASSWORD
-  }
+  },
+  isUnderMaintenance: process.env.IS_UNDER_MAINTENENCE === 'true'
 })

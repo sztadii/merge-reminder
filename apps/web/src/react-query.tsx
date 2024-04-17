@@ -7,6 +7,7 @@ import {
 import { ReactNode } from 'react'
 
 import { logout } from 'src/helpers'
+import { showErrorToast } from 'src/toasts'
 import { TRPCError } from 'src/trpc'
 
 export const queryClient = new QueryClient({
@@ -33,7 +34,16 @@ export function ReactQueryProvider({ children }: { children: ReactNode }) {
 function handleError(e: unknown) {
   const error = e as TRPCError
 
-  if (error.data?.code === 'UNAUTHORIZED') {
+  const errorCode = error?.data?.code
+
+  if (errorCode === 'PRECONDITION_FAILED') {
     logout()
+    showErrorToast('Server under maintenance. We will back soon.', 10_000)
+    return
+  }
+
+  if (errorCode === 'UNAUTHORIZED') {
+    logout()
+    return
   }
 }
