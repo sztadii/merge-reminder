@@ -54,21 +54,12 @@ export class AuthController {
         })
       })
 
-      const createdUserId = await this.usersRepository
+      const createdUser = await this.usersRepository
         .create(validatedUser)
         .catch(() => {
           throw new TRPCError({
             code: 'INTERNAL_SERVER_ERROR',
             message: `An error occurred while creating the user.`
-          })
-        })
-
-      const createdUser = await this.usersRepository
-        .getById(createdUserId)
-        .catch(() => {
-          throw new TRPCError({
-            code: 'INTERNAL_SERVER_ERROR',
-            message: `An error occurred while getting the user.`
           })
         })
 
