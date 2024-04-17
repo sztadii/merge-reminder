@@ -38,7 +38,9 @@ function handleError(e: unknown) {
 
   if (errorCode === 'PRECONDITION_FAILED') {
     logout()
-    showErrorToast('Server under maintenance. We will back soon.', 10_000)
+    showErrorToast('Server under maintenance. We will back soon.', {
+      durationInMilliseconds: 10_000
+    })
     return
   }
 
