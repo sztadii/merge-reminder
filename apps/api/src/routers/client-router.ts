@@ -46,6 +46,17 @@ export const clientRouter = router({
         opts.input.installationId
       )
     }),
+  disconnectRepositories: protectedProcedure
+    .output(EmptyResponseSchema)
+    .mutation(opts => {
+      const usersRepository = new UsersRepository(opts.ctx.database)
+      const installationRepository = new InstallationRepository(usersRepository)
+      const installationController = new InstallationController(
+        installationRepository
+      )
+
+      return installationController.disconnectRepositories(opts.ctx.user.id)
+    }),
   getCurrentWarnings: protectedProcedure
     .output(WarningsResponseSchema)
     .query(opts => {
@@ -83,16 +94,5 @@ export const clientRouter = router({
       )
 
       return authController.deleteCurrentUser(opts.ctx.user.id)
-    }),
-  disconnectRepositories: protectedProcedure
-    .output(EmptyResponseSchema)
-    .mutation(opts => {
-      const usersRepository = new UsersRepository(opts.ctx.database)
-      const installationRepository = new InstallationRepository(usersRepository)
-      const installationController = new InstallationController(
-        installationRepository
-      )
-
-      return installationController.disconnectRepositories(opts.ctx.user.id)
     })
 })
