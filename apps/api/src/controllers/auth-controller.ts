@@ -93,7 +93,14 @@ export class AuthController {
       id: user._id.toString(),
       expiredAt: addHours(new Date(), 6).toString() // Github token expires in 8h
     }
-    const token = convertJSONToToken(userFromToken)!
+    const token = convertJSONToToken(userFromToken)
+
+    if (!token) {
+      throw new TRPCError({
+        code: 'UNAUTHORIZED',
+        message: `Unauthorized to login.`
+      })
+    }
 
     return {
       token
