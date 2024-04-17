@@ -33,12 +33,7 @@ export class AuthController {
 
     const user = await this.usersRepository
       .getByGithubId(githubUser.id)
-      .catch(e => {
-        const error = e as TRPCError
-        if (error.code === 'NOT_FOUND') {
-          return undefined
-        }
-
+      .catch(() => {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: `An error occurred while fetching the user.`
@@ -68,12 +63,19 @@ export class AuthController {
           })
         })
 
-      const createdUser = await this.usersRepository.getById(createdUserId)
+      const createdUser = await this.usersRepository
+        .getById(createdUserId)
+        .catch(() => {
+          throw new TRPCError({
+            code: 'INTERNAL_SERVER_ERROR',
+            message: `An error occurred while getting the user.`
+          })
+        })
 
       if (!createdUser) {
         throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: `An error occurred while getting the user.`
+          code: 'NOT_FOUND',
+          message: `The user not found.`
         })
       }
 

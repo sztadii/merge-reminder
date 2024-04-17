@@ -4,7 +4,10 @@ import { uniq } from 'lodash'
 
 import { GithubAppRepository } from '../repositories/github-app-repository'
 import { UsersRepository } from '../repositories/users-repository'
-import { WarningsRepository } from '../repositories/warnings-repository'
+import {
+  MissingBranchError,
+  WarningsRepository
+} from '../repositories/warnings-repository'
 import { WarningResponse } from '../schemas'
 import { EmailService } from '../services/email-service'
 
@@ -39,7 +42,11 @@ export class WarningsController {
     )
 
     const warnings = await warningsRepository.getWarnings().catch(e => {
-      if (e instanceof TRPCError) throw e
+      if (e instanceof MissingBranchError)
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: e.message
+        })
 
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
