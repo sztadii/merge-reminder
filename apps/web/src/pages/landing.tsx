@@ -23,7 +23,7 @@ export function Landing() {
 
       <Box position="absolute" right={4} top={4}>
         <Button as={Link} to={routerPaths.login.path}>
-          Redirect to login
+          Dashaboard
         </Button>
       </Box>
     </Flex>
