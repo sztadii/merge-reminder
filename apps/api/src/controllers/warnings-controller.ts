@@ -98,7 +98,12 @@ export class WarningsController {
           text: message
         })
       })
-    )
+    ).catch(() => {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: `We could not send warnings.`
+      })
+    })
   }
 
   async sendWarningsForAllUsers(): Promise<void> {
