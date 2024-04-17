@@ -16,9 +16,9 @@ export function SendWarningsButton() {
 
     try {
       await sendWarningsMutation()
-      showSuccessToast('Warnings has been send!')
+      showSuccessToast('Warnings has been send.')
     } catch {
-      showErrorToast('Something went wrong when sending warnings!')
+      showErrorToast('Something went wrong when sending warnings.')
     }
   }
 

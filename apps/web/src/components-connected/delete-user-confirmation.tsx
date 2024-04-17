@@ -48,7 +48,7 @@ export function DeleteUserConfirmation({
       setUserOrOrganizationName('')
       onConfirm()
     } catch {
-      showErrorToast('Can not delete profile')
+      showErrorToast('Can not delete profile.')
     }
   }
 

@@ -163,7 +163,7 @@ export function ViewWarningsSection() {
         numberOfSkeletonRows={6}
         isLoading={isLoadingForWarnings}
         errorMessage={errorForWarnings?.message}
-        noDataMessage="All your repos are looking well. Good job team!"
+        noDataMessage="All your repos are looking well. Good job team."
       />
     )
   }

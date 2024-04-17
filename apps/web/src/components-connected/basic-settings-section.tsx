@@ -59,9 +59,9 @@ export function BasicSettingsSection() {
               await queryClient.invalidateQueries(
                 getQueryKey(trpc.client.getCurrentUser)
               )
-              showSuccessToast('Successfully disconnected repositories')
+              showSuccessToast('Successfully disconnected repositories.')
             } catch {
-              showErrorToast('Cannot disconnect repositories')
+              showErrorToast('Cannot disconnect repositories.')
             }
           }}
           colorScheme="red"
