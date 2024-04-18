@@ -7,9 +7,9 @@ const configSchema = z.object({
     appId: z.string(),
     appPrivateKey: z.string()
   }),
-  email: z.object({
-    user: z.string(),
-    password: z.string()
+  mailgun: z.object({
+    domainName: z.string(),
+    apiKey: z.string()
   }),
   isUnderMaintenance: z.boolean()
 })
@@ -21,9 +21,9 @@ export const config = configSchema.parse({
     appId: process.env.GITHUB_APP_ID,
     appPrivateKey: process.env.GITHUB_APP_PRIVATE_KEY
   },
-  email: {
-    user: process.env.EMAIL_USER,
-    password: process.env.EMAIL_PASSWORD
+  mailgun: {
+    domainName: process.env.MAILGUN_DOMAIN_NAME,
+    apiKey: process.env.MAILGUN_API_KEY
   },
   isUnderMaintenance: process.env.IS_UNDER_MAINTENENCE === 'true'
 })
