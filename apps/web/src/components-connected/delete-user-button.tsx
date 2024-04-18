@@ -38,7 +38,10 @@ export function DeleteUserButton({ user }: DeleteUserButtonProps) {
         isDisabled={!user}
         onClick={onOpenForConfirmModal}
         colorScheme="red"
-        minWidth="150px"
+        width={{
+          base: '100%',
+          md: '150px'
+        }}
       >
         Delete
       </Button>

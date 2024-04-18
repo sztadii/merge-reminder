@@ -9,7 +9,10 @@ export function ToggleThemeButton() {
     <Button
       onClick={toggleColorMode}
       rightIcon={<Icon variant={colorMode === 'light' ? 'moon' : 'sun'} />}
-      minWidth="150px"
+      width={{
+        base: '100%',
+        md: '150px'
+      }}
     >
       {colorMode === 'light' ? 'Dark' : 'Light'}
     </Button>

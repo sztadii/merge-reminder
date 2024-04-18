@@ -30,6 +30,7 @@ export function DisconnectReposButton({ user }: DisconnectReposButtonProps) {
 
     try {
       await disconnectRepositoriesMutation()
+      onCloseForConfirmModal()
       await queryClient.invalidateQueries(
         getQueryKey(trpc.client.getCurrentUser)
       )
@@ -46,7 +47,10 @@ export function DisconnectReposButton({ user }: DisconnectReposButtonProps) {
         isLoading={isLoadingForDisconnecting}
         onClick={onOpenForConfirmModal}
         colorScheme="red"
-        minWidth="150px"
+        width={{
+          base: '100%',
+          md: '150px'
+        }}
       >
         Disconnect
       </Button>

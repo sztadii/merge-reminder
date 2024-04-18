@@ -23,7 +23,7 @@ export function SpinnerWithLabel({
     <Flex gap={gaps[size]} alignItems="center">
       <Spinner size={size} color={color} />
 
-      <Text color={color} fontSize={size}>
+      <Text hideBelow="md" color={color} fontSize={size}>
         {label}
       </Text>
     </Flex>
