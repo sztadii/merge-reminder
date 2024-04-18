@@ -13,16 +13,18 @@ import {
   WarningsResponseSchema
 } from '../schemas'
 import { EmailService } from '../services/email-service'
-import { protectedProcedure, router } from '../trpc'
+import { router, tokenProtectedProcedure } from '../trpc'
 
 export const clientRouter = router({
-  getCurrentUser: protectedProcedure.output(UserResponseSchema).query(opts => {
-    const usersRepository = new UsersRepository(opts.ctx.database)
-    const usersController = new UsersController(usersRepository)
+  getCurrentUser: tokenProtectedProcedure
+    .output(UserResponseSchema)
+    .query(opts => {
+      const usersRepository = new UsersRepository(opts.ctx.database)
+      const usersController = new UsersController(usersRepository)
 
-    return usersController.getById(opts.ctx.user.id)
-  }),
-  updateCurrentUser: protectedProcedure
+      return usersController.getById(opts.ctx.user.id)
+    }),
+  updateCurrentUser: tokenProtectedProcedure
     .input(UserUpdateRequestSchema)
     .output(EmptyResponseSchema)
     .mutation(opts => {
@@ -31,7 +33,7 @@ export const clientRouter = router({
 
       return usersController.updateById(opts.ctx.user.id, opts.input)
     }),
-  connectRepositories: protectedProcedure
+  connectRepositories: tokenProtectedProcedure
     .input(ConnectRepositoriesRequestSchema)
     .output(EmptyResponseSchema)
     .mutation(opts => {
@@ -46,7 +48,7 @@ export const clientRouter = router({
         opts.input.installationId
       )
     }),
-  disconnectRepositories: protectedProcedure
+  disconnectRepositories: tokenProtectedProcedure
     .output(EmptyResponseSchema)
     .mutation(opts => {
       const usersRepository = new UsersRepository(opts.ctx.database)
@@ -57,7 +59,7 @@ export const clientRouter = router({
 
       return installationController.disconnectRepositories(opts.ctx.user.id)
     }),
-  getCurrentWarnings: protectedProcedure
+  getCurrentWarnings: tokenProtectedProcedure
     .output(WarningsResponseSchema)
     .query(opts => {
       const usersRepository = new UsersRepository(opts.ctx.database)
@@ -69,7 +71,7 @@ export const clientRouter = router({
 
       return warningsController.getWarnings(opts.ctx.user.id)
     }),
-  sendCurrentWarnings: protectedProcedure
+  sendCurrentWarnings: tokenProtectedProcedure
     .output(EmptyResponseSchema)
     .mutation(opts => {
       const usersRepository = new UsersRepository(opts.ctx.database)
@@ -81,7 +83,7 @@ export const clientRouter = router({
 
       return warningsController.sendWarnings(opts.ctx.user.id)
     }),
-  removeCurrentAccount: protectedProcedure
+  removeCurrentAccount: tokenProtectedProcedure
     .output(EmptyResponseSchema)
     .mutation(opts => {
       const usersRepository = new UsersRepository(opts.ctx.database)

@@ -15,7 +15,7 @@ export function LoginGithubButton() {
 
   const [isLoading, setIsLoading] = useState(!!code)
 
-  const { mutateAsync: loginMutation } = trpc.public.login.useMutation()
+  const { mutateAsync: loginMutation } = trpc.auth.login.useMutation()
 
   function redirectToGithub() {
     setIsLoading(true)

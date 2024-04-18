@@ -9,14 +9,24 @@ const t = initTRPC.context<Context>().create()
 export const router = t.router
 export const publicProcedure = t.procedure
 
-export const protectedProcedure = t.procedure.use(opts => {
+export const apiKeyProtectedProcedure = t.procedure.use(opts => {
   const { ctx } = opts
 
-  const isUnderMaintenance = config.isUnderMaintenance
+  throwIfUnderMaintenance()
 
-  if (isUnderMaintenance) {
-    throw new TRPCError({ code: 'PRECONDITION_FAILED' })
+  const isAuthorized = ctx.apiKey === config.apiKeyForPublicEndpoints
+
+  if (!isAuthorized) {
+    throw new TRPCError({ code: 'UNAUTHORIZED' })
   }
+
+  return opts.next({ ctx })
+})
+
+export const tokenProtectedProcedure = t.procedure.use(opts => {
+  const { ctx } = opts
+
+  throwIfUnderMaintenance()
 
   const isAuthorized =
     ctx.user && isBefore(new Date(), new Date(ctx.user.expiredAt))
@@ -25,7 +35,13 @@ export const protectedProcedure = t.procedure.use(opts => {
     throw new TRPCError({ code: 'UNAUTHORIZED' })
   }
 
-  return opts.next({
-    ctx
-  })
+  return opts.next({ ctx })
 })
+
+function throwIfUnderMaintenance() {
+  const isUnderMaintenance = config.isUnderMaintenance
+
+  if (isUnderMaintenance) {
+    throw new TRPCError({ code: 'PRECONDITION_FAILED' })
+  }
+}
