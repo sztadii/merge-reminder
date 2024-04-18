@@ -55,11 +55,10 @@ export function DisconnectReposButton({ user }: DisconnectReposButtonProps) {
         isOpen={isOpenForConfirmModal}
         onClose={onCloseForConfirmModal}
         title="Disconnect repositories"
-        description="Are you sure you want to disconnect all your repositories?"
+        description="Do you want to disconnect all your repositories?"
         confirmButton={{
-          name: 'Disconnect',
-          onClick: disconnectRepos,
-          colorScheme: 'red'
+          text: 'Disconnect',
+          onClick: disconnectRepos
         }}
       />
     </>

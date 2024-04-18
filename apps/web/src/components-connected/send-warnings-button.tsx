@@ -46,9 +46,8 @@ export function SendWarningsButton() {
           </>
         }
         confirmButton={{
-          name: 'Confirm',
-          onClick: sendWarnings,
-          colorScheme: 'red'
+          text: 'Confirm',
+          onClick: sendWarnings
         }}
       />
     </>
