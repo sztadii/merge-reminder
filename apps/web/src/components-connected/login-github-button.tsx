@@ -34,7 +34,7 @@ export function LoginGithubButton() {
 
         storage.auth.setToken(loginResponse.token)
 
-        routerPaths.profile.navigate()
+        routerPaths.dashboard.navigate()
       } catch (e) {
         const error = e as TRPCError
         showErrorToast(error.message)
