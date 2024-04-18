@@ -1,35 +1,30 @@
-import { SendMailOptions, createTransport } from 'nodemailer'
+import axios from 'axios'
 
 import { config } from '../config'
 
-type Mail = Pick<SendMailOptions, 'to' | 'subject' | 'text'>
-
 export class EmailService {
   async sendEmail(mail: Mail): Promise<void> {
-    const { user, password } = config.email
+    const { domainName } = config.mailgun
 
-    const transporter = createTransport({
-      service: 'Gmail',
+    await axios({
+      method: 'post',
+      url: `https://api.mailgun.net/v3/${domainName}/messages`,
       auth: {
-        user,
-        pass: password
+        username: 'api',
+        password: config.mailgun.apiKey
+      },
+      params: {
+        from: `notifications@${domainName}`,
+        to: mail.to,
+        subject: mail.subject,
+        text: mail.text
       }
     })
-
-    const mailOptions: SendMailOptions = {
-      from: user,
-      to: mail.to,
-      subject: mail.subject,
-      text: mail.text
-    }
-
-    return new Promise((resolve, reject) => {
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          reject(error)
-        }
-        resolve()
-      })
-    })
   }
+}
+
+type Mail = {
+  to: string
+  subject: string
+  text: string
 }
