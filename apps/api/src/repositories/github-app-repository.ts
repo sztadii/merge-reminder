@@ -31,7 +31,11 @@ export class GithubAppRepository {
   }
 
   async compareCommits(params: CompareCommitsParams): Promise<CompareCommits> {
-    const response = await this.octokit.rest.repos.compareCommits(params)
+    const response = await this.octokit.rest.repos.compareCommitsWithBasehead({
+      owner: params.owner,
+      repo: params.repo,
+      basehead: `${params.baseBranch}...${params.headBranch}`
+    })
     return response.data
   }
 
@@ -71,8 +75,12 @@ type ListBranchesParams =
 type Branch =
   RestEndpointMethodTypes['repos']['listBranches']['response']['data'][0]
 
-type CompareCommitsParams =
-  RestEndpointMethodTypes['repos']['compareCommits']['parameters']
+type CompareCommitsParams = {
+  owner: string
+  repo: string
+  baseBranch: string
+  headBranch: string
+}
 
 type CompareCommits =
-  RestEndpointMethodTypes['repos']['compareCommits']['response']['data']
+  RestEndpointMethodTypes['repos']['compareCommitsWithBasehead']['response']['data']

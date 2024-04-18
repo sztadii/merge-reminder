@@ -46,8 +46,8 @@ export class WarningsRepository {
         this.githubAppRepository.compareCommits({
           owner: repo.owner.login,
           repo: repo.name,
-          base: this.config.baseBranch,
-          head: this.config.headBranch
+          baseBranch: this.config.baseBranch,
+          headBranch: this.config.headBranch
         })
       )
 
