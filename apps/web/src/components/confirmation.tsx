@@ -16,8 +16,8 @@ type ConfirmationProps = {
   onClose: () => void
   confirmButton: {
     onClick: ButtonProps['onClick']
-    name: string
-    colorScheme: ButtonProps['colorScheme']
+    text: string
+    colorScheme?: ButtonProps['colorScheme']
     isDisabled?: boolean
   }
   title: string
@@ -46,10 +46,10 @@ export function Confirmation({
 
           <Button
             onClick={confirmButton.onClick}
-            colorScheme={confirmButton.colorScheme}
+            colorScheme={confirmButton.colorScheme || 'red'}
             isDisabled={confirmButton.isDisabled}
           >
-            {confirmButton.name}
+            {confirmButton.text}
           </Button>
         </ModalFooter>
       </ModalContent>

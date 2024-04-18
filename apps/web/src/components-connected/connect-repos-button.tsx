@@ -61,6 +61,10 @@ export function ConnectReposButton() {
       isLoading={isLoading}
       onClick={redirectToGithub}
       rightIcon={<Icon variant="chevronRight" />}
+      width={{
+        base: '100%',
+        md: 'auto'
+      }}
     >
       Connect repositories
     </Button>
