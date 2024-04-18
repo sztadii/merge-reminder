@@ -3,10 +3,10 @@ import { ReactNode, useLayoutEffect } from 'react'
 import { Redirect, Route, Switch } from 'wouter'
 
 import { Navigation } from 'src/components/navigation'
+import { Dashboard } from 'src/pages/dashboard'
 import { Landing } from 'src/pages/landing'
 import { Login } from 'src/pages/login'
 import { Settings } from 'src/pages/settings'
-import { User } from 'src/pages/user'
 import { storage } from 'src/storage'
 
 import { routerPaths } from './router-paths'
@@ -37,11 +37,11 @@ export function Router() {
       />
 
       <Route
-        path={routerPaths.profile.path}
+        path={routerPaths.dashboard.path}
         component={() => {
           return (
             <PrivateLayout>
-              <User />
+              <Dashboard />
             </PrivateLayout>
           )
         }}
@@ -69,7 +69,7 @@ function PublicLayout({ children }: { children: ReactNode }) {
     const token = storage.auth.getToken()
 
     if (isLoginPage && token) {
-      routerPaths.profile.navigate()
+      routerPaths.dashboard.navigate()
     }
   }, [])
 

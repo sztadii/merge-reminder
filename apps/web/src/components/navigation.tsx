@@ -22,7 +22,7 @@ export function Navigation() {
   return (
     <Box>
       <Flex p={4} alignItems="center" justifyContent="space-between">
-        <Link to={routerPaths.profile.path}>
+        <Link to={routerPaths.dashboard.path}>
           <Heading size="sm" color="gray.500">
             Merge Reminder
           </Heading>

@@ -43,7 +43,7 @@ export function BasicSettingsSection() {
           onClick={toggleColorMode}
           rightIcon={<Icon variant={colorMode === 'light' ? 'moon' : 'sun'} />}
         >
-          {colorMode === 'light' ? 'Dark theme' : 'Light theme'}
+          {colorMode === 'light' ? 'Dark' : 'Light'}
         </Button>
       )
     },
