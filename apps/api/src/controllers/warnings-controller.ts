@@ -94,7 +94,7 @@ export class WarningsController {
 
         return this.emailService.sendEmail({
           to: author,
-          subject: `Reminder - ${formattedDate}`,
+          subject: `Unmerged changes in ${formattedDate}`,
           text: message
         })
       })

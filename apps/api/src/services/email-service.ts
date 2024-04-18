@@ -14,7 +14,7 @@ export class EmailService {
         password: config.mailgun.apiKey
       },
       params: {
-        from: `notifications@${domainName}`,
+        from: `Merge Reminder <notifications@${domainName}>`,
         to: mail.to,
         subject: mail.subject,
         text: mail.text
