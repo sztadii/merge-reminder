@@ -16,4 +16,5 @@ npm run dev
 * [FE deployment](https://dash.cloudflare.com/b7200f3121d6ef98ffe1edfd5ba95ce4/pages/view/merge-reminder)
 * [BE deployment](https://dashboard.render.com)
 * [mailing](https://app.mailgun.com/mg/dashboard)
+* [analytics](https://plausible.io/merge-reminder.com)
 * [database](https://cloud.mongodb.com/v2/661119a2fb80c513aef9afcc)
