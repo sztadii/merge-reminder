@@ -26,9 +26,9 @@ export function DeleteUserButton({ user }: DeleteUserButtonProps) {
   const [userOrOrganizationName, setUserOrOrganizationName] = useState('')
 
   const {
-    isOpen: isOpenForDeleteModal,
-    onOpen: onOpenForDeleteModal,
-    onClose: onCloseForDeleteModal
+    isOpen: isOpenForConfirmModal,
+    onOpen: onOpenForConfirmModal,
+    onClose: onCloseForConfirmModal
   } = useDisclosure()
 
   const dangerColor = useColorModeValue('red.500', 'red.200')
@@ -38,7 +38,7 @@ export function DeleteUserButton({ user }: DeleteUserButtonProps) {
 
   function handleCancel() {
     setUserOrOrganizationName('')
-    onCloseForDeleteModal()
+    onCloseForConfirmModal()
   }
 
   async function deleteUser() {
@@ -46,7 +46,7 @@ export function DeleteUserButton({ user }: DeleteUserButtonProps) {
 
     try {
       await removeCurrentAccountMutation()
-      onCloseForDeleteModal()
+      onCloseForConfirmModal()
       logout()
     } catch {
       showErrorToast('Can not delete profile.')
@@ -57,14 +57,15 @@ export function DeleteUserButton({ user }: DeleteUserButtonProps) {
     <>
       <Button
         isDisabled={!user}
-        onClick={onOpenForDeleteModal}
+        onClick={onOpenForConfirmModal}
         colorScheme="red"
+        minWidth="150px"
       >
         Delete
       </Button>
 
       <Confirmation
-        isOpen={isOpenForDeleteModal}
+        isOpen={isOpenForConfirmModal}
         onClose={handleCancel}
         title="Delete profile"
         description={
