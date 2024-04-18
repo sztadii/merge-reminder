@@ -11,7 +11,8 @@ const configSchema = z.object({
     domainName: z.string(),
     apiKey: z.string()
   }),
-  isUnderMaintenance: z.boolean()
+  isUnderMaintenance: z.boolean(),
+  apiKeyForPublicEndpoints: z.string()
 })
 
 export const config = configSchema.parse({
@@ -25,5 +26,6 @@ export const config = configSchema.parse({
     domainName: process.env.MAILGUN_DOMAIN_NAME,
     apiKey: process.env.MAILGUN_API_KEY
   },
-  isUnderMaintenance: process.env.IS_UNDER_MAINTENENCE === 'true'
+  isUnderMaintenance: process.env.IS_UNDER_MAINTENENCE === 'true',
+  apiKeyForPublicEndpoints: process.env.API_KEY_FOR_PUBLIC_ENDPOINTS
 })
