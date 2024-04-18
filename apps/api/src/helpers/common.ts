@@ -56,3 +56,16 @@ export function convertHoursToReadableFormat(timeInHours: number) {
     }
   }
 }
+
+export async function promiseAllInBatches<T>(
+  promises: Promise<T>[],
+  batchSize = 50
+): Promise<T[]> {
+  let results: T[] = []
+  for (let i = 0; i < promises.length; i += batchSize) {
+    const batch = promises.slice(i, i + batchSize)
+    const batchResults = await Promise.all(batch)
+    results = results.concat(batchResults)
+  }
+  return results
+}

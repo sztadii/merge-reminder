@@ -3,7 +3,8 @@ import { differenceInHours } from 'date-fns'
 import {
   convertHoursToReadableFormat,
   handlePromise,
-  isTruthy
+  isTruthy,
+  promiseAllInBatches
 } from '../helpers'
 import { GithubAppRepository, Repo } from './github-app-repository'
 
@@ -46,8 +47,8 @@ export class WarningsRepository {
         this.githubAppRepository.compareCommits({
           owner: repo.owner.login,
           repo: repo.name,
-          base: this.config.baseBranch,
-          head: this.config.headBranch
+          baseBranch: this.config.baseBranch,
+          headBranch: this.config.headBranch
         })
       )
 
@@ -81,7 +82,7 @@ export class WarningsRepository {
       }
     })
 
-    const allBranchesInfos = await Promise.all(allBranchesResponses)
+    const allBranchesInfos = await promiseAllInBatches(allBranchesResponses)
 
     return allBranchesInfos.filter(isTruthy)
   }
