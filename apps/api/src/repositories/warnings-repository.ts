@@ -3,7 +3,8 @@ import { differenceInHours } from 'date-fns'
 import {
   convertHoursToReadableFormat,
   handlePromise,
-  isTruthy
+  isTruthy,
+  promiseAllInBatches
 } from '../helpers'
 import { GithubAppRepository, Repo } from './github-app-repository'
 
@@ -81,7 +82,7 @@ export class WarningsRepository {
       }
     })
 
-    const allBranchesInfos = await Promise.all(allBranchesResponses)
+    const allBranchesInfos = await promiseAllInBatches(allBranchesResponses)
 
     return allBranchesInfos.filter(isTruthy)
   }

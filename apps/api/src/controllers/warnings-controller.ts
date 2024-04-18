@@ -2,6 +2,7 @@ import { TRPCError } from '@trpc/server'
 import { format } from 'date-fns'
 import { uniq } from 'lodash'
 
+import { promiseAllInBatches } from '../helpers'
 import { GithubAppRepository } from '../repositories/github-app-repository'
 import { UsersRepository } from '../repositories/users-repository'
 import {
@@ -73,7 +74,7 @@ export class WarningsController {
 
     const allAuthors = uniq(warnings.flatMap(warning => warning.authors))
 
-    await Promise.all(
+    await promiseAllInBatches(
       allAuthors.map(author => {
         const reposTouchedByAuthor = warnings.filter(warning =>
           warning.authors.includes(author)
@@ -114,7 +115,7 @@ export class WarningsController {
       })
     })
 
-    await Promise.all(
+    await promiseAllInBatches(
       users.map(user => this.sendWarnings(user._id.toString()))
     ).catch(() => {
       throw new TRPCError({
