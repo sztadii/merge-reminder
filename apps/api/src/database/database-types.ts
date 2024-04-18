@@ -1,4 +1,3 @@
-import { UserResponse } from '../schemas'
 import { DatabaseId } from './database-connection'
 
 export type DatabaseRecord = {
