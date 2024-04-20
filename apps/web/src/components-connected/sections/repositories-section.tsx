@@ -10,8 +10,9 @@ import {
   Tag,
   useDisclosure
 } from '@chakra-ui/react'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 
+import { UpdateRepoConfigurationDrawer } from 'src/components-connected/drawers/update-repo-configuration-drawer'
 import { UpdateReposConfigurationDrawer } from 'src/components-connected/drawers/update-repos-configuration-drawer'
 import { DetailsGrid, DetailsGridProps } from 'src/components/details-grid'
 import { Icon } from 'src/components/icon'
@@ -33,10 +34,18 @@ export function RepositoriesSection() {
     error: errorForConfiguration
   } = trpc.client.getCurrentRepositoriesConfiguration.useQuery()
 
+  const [repoId, setRepoId] = useState<number>()
+
   const {
-    isOpen: isOpenForUpdateDrawer,
-    onOpen: onOpenForUpdateDrawer,
-    onClose: onCloseForUpdateDrawer
+    isOpen: isOpenForUpdateAllDrawer,
+    onOpen: onOpenForUpdateAllDrawer,
+    onClose: onCloseForUpdateAllDrawer
+  } = useDisclosure()
+
+  const {
+    isOpen: isOpenForUpdateSingleDrawer,
+    onOpen: onOpenForUpdateSingleDrawer,
+    onClose: onCloseForUpdateSingleDrawer
   } = useDisclosure()
 
   const details: DetailsGridProps['details'] = [
@@ -92,7 +101,14 @@ export function RepositoriesSection() {
               )
 
               return (
-                <Flex gap={2} alignItems="center">
+                <Flex
+                  gap={2}
+                  alignItems="center"
+                  onClick={() => {
+                    setRepoId(repository.id)
+                    onOpenForUpdateSingleDrawer()
+                  }}
+                >
                   {repoConfiguration ? (
                     <>
                       <Tag>{repoConfiguration.headBranch}</Tag>
@@ -130,7 +146,7 @@ export function RepositoriesSection() {
               <IconButton
                 aria-label="update configuration"
                 isDisabled={!configuration}
-                onClick={onOpenForUpdateDrawer}
+                onClick={onOpenForUpdateAllDrawer}
                 icon={<Icon variant="edit" />}
               />
             )}
@@ -158,8 +174,18 @@ export function RepositoriesSection() {
 
       <UpdateReposConfigurationDrawer
         configuration={configuration}
-        isOpen={isOpenForUpdateDrawer}
-        onClose={onCloseForUpdateDrawer}
+        isOpen={isOpenForUpdateAllDrawer}
+        onClose={onCloseForUpdateAllDrawer}
+      />
+
+      <UpdateRepoConfigurationDrawer
+        repoId={repoId}
+        configuration={configuration}
+        isOpen={isOpenForUpdateSingleDrawer}
+        onClose={() => {
+          setRepoId(undefined)
+          onCloseForUpdateSingleDrawer()
+        }}
       />
     </>
   )

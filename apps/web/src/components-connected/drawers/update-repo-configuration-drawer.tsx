@@ -11,32 +11,33 @@ import {
   FormControl,
   FormHelperText,
   FormLabel,
-  Input,
-  Switch
+  Input
 } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { getQueryKey } from '@trpc/react-query'
 import { useEffect, useState } from 'react'
 
 import { trimObjectValues } from 'src/helpers'
-import {
-  RepoConfigurationResponse,
-  RepoConfigurationUpdateRequest
-} from 'src/schemas'
+import { RepoConfigurationResponse } from 'src/schemas'
 import { showErrorToast } from 'src/toasts'
 import { trpc } from 'src/trpc'
 
 type UpdateRepoConfigurationDrawerProps = {
+  repoId?: number
   configuration?: RepoConfigurationResponse
   isOpen: boolean
   onClose: () => void
 }
 
-type FormValuesRequired = RepoConfigurationUpdateRequest
+type FormValuesRequired = {
+  baseBranch: string
+  headBranch: string
+}
 
 type FormValuesInitial = Partial<FormValuesRequired>
 
-export function UpdateReposConfigurationDrawer({
+export function UpdateRepoConfigurationDrawer({
+  repoId,
   configuration,
   isOpen,
   onClose
@@ -53,20 +54,56 @@ export function UpdateReposConfigurationDrawer({
   useEffect(() => {
     if (!configuration) return
 
-    setFormValues(configuration)
+    const formValues = configuration.repos.find(repo => repo.repoId === repoId)
+
+    setFormValues(formValues)
   }, [configuration])
 
   async function updateConfiguration() {
+    debugger
+    if (!repoId) return
     if (!configuration) return
     if (hasMissingFormValues) return
 
     try {
       setIsPending(true)
 
-      const trimmedValues = trimObjectValues(formValues)
-      await updateReposConfigurationMutation(
-        trimmedValues as FormValuesRequired
+      const trimmedValues = trimObjectValues({
+        headBranch: formValues?.headBranch,
+        baseBranch: formValues?.baseBranch
+      } as FormValuesRequired)
+
+      let reposYoUpdate: RepoConfigurationResponse['repos'] = []
+
+      const isReposConfigurationEmpty = configuration.repos.length === 0
+
+      if (isReposConfigurationEmpty) {
+        reposYoUpdate = [
+          {
+            repoId,
+            ...trimmedValues
+          }
+        ]
+      }
+
+      const hasRepoInConfiguration = configuration.repos.find(
+        repo => repo.repoId === repoId
       )
+
+      if (hasRepoInConfiguration) {
+        reposYoUpdate = configuration.repos.map(repo => {
+          if (repo.repoId !== repoId) return repo
+
+          return {
+            repoId,
+            ...trimmedValues
+          }
+        })
+      }
+
+      await updateReposConfigurationMutation({
+        repos: reposYoUpdate
+      })
 
       await queryClient.invalidateQueries(
         getQueryKey(trpc.client.getCurrentRepositoriesConfiguration)
@@ -79,7 +116,7 @@ export function UpdateReposConfigurationDrawer({
       onClose()
       setFormValues(undefined)
     } catch {
-      showErrorToast('Can not update configuration.')
+      showErrorToast('Can not update repo configuration.')
     } finally {
       setIsPending(false)
     }
@@ -90,7 +127,7 @@ export function UpdateReposConfigurationDrawer({
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
-        <DrawerHeader>Update configuration</DrawerHeader>
+        <DrawerHeader>Update repo configuration</DrawerHeader>
 
         <DrawerBody>
           <FormControl>
@@ -162,22 +199,6 @@ export function UpdateReposConfigurationDrawer({
                 develop
               </Button>
             </Flex>
-          </FormControl>
-
-          <FormControl mt={8}>
-            <FormLabel>Exclude repos without required branches</FormLabel>
-            <Switch
-              size="lg"
-              isChecked={formValues?.excludeReposWithoutRequiredBranches}
-              onChange={e =>
-                setFormValues({
-                  ...formValues,
-                  excludeReposWithoutRequiredBranches: e.target.checked
-                })
-              }
-            />
-
-            <FormHelperText>Helpful during the initial setup</FormHelperText>
           </FormControl>
         </DrawerBody>
 

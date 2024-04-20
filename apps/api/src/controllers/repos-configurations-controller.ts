@@ -37,13 +37,10 @@ export class ReposConfigurationsController {
     configurationData: RepoConfigurationUpdateRequest
   ): Promise<void> {
     try {
-      await this.reposConfigurationsRepository.updateByUserId(userId, {
-        headBranch: configurationData.headBranch,
-        baseBranch: configurationData.baseBranch,
-        excludeReposWithoutRequiredBranches:
-          configurationData.excludeReposWithoutRequiredBranches,
-        repos: configurationData.repos
-      })
+      await this.reposConfigurationsRepository.updateByUserId(
+        userId,
+        configurationData
+      )
     } catch {
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
