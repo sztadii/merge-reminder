@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Card,
   CardBody,
   CardHeader,
@@ -100,22 +101,21 @@ export function RepositoriesSection() {
                 iteratedRepo => iteratedRepo.repoId === repository.id
               )
 
+              function openEditDrawer() {
+                setRepoId(repository.id)
+                onOpenForUpdateSingleDrawer()
+              }
+
               return (
-                <Flex
-                  gap={2}
-                  alignItems="center"
-                  onClick={() => {
-                    setRepoId(repository.id)
-                    onOpenForUpdateSingleDrawer()
-                  }}
-                >
+                <Flex onClick={openEditDrawer} gap={2} alignItems="center">
                   {repoConfiguration ? (
                     <>
-                      <Tag>{repoConfiguration.headBranch}</Tag>
-                      <Tag>{repoConfiguration.baseBranch}</Tag>
+                      <Button size="xs">{repoConfiguration.headBranch}</Button>
+
+                      <Button size="xs">{repoConfiguration.baseBranch}</Button>
                     </>
                   ) : (
-                    'N/A'
+                    <Button size="xs">N/A</Button>
                   )}
                 </Flex>
               )
