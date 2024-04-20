@@ -4,6 +4,7 @@ import {
   Card,
   CardBody,
   CardHeader,
+  Divider,
   Flex,
   Heading,
   IconButton,
@@ -154,13 +155,13 @@ export function RepositoriesSection() {
         </CardHeader>
 
         <CardBody>
-          <Box mb={8}>
-            <DetailsGrid
-              details={details}
-              isLoading={isLoadingForConfiguration}
-              error={errorForConfiguration?.message}
-            />
-          </Box>
+          <DetailsGrid
+            details={details}
+            isLoading={isLoadingForConfiguration}
+            error={errorForConfiguration?.message}
+          />
+
+          <Divider my={8} />
 
           <Table
             columns={tableColumns}
