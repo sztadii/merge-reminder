@@ -226,7 +226,7 @@ export function UpdateRepoConfigurationDrawer({
               isDisabled={hasMissingFormValues}
               onClick={() => updateConfiguration(true)}
             >
-              Delete
+              Reset
             </Button>
           )}
           <Button
