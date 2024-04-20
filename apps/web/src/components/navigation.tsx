@@ -12,6 +12,7 @@ import {
 } from '@chakra-ui/react'
 import { Link } from 'wouter'
 
+import { Container } from 'src/components/container'
 import { logout } from 'src/helpers'
 import { routerPaths } from 'src/router'
 import { trpc } from 'src/trpc'
@@ -21,38 +22,40 @@ export function Navigation() {
 
   return (
     <Box>
-      <Flex p={4} alignItems="center" justifyContent="space-between">
-        <Link to={routerPaths.dashboard.path}>
-          <Heading size="sm" color="gray.500">
-            Merge Reminder
-          </Heading>
-        </Link>
+      <Container>
+        <Flex py={4} alignItems="center" justifyContent="space-between">
+          <Link to={routerPaths.dashboard.path}>
+            <Heading size="sm" color="gray.500">
+              Merge Reminder
+            </Heading>
+          </Link>
 
-        <Flex alignItems="center" gap={4}>
-          <Menu>
-            <MenuButton>
-              {isLoading ? (
-                <Skeleton borderRadius="50%">
-                  <Avatar size="sm" />
-                </Skeleton>
-              ) : (
-                <Avatar size="sm" src={user?.avatarUrl} />
-              )}
-            </MenuButton>
-            <MenuList>
-              <MenuItem as={Link} to={routerPaths.profile.path}>
-                Profile
-              </MenuItem>
+          <Flex alignItems="center" gap={4}>
+            <Menu>
+              <MenuButton>
+                {isLoading ? (
+                  <Skeleton borderRadius="50%">
+                    <Avatar size="sm" />
+                  </Skeleton>
+                ) : (
+                  <Avatar size="sm" src={user?.avatarUrl} />
+                )}
+              </MenuButton>
+              <MenuList>
+                <MenuItem as={Link} to={routerPaths.profile.path}>
+                  Profile
+                </MenuItem>
 
-              <MenuItem as={Link} to={routerPaths.settings.path}>
-                Settings
-              </MenuItem>
+                <MenuItem as={Link} to={routerPaths.settings.path}>
+                  Settings
+                </MenuItem>
 
-              <MenuItem onClick={logout}>Logout</MenuItem>
-            </MenuList>
-          </Menu>
+                <MenuItem onClick={logout}>Logout</MenuItem>
+              </MenuList>
+            </Menu>
+          </Flex>
         </Flex>
-      </Flex>
+      </Container>
 
       <Divider />
     </Box>

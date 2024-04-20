@@ -2,6 +2,7 @@ import { Box } from '@chakra-ui/react'
 import { ReactNode, useLayoutEffect } from 'react'
 import { Redirect, Route, Switch } from 'wouter'
 
+import { Container } from 'src/components/container'
 import { Navigation } from 'src/components/navigation'
 import { Dashboard } from 'src/pages/dashboard'
 import { Landing } from 'src/pages/landing'
@@ -99,11 +100,11 @@ function PrivateLayout({ children }: { children: ReactNode }) {
 
   return (
     <>
-      <Box>
-        <Navigation />
-      </Box>
+      <Navigation />
 
-      <Box p={4}>{children}</Box>
+      <Box mt={8}>
+        <Container>{children}</Container>
+      </Box>
     </>
   )
 }
