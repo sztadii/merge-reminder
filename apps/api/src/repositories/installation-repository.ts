@@ -1,8 +1,12 @@
 import { GithubAppRepository } from './github-app-repository'
+import { ReposConfigurationsRepository } from './repos-configurations-repository'
 import { UsersRepository } from './users-repository'
 
 export class InstallationRepository {
-  constructor(private usersRepository: UsersRepository) {}
+  constructor(
+    private usersRepository: UsersRepository,
+    private reposConfigurationsRepository: ReposConfigurationsRepository
+  ) {}
 
   async connectRepositories(
     userId: string,
@@ -27,6 +31,6 @@ export class InstallationRepository {
       githubAppInstallationId: null
     })
 
-    // TODO Remove repo configuration
+    await this.reposConfigurationsRepository.deleteByUserId(userId)
   }
 }

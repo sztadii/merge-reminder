@@ -72,10 +72,6 @@ export class AuthController {
         })
       }
 
-      // TODO Make this a transaction
-      // In case the configuration will fail we will not create a user
-      // or just delete user if fails
-
       const validatedConfiguration =
         await RepoConfigurationCreateRequestSchema.parseAsync({
           userId: createdUser._id.toString(),

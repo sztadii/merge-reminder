@@ -8,9 +8,12 @@ import { Context } from '../trpc'
 export function createAuthController(ctx: Context) {
   const githubAuthRepository = new GithubAuthRepository()
   const usersRepository = new UsersRepository(ctx.database)
-  const installationRepository = new InstallationRepository(usersRepository)
   const reposConfigurationsRepository = new ReposConfigurationsRepository(
     ctx.database
+  )
+  const installationRepository = new InstallationRepository(
+    usersRepository,
+    reposConfigurationsRepository
   )
 
   return new AuthController(
