@@ -25,8 +25,9 @@ export class RepositoriesController {
 
     return repos.map(repo => {
       return {
+        id: repo.id,
         name: repo.name,
-        url: repo.url
+        url: repo.html_url
       }
     })
   }

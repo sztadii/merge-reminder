@@ -41,6 +41,7 @@ export const ConnectRepositoriesRequestSchema = z.object({
 })
 
 export const RepositoryResponseSchema = z.object({
+  id: z.number(),
   name: z.string(),
   url: z.string()
 })

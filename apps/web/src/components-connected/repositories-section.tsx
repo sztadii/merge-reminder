@@ -1,11 +1,4 @@
 import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Alert,
-  AlertIcon,
   Box,
   Card,
   CardBody,
@@ -13,23 +6,29 @@ import {
   Flex,
   Heading,
   IconButton,
+  Link,
   Skeleton,
+  Tag,
   useDisclosure
 } from '@chakra-ui/react'
+import { useMemo } from 'react'
 
+import { DetailsGrid, DetailsGridProps } from 'src/components/details-grid'
+import { Icon } from 'src/components/icon'
+import { Table, TableProps } from 'src/components/table'
 import { Text } from 'src/components/text'
 import { trpc } from 'src/trpc'
 
-import { DetailsGrid, DetailsGridProps } from '../components/details-grid'
-import { Icon } from '../components/icon'
 import { UpdateReposConfigurationDrawer } from './update-repos-configuration-drawer'
 
 export function RepositoriesSection() {
   const {
-    data: repositories,
+    data: repositoriesData,
     isLoading: isLoadingForRepositories,
     error: errorForRepositories
   } = trpc.client.getCurrentRepositories.useQuery()
+
+  const repositories = repositoriesData || []
 
   const {
     data: configuration,
@@ -57,6 +56,76 @@ export function RepositoriesSection() {
       text: configuration?.excludeReposWithoutRequiredBranches ? 'Yes' : 'No'
     }
   ]
+
+  const tableColumns: TableProps<typeof repositories>['columns'] =
+    useMemo(() => {
+      return [
+        {
+          id: 'name',
+          width: {
+            base: '150px',
+            lg: 'auto'
+          },
+          headingCell: {
+            skeleton: () => <Skeleton>Loading</Skeleton>,
+            content: () => 'Repo'
+          },
+          rowCell: {
+            skeleton: () => <Skeleton>Loading</Skeleton>,
+            content: repository => {
+              return (
+                <Flex gap={2} alignItems="center">
+                  <Link
+                    href={repository.url}
+                    isExternal
+                    display="flex"
+                    alignItems="center"
+                    gap={2}
+                  >
+                    <Text>{repository.name}</Text>
+                    <Icon variant="externalLink" />
+                  </Link>
+                </Flex>
+              )
+            }
+          }
+        },
+        {
+          id: 'configuration',
+          width: {
+            base: '300px',
+            lg: 'auto'
+          },
+          headingCell: {
+            skeleton: () => <Skeleton>Loading</Skeleton>,
+            content: () => 'Configuration'
+          },
+          rowCell: {
+            skeleton: () => <Skeleton>Loading</Skeleton>,
+            content: repository => {
+              if (!configuration) return
+
+              const repoConfiguration = configuration.repos.find(
+                iteratedRepo => iteratedRepo.repoId === repository.id
+              )
+
+              return (
+                <Flex gap={2} alignItems="center">
+                  {repoConfiguration ? (
+                    <>
+                      <Tag>{repoConfiguration.headBranch}</Tag>
+                      <Tag>{repoConfiguration.baseBranch}</Tag>
+                    </>
+                  ) : (
+                    'N/A'
+                  )}
+                </Flex>
+              )
+            }
+          }
+        }
+      ]
+    }, [configuration])
 
   return (
     <>
@@ -95,59 +164,13 @@ export function RepositoriesSection() {
             />
           </Box>
 
-          {isLoadingForRepositories && (
-            <Accordion allowMultiple>
-              {new Array(2).fill(null).map((_, index) => {
-                return (
-                  <AccordionItem key={index}>
-                    <AccordionButton
-                      px={0}
-                      py={4}
-                      justifyContent="space-between"
-                    >
-                      <Flex alignItems="center" gap={4}>
-                        <Skeleton>Name</Skeleton>
-                        <Skeleton width={200}>Loading</Skeleton>
-                      </Flex>
-
-                      <Skeleton>
-                        <AccordionIcon />
-                      </Skeleton>
-                    </AccordionButton>
-                  </AccordionItem>
-                )
-              })}
-            </Accordion>
-          )}
-
-          {errorForRepositories && (
-            <Alert status="error">
-              <AlertIcon />
-              {errorForRepositories.message}
-            </Alert>
-          )}
-
-          <Accordion allowMultiple>
-            {repositories?.map(repository => {
-              return (
-                <AccordionItem key={repository.name}>
-                  <AccordionButton px={0} py={4} justifyContent="space-between">
-                    <Flex gap={4}>
-                      <Text fontWeight="bold" color="gray.400">
-                        Name
-                      </Text>
-                      {repository.name}
-                    </Flex>
-                    <AccordionIcon />
-                  </AccordionButton>
-
-                  <AccordionPanel px={0} pb={4}>
-                    Other stuff
-                  </AccordionPanel>
-                </AccordionItem>
-              )
-            })}
-          </Accordion>
+          <Table
+            columns={tableColumns}
+            rows={repositories}
+            numberOfSkeletonRows={6}
+            isLoading={isLoadingForRepositories}
+            errorMessage={errorForRepositories?.message}
+          />
         </CardBody>
       </Card>
 
