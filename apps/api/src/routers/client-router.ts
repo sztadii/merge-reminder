@@ -1,5 +1,6 @@
 import { AuthController } from '../controllers/auth-controller'
 import { InstallationController } from '../controllers/installation-controller'
+import { RepositoriesController } from '../controllers/repositories-controller'
 import { UsersController } from '../controllers/users-controller'
 import { WarningsController } from '../controllers/warnings-controller'
 import { GithubAuthRepository } from '../repositories/github-auth-repository'
@@ -8,6 +9,7 @@ import { UsersRepository } from '../repositories/users-repository'
 import {
   ConnectRepositoriesRequestSchema,
   EmptyResponseSchema,
+  RepositoriesResponseSchema,
   UserResponseSchema,
   UserUpdateRequestSchema,
   WarningsResponseSchema
@@ -96,5 +98,13 @@ export const clientRouter = router({
       )
 
       return authController.deleteCurrentUser(opts.ctx.user.id)
+    }),
+  getCurrentRepositories: tokenProtectedProcedure
+    .output(RepositoriesResponseSchema)
+    .query(opts => {
+      const usersRepository = new UsersRepository(opts.ctx.database)
+      const warningsController = new RepositoriesController(usersRepository)
+
+      return warningsController.getRepositories(opts.ctx.user.id)
     })
 })

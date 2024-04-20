@@ -40,7 +40,15 @@ export const ConnectRepositoriesRequestSchema = z.object({
   installationId: z.number()
 })
 
+export const RepositoryResponseSchema = z.object({
+  name: z.string(),
+  url: z.string()
+})
+
+export const RepositoriesResponseSchema = z.array(RepositoryResponseSchema)
+
 export type UserResponse = z.infer<typeof UserResponseSchema>
 export type WarningResponse = z.infer<typeof WarningResponseSchema>
 export type UserCreateRequest = z.infer<typeof UserCreateRequestSchema>
 export type UserUpdateRequest = z.infer<typeof UserUpdateRequestSchema>
+export type RepositoryResponse = z.infer<typeof RepositoryResponseSchema>
