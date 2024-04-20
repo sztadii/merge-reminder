@@ -47,7 +47,7 @@ export function UpdateUserDrawer({
     if (!user) return
 
     setFormValues(user)
-  }, [user])
+  }, [user, isOpen])
 
   async function updateUser() {
     if (!user) return
@@ -63,8 +63,9 @@ export function UpdateUserDrawer({
         getQueryKey(trpc.client.getCurrentUser)
       )
 
-      onClose()
       setFormValues(undefined)
+
+      handleClose()
     } catch {
       showErrorToast('Can not update profile.')
     } finally {
@@ -72,8 +73,13 @@ export function UpdateUserDrawer({
     }
   }
 
+  function handleClose() {
+    setFormValues(undefined)
+    onClose()
+  }
+
   return (
-    <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
+    <Drawer isOpen={isOpen} placement="right" onClose={handleClose}>
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
@@ -96,7 +102,7 @@ export function UpdateUserDrawer({
         </DrawerBody>
 
         <DrawerFooter>
-          <Button variant="outline" mr={2} onClick={onClose}>
+          <Button variant="outline" mr={2} onClick={handleClose}>
             Cancel
           </Button>
           <Button

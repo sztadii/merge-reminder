@@ -57,7 +57,7 @@ export function UpdateRepoConfigurationDrawer({
     const formValues = configuration.repos.find(repo => repo.repoId === repoId)
 
     setFormValues(formValues)
-  }, [configuration])
+  }, [configuration, isOpen])
 
   async function updateConfiguration() {
     debugger
@@ -113,7 +113,7 @@ export function UpdateRepoConfigurationDrawer({
         .invalidateQueries(getQueryKey(trpc.client.getCurrentWarnings))
         .then()
 
-      onClose()
+      handleClose()
       setFormValues(undefined)
     } catch {
       showErrorToast('Can not update repo configuration.')
@@ -122,8 +122,13 @@ export function UpdateRepoConfigurationDrawer({
     }
   }
 
+  function handleClose() {
+    setFormValues(undefined)
+    onClose()
+  }
+
   return (
-    <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
+    <Drawer isOpen={isOpen} placement="right" onClose={handleClose}>
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
@@ -203,7 +208,7 @@ export function UpdateRepoConfigurationDrawer({
         </DrawerBody>
 
         <DrawerFooter>
-          <Button variant="outline" mr={2} onClick={onClose}>
+          <Button variant="outline" mr={2} onClick={handleClose}>
             Cancel
           </Button>
           <Button
