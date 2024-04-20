@@ -8,7 +8,6 @@ import {
   Heading,
   IconButton,
   Skeleton,
-  Tag,
   useDisclosure
 } from '@chakra-ui/react'
 import { useMemo, useState } from 'react'
@@ -18,6 +17,7 @@ import { UpdateReposConfigurationDrawer } from 'src/components-connected/drawers
 import { DetailsGrid, DetailsGridProps } from 'src/components/details-grid'
 import { Icon } from 'src/components/icon'
 import { Table, TableProps } from 'src/components/table'
+import { RepositoryResponse } from 'src/schemas'
 import { trpc } from 'src/trpc'
 
 export function RepositoriesSection() {
@@ -35,7 +35,7 @@ export function RepositoriesSection() {
     error: errorForConfiguration
   } = trpc.client.getCurrentRepositoriesConfiguration.useQuery()
 
-  const [repoId, setRepoId] = useState<number>()
+  const [repo, setRepo] = useState<RepositoryResponse | undefined>()
 
   const {
     isOpen: isOpenForUpdateAllDrawer,
@@ -102,7 +102,7 @@ export function RepositoriesSection() {
               )
 
               function openEditDrawer() {
-                setRepoId(repository.id)
+                setRepo(repository)
                 onOpenForUpdateSingleDrawer()
               }
 
@@ -179,11 +179,11 @@ export function RepositoriesSection() {
       />
 
       <UpdateRepoConfigurationDrawer
-        repoId={repoId}
+        repo={repo}
         configuration={configuration}
         isOpen={isOpenForUpdateSingleDrawer}
         onClose={() => {
-          setRepoId(undefined)
+          setRepo(undefined)
           onCloseForUpdateSingleDrawer()
         }}
       />

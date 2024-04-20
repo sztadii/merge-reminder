@@ -82,7 +82,6 @@ export function UpdateUserDrawer({
     <Drawer isOpen={isOpen} placement="right" onClose={handleClose}>
       <DrawerOverlay />
       <DrawerContent>
-        <DrawerCloseButton />
         <DrawerHeader>Update profile</DrawerHeader>
 
         <DrawerBody>

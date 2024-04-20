@@ -94,7 +94,6 @@ export function UpdateReposConfigurationDrawer({
     <Drawer isOpen={isOpen} placement="right" onClose={handleClose}>
       <DrawerOverlay />
       <DrawerContent>
-        <DrawerCloseButton />
         <DrawerHeader>Update configuration</DrawerHeader>
 
         <DrawerBody>

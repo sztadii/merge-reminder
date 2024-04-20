@@ -18,12 +18,12 @@ import { getQueryKey } from '@trpc/react-query'
 import { useEffect, useState } from 'react'
 
 import { trimObjectValues } from 'src/helpers'
-import { RepoConfigurationResponse } from 'src/schemas'
+import { RepoConfigurationResponse, RepositoryResponse } from 'src/schemas'
 import { showErrorToast } from 'src/toasts'
 import { trpc } from 'src/trpc'
 
 type UpdateRepoConfigurationDrawerProps = {
-  repoId?: number
+  repo?: RepositoryResponse
   configuration?: RepoConfigurationResponse
   isOpen: boolean
   onClose: () => void
@@ -37,7 +37,7 @@ type FormValuesRequired = {
 type FormValuesInitial = Partial<FormValuesRequired>
 
 export function UpdateRepoConfigurationDrawer({
-  repoId,
+  repo,
   configuration,
   isOpen,
   onClose
@@ -52,16 +52,19 @@ export function UpdateRepoConfigurationDrawer({
     !formValues?.headBranch || !formValues?.baseBranch
 
   useEffect(() => {
+    if (!repo) return
     if (!configuration) return
 
-    const formValues = configuration.repos.find(repo => repo.repoId === repoId)
+    const formValues = configuration.repos.find(
+      iteratedRepo => iteratedRepo.repoId === repo?.id
+    )
 
     setFormValues(formValues)
-  }, [configuration, isOpen])
+  }, [configuration, repo, isOpen])
 
   async function updateConfiguration() {
     debugger
-    if (!repoId) return
+    if (!repo) return
     if (!configuration) return
     if (hasMissingFormValues) return
 
@@ -80,22 +83,22 @@ export function UpdateRepoConfigurationDrawer({
       if (isReposConfigurationEmpty) {
         reposYoUpdate = [
           {
-            repoId,
+            repoId: repo.id,
             ...trimmedValues
           }
         ]
       }
 
       const hasRepoInConfiguration = configuration.repos.find(
-        repo => repo.repoId === repoId
+        iteratedRepo => iteratedRepo.repoId === repo.id
       )
 
       if (hasRepoInConfiguration) {
-        reposYoUpdate = configuration.repos.map(repo => {
-          if (repo.repoId !== repoId) return repo
+        reposYoUpdate = configuration.repos.map(iteratedRepo => {
+          if (iteratedRepo.repoId !== repo.id) return iteratedRepo
 
           return {
-            repoId,
+            repoId: repo.id,
             ...trimmedValues
           }
         })
@@ -131,8 +134,7 @@ export function UpdateRepoConfigurationDrawer({
     <Drawer isOpen={isOpen} placement="right" onClose={handleClose}>
       <DrawerOverlay />
       <DrawerContent>
-        <DrawerCloseButton />
-        <DrawerHeader>Update repo configuration</DrawerHeader>
+        <DrawerHeader>Update {repo?.name}</DrawerHeader>
 
         <DrawerBody>
           <FormControl>
