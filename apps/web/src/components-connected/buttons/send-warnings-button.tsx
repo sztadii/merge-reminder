@@ -26,7 +26,7 @@ export function SendWarningsButton() {
     <>
       <IconButton
         aria-label="send warnings"
-        icon={<Icon variant="warning" />}
+        icon={<Icon variant="bell" />}
         colorScheme="red"
         isLoading={isSendingWarnings}
         onClick={onOpen}

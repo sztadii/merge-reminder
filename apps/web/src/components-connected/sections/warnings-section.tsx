@@ -185,8 +185,8 @@ export function WarningsSection() {
               gap={4}
               alignItems="center"
             >
-              <RefreshWarningsButton />
               <SendWarningsButton />
+              <RefreshWarningsButton />
             </Flex>
           )}
         </CardHeader>

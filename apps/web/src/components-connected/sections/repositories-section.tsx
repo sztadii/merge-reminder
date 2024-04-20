@@ -13,6 +13,7 @@ import {
 } from '@chakra-ui/react'
 import { useMemo, useState } from 'react'
 
+import { ResetReposConfigurationsButton } from 'src/components-connected/buttons/reset-repos-configurations-button'
 import { UpdateRepoConfigurationDrawer } from 'src/components-connected/drawers/update-repo-configuration-drawer'
 import { UpdateReposConfigurationDrawer } from 'src/components-connected/drawers/update-repos-configuration-drawer'
 import { DetailsGrid, DetailsGridProps } from 'src/components/details-grid'
@@ -143,20 +144,20 @@ export function RepositoriesSection() {
             )}
           </Heading>
 
-          <Box position="absolute" top={4} right={4}>
-            {isLoadingForConfiguration ? (
-              <Skeleton>
-                <IconButton aria-label="update profile" />
-              </Skeleton>
-            ) : (
-              <IconButton
-                aria-label="update configuration"
-                isDisabled={!configuration}
-                onClick={onOpenForUpdateAllDrawer}
-                icon={<Icon variant="edit" />}
-              />
-            )}
-          </Box>
+          {configuration && (
+            <Box position="absolute" top={4} right={4}>
+              <Flex gap={4}>
+                {!!repositories.length && !!configuration.repos.length && (
+                  <ResetReposConfigurationsButton />
+                )}
+                <IconButton
+                  aria-label="update configuration"
+                  onClick={onOpenForUpdateAllDrawer}
+                  icon={<Icon variant="edit" />}
+                />
+              </Flex>
+            </Box>
+          )}
         </CardHeader>
 
         <CardBody>

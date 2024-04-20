@@ -1,8 +1,10 @@
 import {
   AddIcon,
+  BellIcon,
   ChevronDownIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
+  DeleteIcon,
   EditIcon,
   ExternalLinkIcon,
   MoonIcon,
@@ -21,6 +23,8 @@ const icons = {
   externalLink: ExternalLinkIcon,
   edit: EditIcon,
   warning: WarningTwoIcon,
+  delete: DeleteIcon,
+  bell: BellIcon,
   repeat: RepeatIcon
 }
 
