@@ -28,7 +28,7 @@ export function DetailsGrid({ details, isLoading, error }: DetailsGridProps) {
         return (
           <Box key={detail.heading}>
             <Box mb={1}>
-              <Text fontWeight="bold" fontSize="xs" color="gray.400">
+              <Text fontWeight="500">
                 {isLoading ? (
                   <Skeleton display="inline-block" width={100}>
                     Loading

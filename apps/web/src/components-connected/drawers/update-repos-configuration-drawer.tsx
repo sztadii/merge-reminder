@@ -1,12 +1,5 @@
 import {
   Button,
-  Drawer,
-  DrawerBody,
-  DrawerCloseButton,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerOverlay,
   Flex,
   FormControl,
   FormHelperText,
@@ -18,91 +11,87 @@ import { useQueryClient } from '@tanstack/react-query'
 import { getQueryKey } from '@trpc/react-query'
 import { useEffect, useState } from 'react'
 
+import { Drawer } from 'src/components/drawer'
 import { trimObjectValues } from 'src/helpers'
-import { UserResponse, UserUpdateRequest } from 'src/schemas'
+import {
+  RepoConfigurationResponse,
+  RepoConfigurationUpdateRequest
+} from 'src/schemas'
 import { showErrorToast } from 'src/toasts'
 import { trpc } from 'src/trpc'
 
-type UpdateUserDrawerProps = {
-  user?: UserResponse
+type UpdateRepoConfigurationDrawerProps = {
+  configuration?: RepoConfigurationResponse
   isOpen: boolean
   onClose: () => void
 }
 
-type FormValuesRequired = UserUpdateRequest
+type FormValuesRequired = RepoConfigurationUpdateRequest
 
 type FormValuesInitial = Partial<FormValuesRequired>
 
-export function UpdateUserDrawer({
-  user,
+export function UpdateReposConfigurationDrawer({
+  configuration,
   isOpen,
   onClose
-}: UpdateUserDrawerProps) {
+}: UpdateRepoConfigurationDrawerProps) {
   const [isPending, setIsPending] = useState(false)
   const [formValues, setFormValues] = useState<FormValuesInitial | undefined>()
   const queryClient = useQueryClient()
-  const { mutateAsync: updateUserMutation } =
-    trpc.client.updateCurrentUser.useMutation()
+  const { mutateAsync: updateReposConfigurationMutation } =
+    trpc.client.updateCurrentRepositoriesConfiguration.useMutation()
 
   const hasMissingFormValues =
-    !formValues?.email || !formValues?.headBranch || !formValues?.baseBranch
+    !formValues?.headBranch || !formValues?.baseBranch
 
   useEffect(() => {
-    if (!user) return
+    if (!configuration) return
 
-    setFormValues(user)
-  }, [user])
+    setFormValues(configuration)
+  }, [configuration, isOpen])
 
-  async function updateUser() {
-    if (!user) return
+  async function updateConfiguration() {
+    if (!configuration) return
     if (hasMissingFormValues) return
 
     try {
       setIsPending(true)
 
       const trimmedValues = trimObjectValues(formValues)
-      await updateUserMutation(trimmedValues as FormValuesRequired)
+      await updateReposConfigurationMutation(
+        trimmedValues as FormValuesRequired
+      )
 
       await queryClient.invalidateQueries(
-        getQueryKey(trpc.client.getCurrentUser)
+        getQueryKey(trpc.client.getCurrentRepositoriesConfiguration)
       )
 
       queryClient
         .invalidateQueries(getQueryKey(trpc.client.getCurrentWarnings))
         .then()
 
-      onClose()
+      handleClose()
       setFormValues(undefined)
     } catch {
-      showErrorToast('Can not update profile.')
+      showErrorToast('Can not update configuration.')
     } finally {
       setIsPending(false)
     }
   }
 
+  function handleClose() {
+    setFormValues(undefined)
+    onClose()
+  }
+
   return (
-    <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
-      <DrawerOverlay />
-      <DrawerContent>
-        <DrawerCloseButton />
-        <DrawerHeader>Update profile</DrawerHeader>
-
-        <DrawerBody>
+    <Drawer
+      isOpen={isOpen}
+      onClose={handleClose}
+      header={<>Update configuration</>}
+      body={
+        <>
           <FormControl>
-            <FormLabel>Email</FormLabel>
-            <Input
-              value={formValues?.email || ''}
-              placeholder="Type..."
-              onChange={e =>
-                setFormValues({
-                  ...formValues,
-                  email: e.target.value
-                })
-              }
-            />
-          </FormControl>
-
-          <FormControl mt={8}>
             <FormLabel>Head branch</FormLabel>
             <Input
               value={formValues?.headBranch || ''}
@@ -146,7 +135,7 @@ export function UpdateUserDrawer({
           <FormControl mt={8}>
             <FormLabel>Base branch</FormLabel>
             <Input
-              value={formValues?.baseBranch}
+              value={formValues?.baseBranch || ''}
               placeholder="Type..."
               onChange={e =>
                 setFormValues({
@@ -188,21 +177,23 @@ export function UpdateUserDrawer({
 
             <FormHelperText>Helpful during the initial setup</FormHelperText>
           </FormControl>
-        </DrawerBody>
-
-        <DrawerFooter>
-          <Button variant="outline" mr={2} onClick={onClose}>
+        </>
+      }
+      footer={
+        <>
+          <Button variant="outline" onClick={handleClose}>
             Cancel
           </Button>
           <Button
+            ml={2}
             isLoading={isPending}
             isDisabled={hasMissingFormValues}
-            onClick={updateUser}
+            onClick={updateConfiguration}
           >
             Save
           </Button>
-        </DrawerFooter>
-      </DrawerContent>
-    </Drawer>
+        </>
+      }
+    />
   )
 }

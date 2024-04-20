@@ -28,13 +28,21 @@ export class WarningsRepository {
         repo: repo.name
       })
 
+      const configurationForCurrentRepo = this.config.repos.find(
+        iteratedRepo => iteratedRepo.repoId === repo.id
+      )
+
+      const headBranch =
+        configurationForCurrentRepo?.headBranch || this.config.headBranch
+      const baseBranch =
+        configurationForCurrentRepo?.baseBranch || this.config.baseBranch
+
       if (!this.config.excludeReposWithoutRequiredBranches) {
         const allBranchNames = listBranches.map(branch => branch.name)
 
-        const missingBranch = [
-          this.config.baseBranch,
-          this.config.headBranch
-        ].find(requiredBranch => !allBranchNames.includes(requiredBranch))
+        const missingBranch = [headBranch, baseBranch].find(
+          requiredBranch => !allBranchNames.includes(requiredBranch)
+        )
 
         if (missingBranch) {
           throw new MissingBranchError(
@@ -47,8 +55,8 @@ export class WarningsRepository {
         this.githubAppRepository.compareCommits({
           owner: repo.owner.login,
           repo: repo.name,
-          baseBranch: this.config.baseBranch,
-          headBranch: this.config.headBranch
+          baseBranch,
+          headBranch
         })
       )
 
@@ -76,7 +84,7 @@ export class WarningsRepository {
       return {
         repo: repo.name,
         commits: commits.map(commit => commit.commit.message),
-        compareLink: `https://github.com/${repo.owner.login}/${repo.name}/compare/${this.config.baseBranch}...${this.config.headBranch}`,
+        compareLink: `https://github.com/${repo.owner.login}/${repo.name}/compare/${baseBranch}...${headBranch}`,
         authors,
         delay: convertHoursToReadableFormat(firstCommitDelayInHours)
       }
@@ -100,6 +108,11 @@ type Config = {
   baseBranch: string
   headBranch: string
   excludeReposWithoutRequiredBranches: boolean
+  repos: Array<{
+    repoId: number
+    baseBranch: string
+    headBranch: string
+  }>
 }
 
 export class MissingBranchError extends Error {}

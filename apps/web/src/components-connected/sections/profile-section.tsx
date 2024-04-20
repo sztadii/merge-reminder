@@ -3,20 +3,17 @@ import {
   Button,
   Card,
   CardBody,
-  CardHeader,
-  Heading,
   IconButton,
   Skeleton,
   useDisclosure
 } from '@chakra-ui/react'
 
+import { UpdateUserDrawer } from 'src/components-connected/drawers/update-user-drawer'
 import { DetailsGrid, DetailsGridProps } from 'src/components/details-grid'
 import { Icon } from 'src/components/icon'
 import { trpc } from 'src/trpc'
 
-import { UpdateUserDrawer } from './update-user-drawer'
-
-export function ViewUserDetails() {
+export function ProfileSection() {
   const { data: user, isLoading, error } = trpc.client.getCurrentUser.useQuery()
 
   const {
@@ -37,48 +34,26 @@ export function ViewUserDetails() {
           Please provide the email
         </Button>
       )
-    },
-    {
-      heading: 'Exclude repos without required branches',
-      text: user?.excludeReposWithoutRequiredBranches ? 'Yes' : 'No'
-    },
-    {
-      heading: 'Head branch',
-      text: user?.headBranch
-    },
-    {
-      heading: 'Base branch',
-      text: user?.baseBranch
     }
   ]
 
   return (
     <>
-      <Card>
-        <CardHeader position="relative">
-          <Heading size="md">
-            {isLoading ? (
-              <Skeleton display="inline-block">Profile</Skeleton>
-            ) : (
-              'Profile'
-            )}
-          </Heading>
-
-          <Box position="absolute" top={4} right={4}>
-            {isLoading ? (
-              <Skeleton>
-                <IconButton aria-label="update profile" />
-              </Skeleton>
-            ) : (
-              <IconButton
-                aria-label="update profile"
-                isDisabled={!user}
-                onClick={onOpenForUpdateDrawer}
-                icon={<Icon variant="edit" />}
-              />
-            )}
-          </Box>
-        </CardHeader>
+      <Card position="relative">
+        <Box position="absolute" top={4} right={4}>
+          {isLoading ? (
+            <Skeleton>
+              <IconButton aria-label="update profile" />
+            </Skeleton>
+          ) : (
+            <IconButton
+              aria-label="update profile"
+              isDisabled={!user}
+              onClick={onOpenForUpdateDrawer}
+              icon={<Icon variant="edit" />}
+            />
+          )}
+        </Box>
 
         <CardBody>
           <DetailsGrid

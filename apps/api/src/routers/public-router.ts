@@ -1,19 +1,12 @@
-import { WarningsController } from '../controllers/warnings-controller'
-import { UsersRepository } from '../repositories/users-repository'
+import { createWarningsController } from '../factories/create-warnings-controller'
 import { EmptyResponseSchema } from '../schemas'
-import { EmailService } from '../services/email-service'
 import { apiKeyProtectedProcedure, router } from '../trpc'
 
 export const publicRouter = router({
   sendWarningsForAllUsers: apiKeyProtectedProcedure
     .output(EmptyResponseSchema)
     .mutation(opts => {
-      const usersRepository = new UsersRepository(opts.ctx.database)
-      const emailService = new EmailService()
-      const warningsController = new WarningsController(
-        usersRepository,
-        emailService
-      )
+      const warningsController = createWarningsController(opts.ctx)
 
       return warningsController.sendWarningsForAllUsers()
     })

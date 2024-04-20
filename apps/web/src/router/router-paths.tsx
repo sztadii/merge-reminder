@@ -4,7 +4,8 @@ export const routerPaths = {
   landing: createPage('/'),
   login: createPage('/login'),
   dashboard: createPage('/dashboard'),
-  settings: createPage('/settings')
+  settings: createPage('/settings'),
+  profile: createPage('/profile')
 }
 
 function createPage(path: string) {

@@ -1,23 +1,14 @@
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/react'
-import { Link } from 'wouter'
+import { Box } from '@chakra-ui/react'
 
-import { BasicSettingsSection } from 'src/components-connected/basic-settings-section'
-import { routerPaths } from 'src/router'
+import { BasicSettingsSection } from 'src/components-connected/sections/basic-settings-section'
+import { Breadcrumbs } from 'src/components/breadcrumbs'
 
 export function Settings() {
   return (
     <>
-      <Breadcrumb mb={4}>
-        <BreadcrumbItem>
-          <BreadcrumbLink as={Link} to={routerPaths.dashboard.path}>
-            Dashboard
-          </BreadcrumbLink>
-        </BreadcrumbItem>
-
-        <BreadcrumbItem isCurrentPage>
-          <BreadcrumbLink href="#">Settings</BreadcrumbLink>
-        </BreadcrumbItem>
-      </Breadcrumb>
+      <Box mb={4}>
+        <Breadcrumbs currentPage="Settings" />
+      </Box>
 
       <BasicSettingsSection />
     </>

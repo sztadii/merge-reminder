@@ -1,8 +1,10 @@
 import {
   AddIcon,
+  BellIcon,
   ChevronDownIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
+  DeleteIcon,
   EditIcon,
   ExternalLinkIcon,
   MoonIcon,
@@ -21,6 +23,8 @@ const icons = {
   externalLink: ExternalLinkIcon,
   edit: EditIcon,
   warning: WarningTwoIcon,
+  delete: DeleteIcon,
+  bell: BellIcon,
   repeat: RepeatIcon
 }
 
@@ -33,11 +37,12 @@ const sizes = {
 type IconProps = {
   variant: keyof typeof icons
   size?: 'sm' | 'md' | 'lg'
+  color?: string
 }
 
-export function Icon({ variant, size = 'md' }: IconProps) {
+export function Icon({ variant, size = 'md', color }: IconProps) {
   const Component = icons[variant]
   const sizeInPixels = `${sizes[size]}px`
 
-  return <Component w={sizeInPixels} />
+  return <Component color={color} w={sizeInPixels} />
 }

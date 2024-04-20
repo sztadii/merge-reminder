@@ -5,6 +5,7 @@ import { UserDatabaseRecord } from '../database'
 import { convertJSONToToken } from '../helpers'
 import { GithubAuthRepository } from '../repositories/github-auth-repository'
 import { InstallationRepository } from '../repositories/installation-repository'
+import { ReposConfigurationsRepository } from '../repositories/repos-configurations-repository'
 import { UsersRepository } from '../repositories/users-repository'
 import {
   LoginRequest,
@@ -17,6 +18,7 @@ import { UserFromToken } from '../types'
 export class AuthController {
   constructor(
     private usersRepository: UsersRepository,
+    private reposConfigurationsRepository: ReposConfigurationsRepository,
     private githubAuthRepository: GithubAuthRepository,
     private installationRepository: InstallationRepository
   ) {}
@@ -44,13 +46,11 @@ export class AuthController {
       const validatedUser = await UserCreateRequestSchema.parseAsync({
         role: 'client',
         avatarUrl: githubUser.avatar_url,
-        githubId: githubUser.id,
-        headBranch: 'main',
-        baseBranch: 'develop'
+        githubId: githubUser.id
       } as UserCreateRequest).catch(() => {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
-          message: `The GitHub API sent unexpected data. Please wait, we are working on fixing it soon.`
+          message: `The GitHub API sent unexpected data. Please wait, we are working on it.`
         })
       })
 
@@ -80,6 +80,7 @@ export class AuthController {
     try {
       await this.installationRepository.disconnectRepositories(userId)
       await this.usersRepository.deleteById(userId)
+      await this.reposConfigurationsRepository.deleteByUserId(userId)
     } catch {
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',

@@ -1,8 +1,12 @@
 import { GithubAppRepository } from './github-app-repository'
+import { ReposConfigurationsRepository } from './repos-configurations-repository'
 import { UsersRepository } from './users-repository'
 
 export class InstallationRepository {
-  constructor(private usersRepository: UsersRepository) {}
+  constructor(
+    private usersRepository: UsersRepository,
+    private reposConfigurationsRepository: ReposConfigurationsRepository
+  ) {}
 
   async connectRepositories(
     userId: string,
@@ -10,6 +14,13 @@ export class InstallationRepository {
   ): Promise<void> {
     await this.usersRepository.updateById(userId, {
       githubAppInstallationId: installationId
+    })
+    await this.reposConfigurationsRepository.create({
+      userId,
+      headBranch: 'main',
+      baseBranch: 'develop',
+      excludeReposWithoutRequiredBranches: false,
+      repos: []
     })
   }
 
@@ -26,5 +37,7 @@ export class InstallationRepository {
     await this.usersRepository.updateById(userId, {
       githubAppInstallationId: null
     })
+
+    await this.reposConfigurationsRepository.deleteByUserId(userId)
   }
 }

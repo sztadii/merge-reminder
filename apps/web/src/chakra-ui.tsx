@@ -13,6 +13,19 @@ export const theme = extendTheme({
           borderRadius: 'md'
         }
       }
+    },
+    Card: {
+      baseStyle: {
+        container: {
+          boxShadow: 'none',
+          borderWidth: '1px',
+          borderStyle: 'solid',
+          borderColor: 'gray.200',
+          _dark: {
+            borderColor: 'gray.700'
+          }
+        }
+      }
     }
   }
 })
