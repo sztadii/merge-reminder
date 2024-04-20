@@ -10,8 +10,6 @@ import { UsersRepository } from '../repositories/users-repository'
 import {
   LoginRequest,
   LoginResponse,
-  RepoConfigurationCreateRequest,
-  RepoConfigurationCreateRequestSchema,
   UserCreateRequest,
   UserCreateRequestSchema
 } from '../schemas'
@@ -71,29 +69,6 @@ export class AuthController {
           message: `The user not found.`
         })
       }
-
-      const validatedConfiguration =
-        await RepoConfigurationCreateRequestSchema.parseAsync({
-          userId: createdUser._id.toString(),
-          headBranch: 'main',
-          baseBranch: 'develop',
-          excludeReposWithoutRequiredBranches: false,
-          repos: []
-        } as RepoConfigurationCreateRequest).catch(() => {
-          throw new TRPCError({
-            code: 'INTERNAL_SERVER_ERROR',
-            message: `Something went wrong when validating configuration. Please wait, we are working on it.`
-          })
-        })
-
-      await this.reposConfigurationsRepository
-        .create(validatedConfiguration)
-        .catch(() => {
-          throw new TRPCError({
-            code: 'INTERNAL_SERVER_ERROR',
-            message: `An error occurred while creating the configuration.`
-          })
-        })
 
       return this.getTokenFromUser(createdUser)
     }

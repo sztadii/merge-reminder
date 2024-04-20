@@ -15,6 +15,13 @@ export class InstallationRepository {
     await this.usersRepository.updateById(userId, {
       githubAppInstallationId: installationId
     })
+    await this.reposConfigurationsRepository.create({
+      userId,
+      headBranch: 'main',
+      baseBranch: 'develop',
+      excludeReposWithoutRequiredBranches: false,
+      repos: []
+    })
   }
 
   async disconnectRepositories(userId: string): Promise<void> {
