@@ -1,20 +1,9 @@
-import {
-  Button,
-  Drawer,
-  DrawerBody,
-  DrawerCloseButton,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerOverlay,
-  FormControl,
-  FormLabel,
-  Input
-} from '@chakra-ui/react'
+import { Button, Flex, FormControl, FormLabel, Input } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { getQueryKey } from '@trpc/react-query'
 import { useEffect, useState } from 'react'
 
+import { Drawer } from 'src/components/drawer'
 import { trimObjectValues } from 'src/helpers'
 import { UserResponse, UserUpdateRequest } from 'src/schemas'
 import { showErrorToast } from 'src/toasts'
@@ -79,12 +68,12 @@ export function UpdateUserDrawer({
   }
 
   return (
-    <Drawer isOpen={isOpen} placement="right" onClose={handleClose}>
-      <DrawerOverlay />
-      <DrawerContent>
-        <DrawerHeader>Update profile</DrawerHeader>
-
-        <DrawerBody>
+    <Drawer
+      isOpen={isOpen}
+      onClose={handleClose}
+      header={<>Update profile</>}
+      body={
+        <>
           <FormControl>
             <FormLabel>Email</FormLabel>
             <Input
@@ -98,21 +87,23 @@ export function UpdateUserDrawer({
               }
             />
           </FormControl>
-        </DrawerBody>
-
-        <DrawerFooter>
-          <Button variant="outline" mr={2} onClick={handleClose}>
+        </>
+      }
+      footer={
+        <Flex>
+          <Button variant="outline" onClick={handleClose}>
             Cancel
           </Button>
           <Button
+            ml={2}
             isLoading={isPending}
             isDisabled={hasMissingFormValues}
             onClick={updateUser}
           >
             Save
           </Button>
-        </DrawerFooter>
-      </DrawerContent>
-    </Drawer>
+        </Flex>
+      }
+    />
   )
 }

@@ -1,12 +1,5 @@
 import {
   Button,
-  Drawer,
-  DrawerBody,
-  DrawerCloseButton,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerOverlay,
   Flex,
   FormControl,
   FormHelperText,
@@ -18,6 +11,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { getQueryKey } from '@trpc/react-query'
 import { useEffect, useState } from 'react'
 
+import { Drawer } from 'src/components/drawer'
 import { trimObjectValues } from 'src/helpers'
 import {
   RepoConfigurationResponse,
@@ -91,12 +85,12 @@ export function UpdateReposConfigurationDrawer({
   }
 
   return (
-    <Drawer isOpen={isOpen} placement="right" onClose={handleClose}>
-      <DrawerOverlay />
-      <DrawerContent>
-        <DrawerHeader>Update configuration</DrawerHeader>
-
-        <DrawerBody>
+    <Drawer
+      isOpen={isOpen}
+      onClose={handleClose}
+      header={<>Update configuration</>}
+      body={
+        <>
           <FormControl>
             <FormLabel>Head branch</FormLabel>
             <Input
@@ -183,21 +177,23 @@ export function UpdateReposConfigurationDrawer({
 
             <FormHelperText>Helpful during the initial setup</FormHelperText>
           </FormControl>
-        </DrawerBody>
-
-        <DrawerFooter>
-          <Button variant="outline" mr={2} onClick={handleClose}>
+        </>
+      }
+      footer={
+        <>
+          <Button variant="outline" onClick={handleClose}>
             Cancel
           </Button>
           <Button
+            ml={2}
             isLoading={isPending}
             isDisabled={hasMissingFormValues}
             onClick={updateConfiguration}
           >
             Save
           </Button>
-        </DrawerFooter>
-      </DrawerContent>
-    </Drawer>
+        </>
+      }
+    />
   )
 }

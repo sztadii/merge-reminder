@@ -1,12 +1,5 @@
 import {
   Button,
-  Drawer,
-  DrawerBody,
-  DrawerCloseButton,
-  DrawerContent,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerOverlay,
   Flex,
   FormControl,
   FormHelperText,
@@ -17,6 +10,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { getQueryKey } from '@trpc/react-query'
 import { useEffect, useMemo, useState } from 'react'
 
+import { Drawer } from 'src/components/drawer'
 import { trimObjectValues } from 'src/helpers'
 import { RepoConfigurationResponse, RepositoryResponse } from 'src/schemas'
 import { showErrorToast } from 'src/toasts'
@@ -141,12 +135,12 @@ export function UpdateRepoConfigurationDrawer({
   }
 
   return (
-    <Drawer isOpen={isOpen} placement="right" onClose={handleClose}>
-      <DrawerOverlay />
-      <DrawerContent>
-        <DrawerHeader>Update {repo?.name}</DrawerHeader>
-
-        <DrawerBody>
+    <Drawer
+      isOpen={isOpen}
+      onClose={handleClose}
+      header={<>Update {repo?.name}</>}
+      body={
+        <>
           <FormControl>
             <FormLabel>Head branch</FormLabel>
             <Input
@@ -217,15 +211,16 @@ export function UpdateRepoConfigurationDrawer({
               </Button>
             </Flex>
           </FormControl>
-        </DrawerBody>
-
-        <DrawerFooter>
-          <Button variant="outline" mr={2} onClick={handleClose}>
+        </>
+      }
+      footer={
+        <>
+          <Button variant="outline" onClick={handleClose}>
             Cancel
           </Button>
           {hasRepoInConfiguration && (
             <Button
-              mr={2}
+              ml={2}
               colorScheme="red"
               isLoading={isPending}
               isDisabled={hasMissingFormValues}
@@ -235,14 +230,15 @@ export function UpdateRepoConfigurationDrawer({
             </Button>
           )}
           <Button
+            ml={2}
             isLoading={isPending}
             isDisabled={hasMissingFormValues}
             onClick={() => updateConfiguration()}
           >
             Save
           </Button>
-        </DrawerFooter>
-      </DrawerContent>
-    </Drawer>
+        </>
+      }
+    />
   )
 }
