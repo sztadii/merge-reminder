@@ -1,4 +1,4 @@
-import { Alert, AlertIcon, Box, Spinner } from '@chakra-ui/react'
+import { Alert, AlertIcon, Box } from '@chakra-ui/react'
 
 import { ConnectReposButton } from 'src/components-connected/buttons/connect-repos-button'
 import { RepositoriesSection } from 'src/components-connected/sections/repositories-section'
@@ -9,7 +9,7 @@ export function Dashboard() {
   const { data: user, isLoading, error } = trpc.client.getCurrentUser.useQuery()
 
   function renderContent() {
-    if (isLoading) return <Spinner />
+    if (isLoading) return null
 
     if (error)
       return (
