@@ -26,5 +26,7 @@ export class InstallationRepository {
     await this.usersRepository.updateById(userId, {
       githubAppInstallationId: null
     })
+
+    // TODO Remove repo configuration
   }
 }
