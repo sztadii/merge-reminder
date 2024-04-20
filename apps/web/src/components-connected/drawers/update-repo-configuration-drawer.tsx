@@ -78,8 +78,7 @@ export function UpdateRepoConfigurationDrawer({
         baseBranch: formValues?.baseBranch
       } as FormValuesRequired)
 
-      let reposYoUpdate: RepoConfigurationResponse['repos'] =
-        configuration.repos
+      let reposYoUpdate: RepoConfigurationResponse['repos']
 
       const isReposConfigurationEmpty = configuration.repos.length === 0
 
