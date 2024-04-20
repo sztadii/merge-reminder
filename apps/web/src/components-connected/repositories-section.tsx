@@ -6,6 +6,7 @@ import {
   AccordionPanel,
   Alert,
   AlertIcon,
+  Box,
   Card,
   CardBody,
   CardHeader,
@@ -17,12 +18,35 @@ import {
 import { Text } from 'src/components/text'
 import { trpc } from 'src/trpc'
 
+import { DetailsGrid, DetailsGridProps } from '../components/details-grid'
+
 export function RepositoriesSection() {
   const {
     data: repositories,
-    isLoading,
-    error
+    isLoading: isLoadingForRepositories,
+    error: errorForRepositories
   } = trpc.client.getCurrentRepositories.useQuery()
+
+  const {
+    data: configuration,
+    isLoading: isLoadingForConfiguration,
+    error: errorForConfiguration
+  } = trpc.client.getCurrentRepositoriesConfiguration.useQuery()
+
+  const details: DetailsGridProps['details'] = [
+    {
+      heading: 'Head branch',
+      text: configuration?.headBranch
+    },
+    {
+      heading: 'Base branch',
+      text: configuration?.baseBranch
+    },
+    {
+      heading: 'Exclude repos without required branches',
+      text: configuration?.excludeReposWithoutRequiredBranches ? 'Yes' : 'No'
+    }
+  ]
 
   return (
     <>
@@ -32,7 +56,15 @@ export function RepositoriesSection() {
         </CardHeader>
 
         <CardBody>
-          {isLoading && (
+          <Box mb={8}>
+            <DetailsGrid
+              details={details}
+              isLoading={isLoadingForConfiguration}
+              error={errorForConfiguration?.message}
+            />
+          </Box>
+
+          {isLoadingForRepositories && (
             <Accordion allowMultiple>
               {new Array(2).fill(null).map((_, index) => {
                 return (
@@ -57,10 +89,10 @@ export function RepositoriesSection() {
             </Accordion>
           )}
 
-          {error && (
+          {errorForRepositories && (
             <Alert status="error">
               <AlertIcon />
-              {error.message}
+              {errorForRepositories.message}
             </Alert>
           )}
 

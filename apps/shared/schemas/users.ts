@@ -4,11 +4,8 @@ import { ResponseSchema } from './base'
 
 export const UserResponseSchema = ResponseSchema.extend({
   avatarUrl: z.string(),
-  headBranch: z.string(),
-  baseBranch: z.string(),
   email: z.string().email().optional(),
-  hasInstallationId: z.boolean(),
-  excludeReposWithoutRequiredBranches: z.boolean()
+  hasInstallationId: z.boolean()
 })
 
 export type UserResponse = z.infer<typeof UserResponseSchema>
@@ -16,18 +13,13 @@ export type UserResponse = z.infer<typeof UserResponseSchema>
 export const UserCreateRequestSchema = z.object({
   githubId: z.number(),
   avatarUrl: z.string(),
-  role: z.enum(['client', 'admin']),
-  headBranch: z.string(),
-  baseBranch: z.string()
+  role: z.enum(['client', 'admin'])
 })
 
 export type UserCreateRequest = z.infer<typeof UserCreateRequestSchema>
 
 export const UserUpdateRequestSchema = z.object({
-  headBranch: z.string(),
-  baseBranch: z.string(),
-  email: z.string().email(),
-  excludeReposWithoutRequiredBranches: z.boolean()
+  email: z.string().email()
 })
 
 export type UserUpdateRequest = z.infer<typeof UserUpdateRequestSchema>
@@ -64,6 +56,7 @@ export const RepoConfigurationResponseSchema = ResponseSchema.extend({
   excludeReposWithoutRequiredBranches: z.boolean(),
   repos: z.array(
     z.object({
+      repoId: z.number(),
       headBranch: z.string(),
       baseBranch: z.string()
     })
@@ -81,6 +74,7 @@ export const RepoConfigurationCreateRequestSchema = z.object({
   excludeReposWithoutRequiredBranches: z.boolean(),
   repos: z.array(
     z.object({
+      repoId: z.number(),
       headBranch: z.string(),
       baseBranch: z.string()
     })
@@ -98,6 +92,7 @@ export const RepoConfigurationUpdateRequestSchema = z.object({
   repos: z
     .array(
       z.object({
+        repoId: z.number(),
         headBranch: z.string(),
         baseBranch: z.string()
       })

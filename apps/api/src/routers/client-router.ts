@@ -70,8 +70,12 @@ export const clientRouter = router({
     .query(opts => {
       const usersRepository = new UsersRepository(opts.ctx.database)
       const emailService = new EmailService()
+      const reposConfigurationsRepository = new ReposConfigurationsRepository(
+        opts.ctx.database
+      )
       const warningsController = new WarningsController(
         usersRepository,
+        reposConfigurationsRepository,
         emailService
       )
 
@@ -82,8 +86,12 @@ export const clientRouter = router({
     .mutation(opts => {
       const usersRepository = new UsersRepository(opts.ctx.database)
       const emailService = new EmailService()
+      const reposConfigurationsRepository = new ReposConfigurationsRepository(
+        opts.ctx.database
+      )
       const warningsController = new WarningsController(
         usersRepository,
+        reposConfigurationsRepository,
         emailService
       )
 

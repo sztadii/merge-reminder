@@ -4,6 +4,7 @@ import { uniq } from 'lodash'
 
 import { promiseAllInBatches } from '../helpers'
 import { GithubAppRepository } from '../repositories/github-app-repository'
+import { ReposConfigurationsRepository } from '../repositories/repos-configurations-repository'
 import { UsersRepository } from '../repositories/users-repository'
 import {
   MissingBranchError,
@@ -15,6 +16,7 @@ import { EmailService } from '../services/email-service'
 export class WarningsController {
   constructor(
     private usersRepository: UsersRepository,
+    private reposConfigurationsRepository: ReposConfigurationsRepository,
     private emailService: EmailService
   ) {}
 
@@ -32,13 +34,18 @@ export class WarningsController {
       user.githubAppInstallationId
     )
 
+    const reposConfiguration =
+      await this.reposConfigurationsRepository.getByUserId(userId)
+
+    if (!reposConfiguration) {
+      throw new TRPCError({
+        code: 'FORBIDDEN',
+        message: `The configuration not found for this user.`
+      })
+    }
+
     const warningsRepository = new WarningsRepository(
-      {
-        headBranch: user.headBranch,
-        baseBranch: user.baseBranch,
-        excludeReposWithoutRequiredBranches:
-          !!user.excludeReposWithoutRequiredBranches
-      },
+      reposConfiguration,
       githubAppRepository
     )
 
@@ -56,8 +63,8 @@ export class WarningsController {
     })
 
     if (warnings.length === 0) {
-      const message = user.excludeReposWithoutRequiredBranches
-        ? `You have 0 repositories that we can check. Please add ${user.headBranch} and ${user.baseBranch} branches to your repositories.`
+      const message = reposConfiguration.excludeReposWithoutRequiredBranches
+        ? `You have 0 repositories that we can check.`
         : "You don't have any repositories."
 
       throw new TRPCError({

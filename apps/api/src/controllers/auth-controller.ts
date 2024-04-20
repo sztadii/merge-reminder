@@ -48,9 +48,7 @@ export class AuthController {
       const validatedUser = await UserCreateRequestSchema.parseAsync({
         role: 'client',
         avatarUrl: githubUser.avatar_url,
-        githubId: githubUser.id,
-        headBranch: 'main',
-        baseBranch: 'develop'
+        githubId: githubUser.id
       } as UserCreateRequest).catch(() => {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',

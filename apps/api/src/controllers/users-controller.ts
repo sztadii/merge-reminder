@@ -28,11 +28,7 @@ export class UsersController {
   async updateById(id: string, userData: UserUpdateRequest): Promise<void> {
     try {
       await this.usersRepository.updateById(id, {
-        headBranch: userData.headBranch,
-        baseBranch: userData.baseBranch,
-        email: userData.email,
-        excludeReposWithoutRequiredBranches:
-          userData.excludeReposWithoutRequiredBranches
+        email: userData.email
       })
     } catch {
       throw new TRPCError({
@@ -49,11 +45,7 @@ export class UsersController {
       updatedAt: user.updatedAt?.toISOString(),
       avatarUrl: user.avatarUrl,
       email: user.email,
-      headBranch: user.headBranch,
-      baseBranch: user.baseBranch,
-      hasInstallationId: !!user.githubAppInstallationId,
-      excludeReposWithoutRequiredBranches:
-        !!user.excludeReposWithoutRequiredBranches
+      hasInstallationId: !!user.githubAppInstallationId
     }
   }
 }

@@ -37,18 +37,6 @@ export function ViewUserDetails() {
           Please provide the email
         </Button>
       )
-    },
-    {
-      heading: 'Exclude repos without required branches',
-      text: user?.excludeReposWithoutRequiredBranches ? 'Yes' : 'No'
-    },
-    {
-      heading: 'Head branch',
-      text: user?.headBranch
-    },
-    {
-      heading: 'Base branch',
-      text: user?.baseBranch
     }
   ]
 

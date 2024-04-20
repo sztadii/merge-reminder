@@ -7,12 +7,9 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
-  Flex,
   FormControl,
-  FormHelperText,
   FormLabel,
-  Input,
-  Switch
+  Input
 } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { getQueryKey } from '@trpc/react-query'
@@ -44,8 +41,7 @@ export function UpdateUserDrawer({
   const { mutateAsync: updateUserMutation } =
     trpc.client.updateCurrentUser.useMutation()
 
-  const hasMissingFormValues =
-    !formValues?.email || !formValues?.headBranch || !formValues?.baseBranch
+  const hasMissingFormValues = !formValues?.email
 
   useEffect(() => {
     if (!user) return
@@ -66,10 +62,6 @@ export function UpdateUserDrawer({
       await queryClient.invalidateQueries(
         getQueryKey(trpc.client.getCurrentUser)
       )
-
-      queryClient
-        .invalidateQueries(getQueryKey(trpc.client.getCurrentWarnings))
-        .then()
 
       onClose()
       setFormValues(undefined)
@@ -100,93 +92,6 @@ export function UpdateUserDrawer({
                 })
               }
             />
-          </FormControl>
-
-          <FormControl mt={8}>
-            <FormLabel>Head branch</FormLabel>
-            <Input
-              value={formValues?.headBranch || ''}
-              placeholder="Type..."
-              onChange={e =>
-                setFormValues({
-                  ...formValues,
-                  headBranch: e.target.value
-                })
-              }
-            />
-
-            <FormHelperText>Usually the production branch:</FormHelperText>
-
-            <Flex alignItems="center" gap={2} mt={2}>
-              <Button
-                size="xs"
-                onClick={() => {
-                  setFormValues({
-                    ...formValues,
-                    headBranch: 'master'
-                  })
-                }}
-              >
-                master
-              </Button>
-              <Button
-                size="xs"
-                onClick={() => {
-                  setFormValues({
-                    ...formValues,
-                    headBranch: 'main'
-                  })
-                }}
-              >
-                main
-              </Button>
-            </Flex>
-          </FormControl>
-
-          <FormControl mt={8}>
-            <FormLabel>Base branch</FormLabel>
-            <Input
-              value={formValues?.baseBranch}
-              placeholder="Type..."
-              onChange={e =>
-                setFormValues({
-                  ...formValues,
-                  baseBranch: e.target.value
-                })
-              }
-            />
-
-            <FormHelperText>Usually the development branch:</FormHelperText>
-
-            <Flex alignItems="center" gap={2} mt={2}>
-              <Button
-                size="xs"
-                onClick={() => {
-                  setFormValues({
-                    ...formValues,
-                    baseBranch: 'develop'
-                  })
-                }}
-              >
-                develop
-              </Button>
-            </Flex>
-          </FormControl>
-
-          <FormControl mt={8}>
-            <FormLabel>Exclude repos without required branches</FormLabel>
-            <Switch
-              size="lg"
-              isChecked={formValues?.excludeReposWithoutRequiredBranches}
-              onChange={e =>
-                setFormValues({
-                  ...formValues,
-                  excludeReposWithoutRequiredBranches: e.target.checked
-                })
-              }
-            />
-
-            <FormHelperText>Helpful during the initial setup</FormHelperText>
           </FormControl>
         </DrawerBody>
 

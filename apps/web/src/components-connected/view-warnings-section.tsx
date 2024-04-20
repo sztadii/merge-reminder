@@ -18,7 +18,6 @@ import { Table, TableProps } from 'src/components/table'
 import { Text } from 'src/components/text'
 import { trpc } from 'src/trpc'
 
-import { ConnectReposButton } from './connect-repos-button'
 import { RefreshWarningsButton } from './refresh-warnings-button'
 import { SendWarningsButton } from './send-warnings-button'
 
@@ -30,19 +29,13 @@ export function ViewWarningsSection() {
   } = trpc.client.getCurrentUser.useQuery()
 
   const hasInstallationId = user?.hasInstallationId === true
-  const hasNoInstallationId = user?.hasInstallationId === false
 
-  // isLoading return true when "enabled" is false.
-  // It is a bit weird, so I used isInitialLoading instead.
-  // isInitialLoading works as expected.
   const {
     data: warningsData,
-    isInitialLoading: isLoadingForWarnings,
+    isLoading: isLoadingForWarnings,
     isFetching: isFetchingForWarnings,
     error: errorForWarnings
-  } = trpc.client.getCurrentWarnings.useQuery(undefined, {
-    enabled: hasInstallationId
-  })
+  } = trpc.client.getCurrentWarnings.useQuery()
 
   const warnings = warningsData || []
 
@@ -150,10 +143,6 @@ export function ViewWarningsSection() {
           <AlertIcon /> {errorForUser.message}
         </Alert>
       )
-    }
-
-    if (hasNoInstallationId) {
-      return <ConnectReposButton />
     }
 
     return (

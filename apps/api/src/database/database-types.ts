@@ -10,11 +10,8 @@ export type UserDatabaseValues = {
   githubId: number
   avatarUrl: string
   role: 'admin' | 'client'
-  headBranch: string
-  baseBranch: string
   email?: string
   githubAppInstallationId?: number | null
-  excludeReposWithoutRequiredBranches?: boolean
 }
 
 export type ReposConfigurationDatabaseValues = {
@@ -23,6 +20,7 @@ export type ReposConfigurationDatabaseValues = {
   baseBranch: string
   excludeReposWithoutRequiredBranches: boolean
   repos: Array<{
+    repoId: number
     headBranch: string
     baseBranch: string
   }>
