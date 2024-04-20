@@ -78,7 +78,8 @@ export function UpdateRepoConfigurationDrawer({
         baseBranch: formValues?.baseBranch
       } as FormValuesRequired)
 
-      let reposYoUpdate: RepoConfigurationResponse['repos'] = []
+      let reposYoUpdate: RepoConfigurationResponse['repos'] =
+        configuration.repos
 
       const isReposConfigurationEmpty = configuration.repos.length === 0
 
@@ -89,9 +90,7 @@ export function UpdateRepoConfigurationDrawer({
             ...trimmedValues
           }
         ]
-      }
-
-      if (hasRepoInConfiguration) {
+      } else if (hasRepoInConfiguration) {
         reposYoUpdate = configuration.repos.map(iteratedRepo => {
           if (iteratedRepo.repoId !== repo.id) return iteratedRepo
 
@@ -100,6 +99,14 @@ export function UpdateRepoConfigurationDrawer({
             ...trimmedValues
           }
         })
+      } else {
+        reposYoUpdate = [
+          ...configuration.repos,
+          {
+            repoId: repo.id,
+            ...trimmedValues
+          }
+        ]
       }
 
       if (isDelete) {
