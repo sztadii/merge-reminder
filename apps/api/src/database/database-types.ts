@@ -17,4 +17,18 @@ export type UserDatabaseValues = {
   excludeReposWithoutRequiredBranches?: boolean
 }
 
+export type ReposConfigurationDatabaseValues = {
+  userId: string
+  headBranch: string
+  baseBranch: string
+  excludeReposWithoutRequiredBranches: boolean
+  repos: Array<{
+    headBranch: string
+    baseBranch: string
+  }>
+}
+
 export type UserDatabaseRecord = DatabaseRecord & UserDatabaseValues
+
+export type ReposConfigurationRecord = DatabaseRecord &
+  ReposConfigurationDatabaseValues
