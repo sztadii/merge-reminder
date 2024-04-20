@@ -1,9 +1,9 @@
 import { Box } from '@chakra-ui/react'
 
-import { ConnectReposButton } from 'src/components-connected/connect-repos-button'
-import { RepositoriesSection } from 'src/components-connected/repositories-section'
-import { ViewUserDetails } from 'src/components-connected/view-user-details'
-import { ViewWarningsSection } from 'src/components-connected/view-warnings-section'
+import { ConnectReposButton } from 'src/components-connected/buttons/connect-repos-button'
+import { RepositoriesSection } from 'src/components-connected/sections/repositories-section'
+import { ViewUserDetails } from 'src/components-connected/sections/view-user-details'
+import { ViewWarningsSection } from 'src/components-connected/sections/view-warnings-section'
 import { trpc } from 'src/trpc'
 
 export function Dashboard() {

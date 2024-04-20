@@ -10,11 +10,10 @@ import {
   useDisclosure
 } from '@chakra-ui/react'
 
+import { UpdateUserDrawer } from 'src/components-connected/drawers/update-user-drawer'
 import { DetailsGrid, DetailsGridProps } from 'src/components/details-grid'
 import { Icon } from 'src/components/icon'
 import { trpc } from 'src/trpc'
-
-import { UpdateUserDrawer } from './update-user-drawer'
 
 export function ViewUserDetails() {
   const { data: user, isLoading, error } = trpc.client.getCurrentUser.useQuery()

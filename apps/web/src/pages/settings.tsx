@@ -1,7 +1,7 @@
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/react'
 import { Link } from 'wouter'
 
-import { BasicSettingsSection } from 'src/components-connected/basic-settings-section'
+import { BasicSettingsSection } from 'src/components-connected/sections/basic-settings-section'
 import { routerPaths } from 'src/router'
 
 export function Settings() {

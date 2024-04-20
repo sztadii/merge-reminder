@@ -13,13 +13,12 @@ import {
 } from '@chakra-ui/react'
 import { useMemo } from 'react'
 
+import { UpdateReposConfigurationDrawer } from 'src/components-connected/drawers/update-repos-configuration-drawer'
 import { DetailsGrid, DetailsGridProps } from 'src/components/details-grid'
 import { Icon } from 'src/components/icon'
 import { Table, TableProps } from 'src/components/table'
 import { Text } from 'src/components/text'
 import { trpc } from 'src/trpc'
-
-import { UpdateReposConfigurationDrawer } from './update-repos-configuration-drawer'
 
 export function RepositoriesSection() {
   const {

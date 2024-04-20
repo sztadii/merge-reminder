@@ -12,14 +12,13 @@ import {
 } from '@chakra-ui/react'
 import { useMemo } from 'react'
 
+import { RefreshWarningsButton } from 'src/components-connected/buttons/refresh-warnings-button'
+import { SendWarningsButton } from 'src/components-connected/buttons/send-warnings-button'
 import { Icon } from 'src/components/icon'
 import { SpinnerWithLabel } from 'src/components/spinner-with-label'
 import { Table, TableProps } from 'src/components/table'
 import { Text } from 'src/components/text'
 import { trpc } from 'src/trpc'
-
-import { RefreshWarningsButton } from './refresh-warnings-button'
-import { SendWarningsButton } from './send-warnings-button'
 
 export function ViewWarningsSection() {
   const {
