@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { getQueryKey } from '@trpc/react-query'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { trimObjectValues } from 'src/helpers'
 import { RepoConfigurationResponse, RepositoryResponse } from 'src/schemas'
@@ -48,6 +48,14 @@ export function UpdateRepoConfigurationDrawer({
   const { mutateAsync: updateReposConfigurationMutation } =
     trpc.client.updateCurrentRepositoriesConfiguration.useMutation()
 
+  const hasRepoInConfiguration = useMemo(
+    () =>
+      configuration?.repos.find(
+        iteratedRepo => iteratedRepo.repoId === repo?.id
+      ),
+    [configuration, repo]
+  )
+
   const hasMissingFormValues =
     !formValues?.headBranch || !formValues?.baseBranch
 
@@ -62,7 +70,7 @@ export function UpdateRepoConfigurationDrawer({
     setFormValues(formValues)
   }, [configuration, repo, isOpen])
 
-  async function updateConfiguration() {
+  async function updateConfiguration(isDelete?: boolean) {
     debugger
     if (!repo) return
     if (!configuration) return
@@ -89,10 +97,6 @@ export function UpdateRepoConfigurationDrawer({
         ]
       }
 
-      const hasRepoInConfiguration = configuration.repos.find(
-        iteratedRepo => iteratedRepo.repoId === repo.id
-      )
-
       if (hasRepoInConfiguration) {
         reposYoUpdate = configuration.repos.map(iteratedRepo => {
           if (iteratedRepo.repoId !== repo.id) return iteratedRepo
@@ -101,6 +105,12 @@ export function UpdateRepoConfigurationDrawer({
             repoId: repo.id,
             ...trimmedValues
           }
+        })
+      }
+
+      if (isDelete) {
+        reposYoUpdate = configuration.repos.filter(iteratedRepo => {
+          return iteratedRepo.repoId !== repo.id
         })
       }
 
@@ -213,10 +223,21 @@ export function UpdateRepoConfigurationDrawer({
           <Button variant="outline" mr={2} onClick={handleClose}>
             Cancel
           </Button>
+          {hasRepoInConfiguration && (
+            <Button
+              mr={2}
+              colorScheme="red"
+              isLoading={isPending}
+              isDisabled={hasMissingFormValues}
+              onClick={() => updateConfiguration(true)}
+            >
+              Delete
+            </Button>
+          )}
           <Button
             isLoading={isPending}
             isDisabled={hasMissingFormValues}
-            onClick={updateConfiguration}
+            onClick={() => updateConfiguration()}
           >
             Save
           </Button>
