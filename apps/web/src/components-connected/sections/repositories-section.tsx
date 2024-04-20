@@ -108,16 +108,21 @@ export function RepositoriesSection() {
               }
 
               return (
-                <Flex onClick={openEditDrawer} gap={2} alignItems="center">
+                <Flex
+                  cursor="pointer"
+                  onClick={openEditDrawer}
+                  gap={2}
+                  alignItems="center"
+                >
                   {repoConfiguration ? (
                     <>
                       <Button size="xs">{repoConfiguration.headBranch}</Button>
-
                       <Button size="xs">{repoConfiguration.baseBranch}</Button>
                     </>
                   ) : (
                     <Button size="xs">N/A</Button>
                   )}
+                  <Icon variant="edit" color="gray.500" />
                 </Flex>
               )
             }

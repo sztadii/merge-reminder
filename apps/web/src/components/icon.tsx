@@ -33,11 +33,12 @@ const sizes = {
 type IconProps = {
   variant: keyof typeof icons
   size?: 'sm' | 'md' | 'lg'
+  color?: string
 }
 
-export function Icon({ variant, size = 'md' }: IconProps) {
+export function Icon({ variant, size = 'md', color }: IconProps) {
   const Component = icons[variant]
   const sizeInPixels = `${sizes[size]}px`
 
-  return <Component w={sizeInPixels} />
+  return <Component color={color} w={sizeInPixels} />
 }

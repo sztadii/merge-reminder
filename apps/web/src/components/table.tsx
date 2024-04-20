@@ -126,7 +126,7 @@ export function Table<T extends unknown[]>({
                   flex={1}
                   minWidth={column.width}
                 >
-                  <Text fontWeight="bold">
+                  <Text fontWeight="500">
                     {column.headingCell.content(rows)}
                   </Text>
                 </Box>
