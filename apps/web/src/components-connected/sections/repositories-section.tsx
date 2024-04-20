@@ -6,7 +6,6 @@ import {
   Flex,
   Heading,
   IconButton,
-  Link,
   Skeleton,
   Tag,
   useDisclosure
@@ -17,7 +16,6 @@ import { UpdateReposConfigurationDrawer } from 'src/components-connected/drawers
 import { DetailsGrid, DetailsGridProps } from 'src/components/details-grid'
 import { Icon } from 'src/components/icon'
 import { Table, TableProps } from 'src/components/table'
-import { Text } from 'src/components/text'
 import { trpc } from 'src/trpc'
 
 export function RepositoriesSection() {
@@ -71,22 +69,7 @@ export function RepositoriesSection() {
           },
           rowCell: {
             skeleton: () => <Skeleton>Loading</Skeleton>,
-            content: repository => {
-              return (
-                <Flex gap={2} alignItems="center">
-                  <Link
-                    href={repository.url}
-                    isExternal
-                    display="flex"
-                    alignItems="center"
-                    gap={2}
-                  >
-                    <Text>{repository.name}</Text>
-                    <Icon variant="externalLink" />
-                  </Link>
-                </Flex>
-              )
-            }
+            content: repository => repository.name
           }
         },
         {
