@@ -35,11 +35,11 @@ export function RepositoriesSection() {
 
   const details: DetailsGridProps['details'] = [
     {
-      heading: 'Head branch',
+      heading: 'Default head branch',
       text: configuration?.headBranch
     },
     {
-      heading: 'Base branch',
+      heading: 'Default base branch',
       text: configuration?.baseBranch
     },
     {
