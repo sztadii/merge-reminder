@@ -20,7 +20,7 @@ import { Table, TableProps } from 'src/components/table'
 import { Text } from 'src/components/text'
 import { trpc } from 'src/trpc'
 
-export function ViewWarningsSection() {
+export function WarningsSection() {
   const {
     data: user,
     isLoading: isLoadingForUser,
