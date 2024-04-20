@@ -40,6 +40,10 @@ export function Navigation() {
               )}
             </MenuButton>
             <MenuList>
+              <MenuItem as={Link} to={routerPaths.profile.path}>
+                Profile
+              </MenuItem>
+
               <MenuItem as={Link} to={routerPaths.settings.path}>
                 Settings
               </MenuItem>

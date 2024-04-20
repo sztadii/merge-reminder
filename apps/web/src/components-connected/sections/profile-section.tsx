@@ -3,8 +3,6 @@ import {
   Button,
   Card,
   CardBody,
-  CardHeader,
-  Heading,
   IconButton,
   Skeleton,
   useDisclosure
@@ -41,31 +39,21 @@ export function ProfileSection() {
 
   return (
     <>
-      <Card>
-        <CardHeader position="relative">
-          <Heading size="md">
-            {isLoading ? (
-              <Skeleton display="inline-block">Profile</Skeleton>
-            ) : (
-              'Profile'
-            )}
-          </Heading>
-
-          <Box position="absolute" top={4} right={4}>
-            {isLoading ? (
-              <Skeleton>
-                <IconButton aria-label="update profile" />
-              </Skeleton>
-            ) : (
-              <IconButton
-                aria-label="update profile"
-                isDisabled={!user}
-                onClick={onOpenForUpdateDrawer}
-                icon={<Icon variant="edit" />}
-              />
-            )}
-          </Box>
-        </CardHeader>
+      <Card position="relative">
+        <Box position="absolute" top={4} right={4}>
+          {isLoading ? (
+            <Skeleton>
+              <IconButton aria-label="update profile" />
+            </Skeleton>
+          ) : (
+            <IconButton
+              aria-label="update profile"
+              isDisabled={!user}
+              onClick={onOpenForUpdateDrawer}
+              icon={<Icon variant="edit" />}
+            />
+          )}
+        </Box>
 
         <CardBody>
           <DetailsGrid

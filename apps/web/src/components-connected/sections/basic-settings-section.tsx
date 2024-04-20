@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader, Heading, Skeleton } from '@chakra-ui/react'
+import { Card, CardBody } from '@chakra-ui/react'
 
 import { DeleteUserButton } from 'src/components-connected/buttons/delete-user-button'
 import { DisconnectReposButton } from 'src/components-connected/buttons/disconnect-repos-button'
@@ -27,16 +27,6 @@ export function BasicSettingsSection() {
   return (
     <>
       <Card>
-        <CardHeader position="relative">
-          <Heading size="md">
-            {isLoading ? (
-              <Skeleton display="inline-block">Settings</Skeleton>
-            ) : (
-              'Settings'
-            )}
-          </Heading>
-        </CardHeader>
-
         <CardBody>
           <DetailsGrid
             details={details}

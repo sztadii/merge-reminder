@@ -1,27 +1,30 @@
-import { Box } from '@chakra-ui/react'
+import { Alert, AlertIcon, Box, Spinner } from '@chakra-ui/react'
 
 import { ConnectReposButton } from 'src/components-connected/buttons/connect-repos-button'
-import { ProfileSection } from 'src/components-connected/sections/profile-section'
 import { RepositoriesSection } from 'src/components-connected/sections/repositories-section'
 import { WarningsSection } from 'src/components-connected/sections/warnings-section'
 import { trpc } from 'src/trpc'
 
 export function Dashboard() {
-  const { data: user } = trpc.client.getCurrentUser.useQuery()
+  const { data: user, isLoading, error } = trpc.client.getCurrentUser.useQuery()
 
   function renderContent() {
-    if (!user) return
+    if (isLoading) return <Spinner />
 
-    if (!user.hasInstallationId)
+    if (error)
       return (
-        <Box mt={4}>
-          <ConnectReposButton />
-        </Box>
+        <Alert status="error">
+          <AlertIcon />
+
+          {error.message}
+        </Alert>
       )
+
+    if (user?.hasInstallationId === false) return <ConnectReposButton />
 
     return (
       <>
-        <Box mt={4}>
+        <Box>
           <WarningsSection />
         </Box>
         <Box mt={4}>
@@ -31,11 +34,5 @@ export function Dashboard() {
     )
   }
 
-  return (
-    <>
-      <ProfileSection />
-
-      {renderContent()}
-    </>
-  )
+  return <>{renderContent()}</>
 }
