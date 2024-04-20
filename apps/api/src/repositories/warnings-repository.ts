@@ -33,7 +33,7 @@ export class WarningsRepository {
       )
 
       const headBranch =
-        configurationForCurrentRepo?.baseBranch || this.config.headBranch
+        configurationForCurrentRepo?.headBranch || this.config.headBranch
       const baseBranch =
         configurationForCurrentRepo?.baseBranch || this.config.baseBranch
 
