@@ -15,7 +15,7 @@ import { DetailsGrid, DetailsGridProps } from 'src/components/details-grid'
 import { Icon } from 'src/components/icon'
 import { trpc } from 'src/trpc'
 
-export function UserDetailsSection() {
+export function ProfileSection() {
   const { data: user, isLoading, error } = trpc.client.getCurrentUser.useQuery()
 
   const {

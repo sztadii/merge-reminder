@@ -1,8 +1,8 @@
 import { Box } from '@chakra-ui/react'
 
 import { ConnectReposButton } from 'src/components-connected/buttons/connect-repos-button'
+import { ProfileSection } from 'src/components-connected/sections/profile-section'
 import { RepositoriesSection } from 'src/components-connected/sections/repositories-section'
-import { UserDetailsSection } from 'src/components-connected/sections/user-details-section'
 import { WarningsSection } from 'src/components-connected/sections/warnings-section'
 import { trpc } from 'src/trpc'
 
@@ -33,7 +33,7 @@ export function Dashboard() {
 
   return (
     <>
-      <UserDetailsSection />
+      <ProfileSection />
 
       {renderContent()}
     </>
