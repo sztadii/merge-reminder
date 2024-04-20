@@ -138,7 +138,7 @@ export const clientRouter = router({
   updateCurrentRepositoriesConfiguration: tokenProtectedProcedure
     .input(RepoConfigurationUpdateRequestSchema)
     .output(EmptyResponseSchema)
-    .query(opts => {
+    .mutation(opts => {
       const reposConfigurationsRepository = new ReposConfigurationsRepository(
         opts.ctx.database
       )

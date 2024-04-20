@@ -12,13 +12,17 @@ import {
   CardHeader,
   Flex,
   Heading,
-  Skeleton
+  IconButton,
+  Skeleton,
+  useDisclosure
 } from '@chakra-ui/react'
 
 import { Text } from 'src/components/text'
 import { trpc } from 'src/trpc'
 
 import { DetailsGrid, DetailsGridProps } from '../components/details-grid'
+import { Icon } from '../components/icon'
+import { UpdateReposConfigurationDrawer } from './update-repos-configuration-drawer'
 
 export function RepositoriesSection() {
   const {
@@ -32,6 +36,12 @@ export function RepositoriesSection() {
     isLoading: isLoadingForConfiguration,
     error: errorForConfiguration
   } = trpc.client.getCurrentRepositoriesConfiguration.useQuery()
+
+  const {
+    isOpen: isOpenForUpdateDrawer,
+    onOpen: onOpenForUpdateDrawer,
+    onClose: onCloseForUpdateDrawer
+  } = useDisclosure()
 
   const details: DetailsGridProps['details'] = [
     {
@@ -51,8 +61,29 @@ export function RepositoriesSection() {
   return (
     <>
       <Card>
-        <CardHeader>
-          <Heading size="md">Repositories</Heading>
+        <CardHeader position="relative">
+          <Heading size="md">
+            {isLoadingForConfiguration ? (
+              <Skeleton display="inline-block">Repositories</Skeleton>
+            ) : (
+              'Repositories'
+            )}
+          </Heading>
+
+          <Box position="absolute" top={4} right={4}>
+            {isLoadingForConfiguration ? (
+              <Skeleton>
+                <IconButton aria-label="update profile" />
+              </Skeleton>
+            ) : (
+              <IconButton
+                aria-label="update configuration"
+                isDisabled={!configuration}
+                onClick={onOpenForUpdateDrawer}
+                icon={<Icon variant="edit" />}
+              />
+            )}
+          </Box>
         </CardHeader>
 
         <CardBody>
@@ -119,6 +150,12 @@ export function RepositoriesSection() {
           </Accordion>
         </CardBody>
       </Card>
+
+      <UpdateReposConfigurationDrawer
+        configuration={configuration}
+        isOpen={isOpenForUpdateDrawer}
+        onClose={onCloseForUpdateDrawer}
+      />
     </>
   )
 }
