@@ -41,18 +41,14 @@ export function ProfileSection() {
     <>
       <Card position="relative">
         <Box position="absolute" top={4} right={4}>
-          {isLoading ? (
-            <Skeleton>
-              <IconButton aria-label="update profile" />
-            </Skeleton>
-          ) : (
+          <Skeleton isLoaded={!isLoading}>
             <IconButton
               aria-label="update profile"
               isDisabled={!user}
               onClick={onOpenForUpdateDrawer}
               icon={<Icon variant="edit" />}
             />
-          )}
+          </Skeleton>
         </Box>
 
         <CardBody minHeight="300px">

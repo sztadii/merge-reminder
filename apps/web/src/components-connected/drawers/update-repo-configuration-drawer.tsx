@@ -63,14 +63,14 @@ export function UpdateRepoConfigurationDrawer({
     setFormValues(formValues)
   }, [configuration, repo, isOpen])
 
-  async function updateConfiguration(isDelete: boolean) {
+  async function updateConfiguration() {
     if (!repo) return
     if (!configuration) return
 
     try {
       setIsPending(true)
 
-      const repos = getReposToSend(isDelete)
+      const repos = getReposToSend()
 
       await updateReposConfigurationMutation({
         repos
@@ -93,7 +93,7 @@ export function UpdateRepoConfigurationDrawer({
     }
   }
 
-  function getReposToSend(isDelete: boolean) {
+  function getReposToSend() {
     if (!repo) return []
     if (!configuration) return []
 
@@ -106,7 +106,7 @@ export function UpdateRepoConfigurationDrawer({
     const hasEmptyData = !hasCorrectFormData
 
     // Remove repo from configuration
-    if (isDelete || (hasEmptyData && hasRepoInConfiguration)) {
+    if (hasEmptyData && hasRepoInConfiguration) {
       return configuration.repos.filter(iteratedRepo => {
         return iteratedRepo.repoId !== repo.id
       })
@@ -242,21 +242,7 @@ export function UpdateRepoConfigurationDrawer({
           <Button variant="outline" onClick={handleClose}>
             Cancel
           </Button>
-          {hasRepoInConfiguration && (
-            <Button
-              ml={2}
-              colorScheme="red"
-              isLoading={isPending}
-              onClick={() => updateConfiguration(true)}
-            >
-              Reset
-            </Button>
-          )}
-          <Button
-            ml={2}
-            isLoading={isPending}
-            onClick={() => updateConfiguration(false)}
-          >
+          <Button ml={2} isLoading={isPending} onClick={updateConfiguration}>
             Save
           </Button>
         </>

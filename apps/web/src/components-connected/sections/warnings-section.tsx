@@ -117,11 +117,9 @@ export function WarningsSection() {
         <CardHeader position="relative">
           <Flex alignItems="center" gap={4}>
             <Heading size="md">
-              {isLoadingForWarnings ? (
-                <Skeleton display="inline">Warnings</Skeleton>
-              ) : (
-                'Warnings'
-              )}
+              <Skeleton display="inline" isLoaded={!isLoadingForWarnings}>
+                Warnings
+              </Skeleton>
             </Heading>
 
             {warningsData && isFetchingForWarnings && (
@@ -132,18 +130,19 @@ export function WarningsSection() {
             )}
           </Flex>
 
-          {!!warnings.length && (
-            <Flex
-              position="absolute"
-              top={4}
-              right={4}
-              gap={4}
-              alignItems="center"
-            >
-              <SendWarningsButton />
+          <Flex
+            position="absolute"
+            top={4}
+            right={4}
+            gap={4}
+            alignItems="center"
+          >
+            {!!warnings.length && <SendWarningsButton />}
+
+            <Skeleton isLoaded={!isLoadingForWarnings}>
               <RefreshWarningsButton />
-            </Flex>
-          )}
+            </Skeleton>
+          </Flex>
         </CardHeader>
         <CardBody minHeight="300px">{renderContent()}</CardBody>
       </Card>
