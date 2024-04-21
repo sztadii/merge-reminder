@@ -11,7 +11,7 @@ export function ToggleThemeButton() {
       rightIcon={<Icon variant={colorMode === 'light' ? 'moon' : 'sun'} />}
       width={{
         base: '100%',
-        md: '150px'
+        md: 'auto'
       }}
     >
       {colorMode === 'light' ? 'Dark' : 'Light'}
