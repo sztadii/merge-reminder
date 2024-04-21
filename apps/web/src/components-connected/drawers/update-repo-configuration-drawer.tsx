@@ -46,7 +46,7 @@ export function UpdateRepoConfigurationDrawer({
 
   const hasRepoInConfiguration = useMemo(
     () =>
-      configuration?.repos.find(
+      configuration?.repos?.some(
         iteratedRepo => iteratedRepo.repoId === repo?.id
       ),
     [configuration, repo]
@@ -102,38 +102,34 @@ export function UpdateRepoConfigurationDrawer({
       headBranch: formValues?.headBranch,
       baseBranch: formValues?.baseBranch
     })
-
     const hasCorrectFormData = hasCorrectData()
-
     const hasEmptyData = !hasCorrectFormData
 
+    // Remove repo from configuration
     if (isDelete || (hasEmptyData && hasRepoInConfiguration)) {
       return configuration.repos.filter(iteratedRepo => {
         return iteratedRepo.repoId !== repo.id
       })
     }
 
+    const updatedRepo = {
+      repoId: repo.id,
+      ...trimmedValues
+    }
+
+    // Update repo in configuration
     if (hasCorrectFormData && hasRepoInConfiguration) {
       return configuration.repos.map(iteratedRepo => {
-        if (iteratedRepo.repoId !== repo.id) return iteratedRepo
-
-        return {
-          repoId: repo.id,
-          ...trimmedValues
-        }
+        return iteratedRepo.repoId === repo.id ? updatedRepo : iteratedRepo
       })
     }
 
+    // Add repo to configuration
     if (hasCorrectFormData) {
-      return [
-        ...configuration.repos,
-        {
-          repoId: repo.id,
-          ...trimmedValues
-        }
-      ]
+      return [...configuration.repos, updatedRepo]
     }
 
+    // Return empty repos
     return []
   }
 
