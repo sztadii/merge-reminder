@@ -6,7 +6,6 @@ import {
   CardHeader,
   Flex,
   Heading,
-  Link,
   Skeleton,
   Spinner
 } from '@chakra-ui/react'
@@ -14,7 +13,7 @@ import { useMemo } from 'react'
 
 import { RefreshWarningsButton } from 'src/components-connected/buttons/refresh-warnings-button'
 import { SendWarningsButton } from 'src/components-connected/buttons/send-warnings-button'
-import { Icon } from 'src/components/icon'
+import { ExternalLink } from 'src/components/external-link'
 import { SpinnerWithLabel } from 'src/components/spinner-with-label'
 import { Table, TableProps } from 'src/components/table'
 import { Text } from 'src/components/text'
@@ -84,19 +83,10 @@ export function WarningsSection() {
           skeleton: () => <Skeleton>Loading</Skeleton>,
           content: warning => {
             return (
-              <Flex gap={2} alignItems="center">
-                <Link
-                  href={warning.compareLink}
-                  isExternal
-                  display="flex"
-                  alignItems="center"
-                  gap={2}
-                >
-                  <Text noOfLines={1}>{warning.commits.join(', ')}</Text>
-
-                  <Icon variant="externalLink" />
-                </Link>
-              </Flex>
+              <ExternalLink
+                to={warning.compareLink}
+                text={warning.commits.join(', ')}
+              />
             )
           }
         }
