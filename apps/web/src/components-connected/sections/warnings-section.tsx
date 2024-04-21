@@ -1,13 +1,10 @@
 import {
-  Alert,
-  AlertIcon,
   Card,
   CardBody,
   CardHeader,
   Flex,
   Heading,
-  Skeleton,
-  Spinner
+  Skeleton
 } from '@chakra-ui/react'
 import { useMemo } from 'react'
 
@@ -20,14 +17,6 @@ import { Text } from 'src/components/text'
 import { trpc } from 'src/trpc'
 
 export function WarningsSection() {
-  const {
-    data: user,
-    isLoading: isLoadingForUser,
-    error: errorForUser
-  } = trpc.client.getCurrentUser.useQuery()
-
-  const hasInstallationId = user?.hasInstallationId === true
-
   const {
     data: warningsData,
     isLoading: isLoadingForWarnings,
@@ -115,25 +104,7 @@ export function WarningsSection() {
     ]
   }, [])
 
-  if (isLoadingForUser) {
-    return (
-      <Card>
-        <CardBody>
-          <Spinner />
-        </CardBody>
-      </Card>
-    )
-  }
-
   function renderContent() {
-    if (errorForUser) {
-      return (
-        <Alert status="error">
-          <AlertIcon /> {errorForUser.message}
-        </Alert>
-      )
-    }
-
     return (
       <Table
         columns={tableColumns}
@@ -167,7 +138,7 @@ export function WarningsSection() {
             )}
           </Flex>
 
-          {hasInstallationId && !!warnings.length && (
+          {!!warnings.length && (
             <Flex
               position="absolute"
               top={4}
