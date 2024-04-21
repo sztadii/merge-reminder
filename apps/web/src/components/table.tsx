@@ -54,7 +54,7 @@ export function Table<T extends unknown[]>({
   const contentHeight = rowsSpace + marginsSpace
 
   const headerSpace = rowHeight + marginsSpace
-  const tableHeight = headerSpace + rowsSpace
+  const tableHeight = headerSpace + rowsSpace + marginBottom
 
   // On the phones, where table has a scroll we do not want to hide the content.
   // So we need a small padding.
@@ -186,7 +186,7 @@ export function Table<T extends unknown[]>({
   }
 
   return (
-    <Box overflow="auto" pb={paddingBottomValue}>
+    <Box overflowX="auto" pb={paddingBottomValue}>
       <Box height={tableHeight}>{renderContent()}</Box>
     </Box>
   )
