@@ -33,13 +33,9 @@ export function Navigation() {
           <Flex alignItems="center" gap={4}>
             <Menu>
               <MenuButton>
-                {isLoading ? (
-                  <Skeleton borderRadius="50%">
-                    <Avatar size="sm" />
-                  </Skeleton>
-                ) : (
+                <Skeleton borderRadius="50%" isLoaded={!isLoading}>
                   <Avatar size="sm" src={user?.avatarUrl} />
-                )}
+                </Skeleton>
               </MenuButton>
               <MenuList>
                 <MenuItem as={Link} to={routerPaths.profile.path}>

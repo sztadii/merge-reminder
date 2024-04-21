@@ -148,11 +148,12 @@ export function RepositoriesSection() {
       <Card>
         <CardHeader position="relative">
           <Heading size="md">
-            {isLoadingForConfiguration ? (
-              <Skeleton display="inline-block">Repositories</Skeleton>
-            ) : (
-              'Repositories'
-            )}
+            <Skeleton
+              display="inline-block"
+              isLoaded={!isLoadingForConfiguration}
+            >
+              Repositories
+            </Skeleton>
           </Heading>
 
           {configuration && (
