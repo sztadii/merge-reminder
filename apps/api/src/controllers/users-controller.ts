@@ -41,8 +41,6 @@ export class UsersController {
   protected mapRecordToResponse(user: UserDatabaseRecord): UserResponse {
     return {
       id: user._id.toString(),
-      createdAt: user.createdAt.toISOString(),
-      updatedAt: user.updatedAt?.toISOString(),
       avatarUrl: user.avatarUrl,
       email: user.email,
       hasInstallationId: !!user.githubAppInstallationId
