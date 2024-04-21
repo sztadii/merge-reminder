@@ -77,7 +77,7 @@ export function RepositoriesSection() {
           },
           headingCell: {
             skeleton: () => <Skeleton>Loading</Skeleton>,
-            content: () => 'Repo'
+            content: () => 'Repository'
           },
           rowCell: {
             skeleton: () => <Skeleton>Loading</Skeleton>,
