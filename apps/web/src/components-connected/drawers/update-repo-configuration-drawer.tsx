@@ -223,7 +223,7 @@ export function UpdateRepoConfigurationDrawer({
           </FormControl>
 
           <FormControl mt={8}>
-            <FormLabel>Ignore</FormLabel>
+            <FormLabel>Ignore repository</FormLabel>
             <Switch
               size="lg"
               isChecked={formValues?.isIgnored}
