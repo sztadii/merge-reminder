@@ -1,8 +1,7 @@
 import * as z from 'zod'
 
-import { ResponseSchema } from './base'
-
-export const UserResponseSchema = ResponseSchema.extend({
+export const UserResponseSchema = z.object({
+  id: z.string(),
   avatarUrl: z.string(),
   email: z.string().email().optional(),
   hasInstallationId: z.boolean()
@@ -50,24 +49,6 @@ export type RepositoryResponse = z.infer<typeof RepositoryResponseSchema>
 
 export const RepositoriesResponseSchema = z.array(RepositoryResponseSchema)
 
-export const RepoConfigurationResponseSchema = ResponseSchema.extend({
-  userId: z.string(),
-  headBranch: z.string(),
-  baseBranch: z.string(),
-  excludeReposWithoutRequiredBranches: z.boolean(),
-  repos: z.array(
-    z.object({
-      repoId: z.number(),
-      headBranch: z.string(),
-      baseBranch: z.string()
-    })
-  )
-})
-
-export type RepoConfigurationResponse = z.infer<
-  typeof RepoConfigurationResponseSchema
->
-
 export const RepoConfigurationCreateRequestSchema = z.object({
   userId: z.string(),
   headBranch: z.string(),
@@ -76,30 +57,24 @@ export const RepoConfigurationCreateRequestSchema = z.object({
   repos: z.array(
     z.object({
       repoId: z.number(),
-      headBranch: z.string(),
-      baseBranch: z.string()
+      isIgnored: z.boolean(),
+      headBranch: z.string().optional(),
+      baseBranch: z.string().optional()
     })
   )
 })
 
-export type RepoConfigurationCreateRequest = z.infer<
-  typeof RepoConfigurationCreateRequestSchema
+export const RepoConfigurationResponseSchema =
+  RepoConfigurationCreateRequestSchema.extend({
+    id: z.string()
+  })
+
+export type RepoConfigurationResponse = z.infer<
+  typeof RepoConfigurationResponseSchema
 >
 
-export const RepoConfigurationUpdateRequestSchema = z.object({
-  headBranch: z.string().optional(),
-  baseBranch: z.string().optional(),
-  excludeReposWithoutRequiredBranches: z.boolean().optional(),
-  repos: z
-    .array(
-      z.object({
-        repoId: z.number(),
-        headBranch: z.string(),
-        baseBranch: z.string()
-      })
-    )
-    .optional()
-})
+export const RepoConfigurationUpdateRequestSchema =
+  RepoConfigurationCreateRequestSchema.partial()
 
 export type RepoConfigurationUpdateRequest = z.infer<
   typeof RepoConfigurationUpdateRequestSchema

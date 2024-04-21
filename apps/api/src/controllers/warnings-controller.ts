@@ -62,17 +62,6 @@ export class WarningsController {
       })
     })
 
-    if (warnings.length === 0) {
-      const message = reposConfiguration.excludeReposWithoutRequiredBranches
-        ? `You have 0 repositories that we can check.`
-        : "You don't have any repositories."
-
-      throw new TRPCError({
-        code: 'NOT_FOUND',
-        message: message
-      })
-    }
-
     return warnings
   }
 

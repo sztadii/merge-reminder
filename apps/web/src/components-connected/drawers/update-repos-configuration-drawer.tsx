@@ -163,7 +163,7 @@ export function UpdateReposConfigurationDrawer({
           </FormControl>
 
           <FormControl mt={8}>
-            <FormLabel>Exclude repos without required branches</FormLabel>
+            <FormLabel>Ignore repos without required branches</FormLabel>
             <Switch
               size="lg"
               isChecked={formValues?.excludeReposWithoutRequiredBranches}

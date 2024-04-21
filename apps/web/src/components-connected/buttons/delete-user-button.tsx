@@ -1,6 +1,7 @@
 import { Button, useDisclosure } from '@chakra-ui/react'
 
 import { Confirmation } from 'src/components/confirmation'
+import { Icon } from 'src/components/icon'
 import { logout } from 'src/helpers'
 import { UserResponse } from 'src/schemas'
 import { showErrorToast } from 'src/toasts'
@@ -40,8 +41,9 @@ export function DeleteUserButton({ user }: DeleteUserButtonProps) {
         colorScheme="red"
         width={{
           base: '100%',
-          md: '150px'
+          md: 'auto'
         }}
+        rightIcon={<Icon variant="delete" />}
       >
         Delete
       </Button>

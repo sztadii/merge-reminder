@@ -3,6 +3,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { getQueryKey } from '@trpc/react-query'
 
 import { Confirmation } from 'src/components/confirmation'
+import { Icon } from 'src/components/icon'
 import { UserResponse } from 'src/schemas'
 import { showErrorToast, showSuccessToast } from 'src/toasts'
 import { trpc } from 'src/trpc'
@@ -49,8 +50,9 @@ export function DisconnectReposButton({ user }: DisconnectReposButtonProps) {
         colorScheme="red"
         width={{
           base: '100%',
-          md: '150px'
+          md: 'auto'
         }}
+        rightIcon={<Icon variant="warning" />}
       >
         Disconnect
       </Button>

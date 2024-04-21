@@ -27,7 +27,7 @@ export function Dashboard() {
         <Box>
           <WarningsSection />
         </Box>
-        <Box mt={4}>
+        <Box mt={8}>
           <RepositoriesSection />
         </Box>
       </>

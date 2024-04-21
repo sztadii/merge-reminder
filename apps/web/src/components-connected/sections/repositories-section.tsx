@@ -17,6 +17,7 @@ import { ResetReposConfigurationsButton } from 'src/components-connected/buttons
 import { UpdateRepoConfigurationDrawer } from 'src/components-connected/drawers/update-repo-configuration-drawer'
 import { UpdateReposConfigurationDrawer } from 'src/components-connected/drawers/update-repos-configuration-drawer'
 import { DetailsGrid, DetailsGridProps } from 'src/components/details-grid'
+import { ExternalLink } from 'src/components/external-link'
 import { Icon } from 'src/components/icon'
 import { Table, TableProps } from 'src/components/table'
 import { RepositoryResponse } from 'src/schemas'
@@ -61,7 +62,7 @@ export function RepositoriesSection() {
       text: configuration?.baseBranch
     },
     {
-      heading: 'Exclude repos without required branches',
+      heading: 'Ignore repos without required branches',
       text: configuration?.excludeReposWithoutRequiredBranches ? 'Yes' : 'No'
     }
   ]
@@ -77,11 +78,13 @@ export function RepositoriesSection() {
           },
           headingCell: {
             skeleton: () => <Skeleton>Loading</Skeleton>,
-            content: () => 'Repo'
+            content: () => 'Repository'
           },
           rowCell: {
             skeleton: () => <Skeleton>Loading</Skeleton>,
-            content: repository => repository.name
+            content: repository => (
+              <ExternalLink to={repository.url} text={repository.name} />
+            )
           }
         },
         {
@@ -117,8 +120,20 @@ export function RepositoriesSection() {
                 >
                   {repoConfiguration ? (
                     <>
-                      <Button size="xs">{repoConfiguration.headBranch}</Button>
-                      <Button size="xs">{repoConfiguration.baseBranch}</Button>
+                      {repoConfiguration.isIgnored ? (
+                        <Button size="xs" colorScheme="red">
+                          Ignored
+                        </Button>
+                      ) : (
+                        <>
+                          <Button size="xs">
+                            {repoConfiguration.headBranch}
+                          </Button>
+                          <Button size="xs">
+                            {repoConfiguration.baseBranch}
+                          </Button>
+                        </>
+                      )}
                     </>
                   ) : (
                     <Button size="xs">N/A</Button>

@@ -55,8 +55,6 @@ export class ReposConfigurationsController {
     return {
       id: configuration._id.toString(),
       userId: configuration.userId,
-      createdAt: configuration.createdAt.toISOString(),
-      updatedAt: configuration.updatedAt?.toISOString(),
       headBranch: configuration.headBranch,
       baseBranch: configuration.baseBranch,
       excludeReposWithoutRequiredBranches:
