@@ -21,8 +21,9 @@ export type ReposConfigurationDatabaseValues = {
   excludeReposWithoutRequiredBranches: boolean
   repos: Array<{
     repoId: number
-    headBranch: string
-    baseBranch: string
+    isIgnored: boolean
+    headBranch?: string
+    baseBranch?: string
   }>
 }
 

@@ -62,7 +62,7 @@ export function RepositoriesSection() {
       text: configuration?.baseBranch
     },
     {
-      heading: 'Exclude repos without required branches',
+      heading: 'Ignore repos without required branches',
       text: configuration?.excludeReposWithoutRequiredBranches ? 'Yes' : 'No'
     }
   ]
@@ -120,8 +120,20 @@ export function RepositoriesSection() {
                 >
                   {repoConfiguration ? (
                     <>
-                      <Button size="xs">{repoConfiguration.headBranch}</Button>
-                      <Button size="xs">{repoConfiguration.baseBranch}</Button>
+                      {repoConfiguration.isIgnored ? (
+                        <Button size="xs" colorScheme="red">
+                          Ignored
+                        </Button>
+                      ) : (
+                        <>
+                          <Button size="xs">
+                            {repoConfiguration.headBranch}
+                          </Button>
+                          <Button size="xs">
+                            {repoConfiguration.baseBranch}
+                          </Button>
+                        </>
+                      )}
                     </>
                   ) : (
                     <Button size="xs">N/A</Button>

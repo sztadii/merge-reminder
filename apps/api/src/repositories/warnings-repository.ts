@@ -16,7 +16,13 @@ export class WarningsRepository {
 
   public async getWarnings(): Promise<RepoWarning[]> {
     const allRepos = await this.githubAppRepository.getInstalledRepos()
-    return this.getWarningsFromAffectedBranches(allRepos)
+    const ignoredRepos = this.config.repos
+      .filter(repo => repo.isIgnored)
+      .map(repo => repo.repoId)
+    const notIgnoredRepos = allRepos.filter(
+      repo => !ignoredRepos.includes(repo.id)
+    )
+    return this.getWarningsFromAffectedBranches(notIgnoredRepos)
   }
 
   private async getWarningsFromAffectedBranches(
@@ -110,8 +116,9 @@ type Config = {
   excludeReposWithoutRequiredBranches: boolean
   repos: Array<{
     repoId: number
-    baseBranch: string
-    headBranch: string
+    isIgnored: boolean
+    baseBranch?: string
+    headBranch?: string
   }>
 }
 

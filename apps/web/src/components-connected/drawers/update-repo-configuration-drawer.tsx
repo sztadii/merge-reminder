@@ -4,7 +4,8 @@ import {
   FormControl,
   FormHelperText,
   FormLabel,
-  Input
+  Input,
+  Switch
 } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { getQueryKey } from '@trpc/react-query'
@@ -24,8 +25,9 @@ type UpdateRepoConfigurationDrawerProps = {
 }
 
 type FormValuesRequired = {
-  baseBranch: string
-  headBranch: string
+  baseBranch?: string
+  headBranch?: string
+  isIgnored: boolean
 }
 
 type FormValuesInitial = Partial<FormValuesRequired>
@@ -50,8 +52,7 @@ export function UpdateRepoConfigurationDrawer({
     [configuration, repo]
   )
 
-  const hasMissingFormValues =
-    !formValues?.headBranch || !formValues?.baseBranch
+  const hasMissingFormValues = hasMissingValues()
 
   useEffect(() => {
     if (!repo) return
@@ -64,16 +65,22 @@ export function UpdateRepoConfigurationDrawer({
     setFormValues(formValues)
   }, [configuration, repo, isOpen])
 
-  async function updateConfiguration(isDelete?: boolean) {
-    debugger
+  function hasMissingValues() {
+    if (formValues?.isIgnored === true) return false
+
+    return !formValues?.headBranch || !formValues?.baseBranch
+  }
+
+  async function updateConfiguration(isDelete: boolean) {
     if (!repo) return
     if (!configuration) return
-    if (hasMissingFormValues) return
+    if (!isDelete && hasMissingFormValues) return
 
     try {
       setIsPending(true)
 
       const trimmedValues = trimObjectValues({
+        isIgnored: !!formValues?.isIgnored,
         headBranch: formValues?.headBranch,
         baseBranch: formValues?.baseBranch
       } as FormValuesRequired)
@@ -217,6 +224,20 @@ export function UpdateRepoConfigurationDrawer({
               </Button>
             </Flex>
           </FormControl>
+
+          <FormControl mt={8}>
+            <FormLabel>Ignore</FormLabel>
+            <Switch
+              size="lg"
+              isChecked={formValues?.isIgnored}
+              onChange={e =>
+                setFormValues({
+                  ...formValues,
+                  isIgnored: e.target.checked
+                })
+              }
+            />
+          </FormControl>
         </>
       }
       footer={
@@ -229,7 +250,6 @@ export function UpdateRepoConfigurationDrawer({
               ml={2}
               colorScheme="red"
               isLoading={isPending}
-              isDisabled={hasMissingFormValues}
               onClick={() => updateConfiguration(true)}
             >
               Reset
@@ -239,7 +259,7 @@ export function UpdateRepoConfigurationDrawer({
             ml={2}
             isLoading={isPending}
             isDisabled={hasMissingFormValues}
-            onClick={() => updateConfiguration()}
+            onClick={() => updateConfiguration(false)}
           >
             Save
           </Button>
