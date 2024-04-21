@@ -73,15 +73,13 @@ export function RepositoriesSection() {
         {
           id: 'name',
           width: {
-            base: '150px',
+            base: '200px',
             lg: 'auto'
           },
           headingCell: {
-            skeleton: () => <Skeleton>Loading</Skeleton>,
             content: () => 'Repository'
           },
           rowCell: {
-            skeleton: () => <Skeleton>Loading</Skeleton>,
             content: repository => (
               <ExternalLink to={repository.url} text={repository.name} />
             )
@@ -90,15 +88,13 @@ export function RepositoriesSection() {
         {
           id: 'configuration',
           width: {
-            base: '300px',
+            base: '200px',
             lg: 'auto'
           },
           headingCell: {
-            skeleton: () => <Skeleton>Loading</Skeleton>,
             content: () => 'Configuration'
           },
           rowCell: {
-            skeleton: () => <Skeleton>Loading</Skeleton>,
             content: repository => {
               if (!configuration) return
 
@@ -187,7 +183,7 @@ export function RepositoriesSection() {
           <Table
             columns={tableColumns}
             rows={repositories}
-            numberOfSkeletonRows={6}
+            numberOfVisibleRows={6}
             isLoading={isLoadingForRepositories}
             errorMessage={errorForRepositories?.message}
           />

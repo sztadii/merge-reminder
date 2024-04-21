@@ -102,7 +102,7 @@ function PrivateLayout({ children }: { children: ReactNode }) {
     <>
       <Navigation />
 
-      <Box mt={8}>
+      <Box my={8}>
         <Container>{children}</Container>
       </Box>
     </>

@@ -35,11 +35,9 @@ export function WarningsSection() {
           lg: 'auto'
         },
         headingCell: {
-          skeleton: () => <Skeleton>Loading</Skeleton>,
           content: () => 'Repository'
         },
         rowCell: {
-          skeleton: () => <Skeleton>Loading</Skeleton>,
           content: warning => warning.repo
         }
       },
@@ -50,11 +48,9 @@ export function WarningsSection() {
           lg: 'auto'
         },
         headingCell: {
-          skeleton: () => <Skeleton>Loading</Skeleton>,
           content: () => 'Delay'
         },
         rowCell: {
-          skeleton: () => <Skeleton>Loading</Skeleton>,
           content: user => user.delay
         }
       },
@@ -65,11 +61,9 @@ export function WarningsSection() {
           lg: 'auto'
         },
         headingCell: {
-          skeleton: () => <Skeleton>Loading</Skeleton>,
           content: () => 'Unmerged commits'
         },
         rowCell: {
-          skeleton: () => <Skeleton>Loading</Skeleton>,
           content: warning => {
             return (
               <ExternalLink
@@ -109,7 +103,7 @@ export function WarningsSection() {
       <Table
         columns={tableColumns}
         rows={warnings}
-        numberOfSkeletonRows={6}
+        numberOfVisibleRows={6}
         isLoading={isLoadingForWarnings}
         errorMessage={errorForWarnings?.message}
         noDataMessage="All your repos are looking well. Good job team."
