@@ -55,7 +55,7 @@ export function ProfileSection() {
           )}
         </Box>
 
-        <CardBody>
+        <CardBody minHeight="300px">
           <DetailsGrid
             details={details}
             isLoading={isLoading}

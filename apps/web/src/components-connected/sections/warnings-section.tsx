@@ -145,7 +145,7 @@ export function WarningsSection() {
             </Flex>
           )}
         </CardHeader>
-        <CardBody>{renderContent()}</CardBody>
+        <CardBody minHeight="300px">{renderContent()}</CardBody>
       </Card>
     </>
   )
