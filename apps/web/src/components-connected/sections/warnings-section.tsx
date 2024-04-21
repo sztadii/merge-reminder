@@ -132,7 +132,7 @@ export function WarningsSection() {
             )}
           </Flex>
 
-          {!!warnings.length && (
+          {!isLoadingForWarnings && (
             <Flex
               position="absolute"
               top={4}
@@ -140,7 +140,7 @@ export function WarningsSection() {
               gap={4}
               alignItems="center"
             >
-              <SendWarningsButton />
+              {!!warnings.length && <SendWarningsButton />}
               <RefreshWarningsButton />
             </Flex>
           )}
