@@ -52,8 +52,6 @@ export function UpdateRepoConfigurationDrawer({
     [configuration, repo]
   )
 
-  const hasMissingFormValues = hasMissingValues()
-
   useEffect(() => {
     if (!repo) return
     if (!configuration) return
@@ -65,64 +63,17 @@ export function UpdateRepoConfigurationDrawer({
     setFormValues(formValues)
   }, [configuration, repo, isOpen])
 
-  function hasMissingValues() {
-    if (formValues?.isIgnored === true) return false
-
-    return !formValues?.headBranch || !formValues?.baseBranch
-  }
-
   async function updateConfiguration(isDelete: boolean) {
     if (!repo) return
     if (!configuration) return
-    if (!isDelete && hasMissingFormValues) return
 
     try {
       setIsPending(true)
 
-      const trimmedValues = trimObjectValues({
-        isIgnored: !!formValues?.isIgnored,
-        headBranch: formValues?.headBranch,
-        baseBranch: formValues?.baseBranch
-      } as FormValuesRequired)
-
-      let reposYoUpdate: RepoConfigurationResponse['repos']
-
-      const isReposConfigurationEmpty = configuration.repos.length === 0
-
-      if (isReposConfigurationEmpty) {
-        reposYoUpdate = [
-          {
-            repoId: repo.id,
-            ...trimmedValues
-          }
-        ]
-      } else if (hasRepoInConfiguration) {
-        reposYoUpdate = configuration.repos.map(iteratedRepo => {
-          if (iteratedRepo.repoId !== repo.id) return iteratedRepo
-
-          return {
-            repoId: repo.id,
-            ...trimmedValues
-          }
-        })
-      } else {
-        reposYoUpdate = [
-          ...configuration.repos,
-          {
-            repoId: repo.id,
-            ...trimmedValues
-          }
-        ]
-      }
-
-      if (isDelete) {
-        reposYoUpdate = configuration.repos.filter(iteratedRepo => {
-          return iteratedRepo.repoId !== repo.id
-        })
-      }
+      const repos = getReposToSend(isDelete)
 
       await updateReposConfigurationMutation({
-        repos: reposYoUpdate
+        repos
       })
 
       await queryClient.invalidateQueries(
@@ -140,6 +91,56 @@ export function UpdateRepoConfigurationDrawer({
     } finally {
       setIsPending(false)
     }
+  }
+
+  function getReposToSend(isDelete: boolean) {
+    if (!repo) return []
+    if (!configuration) return []
+
+    const trimmedValues = trimObjectValues({
+      isIgnored: !!formValues?.isIgnored,
+      headBranch: formValues?.headBranch,
+      baseBranch: formValues?.baseBranch
+    })
+
+    const hasCorrectFormData = hasCorrectData()
+
+    const hasEmptyData = !hasCorrectFormData
+
+    if (isDelete || (hasEmptyData && hasRepoInConfiguration)) {
+      return configuration.repos.filter(iteratedRepo => {
+        return iteratedRepo.repoId !== repo.id
+      })
+    }
+
+    if (hasCorrectFormData && hasRepoInConfiguration) {
+      return configuration.repos.map(iteratedRepo => {
+        if (iteratedRepo.repoId !== repo.id) return iteratedRepo
+
+        return {
+          repoId: repo.id,
+          ...trimmedValues
+        }
+      })
+    }
+
+    if (hasCorrectFormData) {
+      return [
+        ...configuration.repos,
+        {
+          repoId: repo.id,
+          ...trimmedValues
+        }
+      ]
+    }
+
+    return []
+  }
+
+  function hasCorrectData() {
+    if (formValues?.isIgnored === true) return true
+
+    return formValues?.headBranch && formValues?.baseBranch
   }
 
   function handleClose() {
@@ -258,7 +259,6 @@ export function UpdateRepoConfigurationDrawer({
           <Button
             ml={2}
             isLoading={isPending}
-            isDisabled={hasMissingFormValues}
             onClick={() => updateConfiguration(false)}
           >
             Save
