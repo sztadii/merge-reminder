@@ -4,7 +4,7 @@ import { getQueryKey } from '@trpc/react-query'
 import { useEffect, useState } from 'react'
 
 import { Drawer } from 'src/components/drawer'
-import { trimObjectValues } from 'src/helpers'
+import { isValidEmail, trimObjectValues } from 'src/helpers'
 import { UserResponse, UserUpdateRequest } from 'src/schemas'
 import { showErrorToast } from 'src/toasts'
 import { trpc } from 'src/trpc'
@@ -30,7 +30,8 @@ export function UpdateUserDrawer({
   const { mutateAsync: updateUserMutation } =
     trpc.client.updateCurrentUser.useMutation()
 
-  const hasMissingFormValues = !formValues?.email
+  const hasCorrectData =
+    !!formValues?.email?.length && isValidEmail(formValues?.email)
 
   useEffect(() => {
     if (!user) return
@@ -40,7 +41,7 @@ export function UpdateUserDrawer({
 
   async function updateUser() {
     if (!user) return
-    if (hasMissingFormValues) return
+    if (!hasCorrectData) return
 
     try {
       setIsPending(true)
@@ -97,7 +98,7 @@ export function UpdateUserDrawer({
           <Button
             ml={2}
             isLoading={isPending}
-            isDisabled={hasMissingFormValues}
+            isDisabled={!hasCorrectData}
             onClick={updateUser}
           >
             Save

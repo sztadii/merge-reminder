@@ -3,6 +3,7 @@ import { navigate as wouterNavigate } from 'wouter/use-browser-location'
 export const routerPaths = {
   landing: createPage('/'),
   login: createPage('/login'),
+  onboarding: createPage('/onboarding'),
   dashboard: createPage('/dashboard'),
   settings: createPage('/settings'),
   profile: createPage('/profile')

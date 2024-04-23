@@ -7,6 +7,7 @@ import { Navigation } from 'src/components/navigation'
 import { Dashboard } from 'src/pages/dashboard'
 import { Landing } from 'src/pages/landing'
 import { Login } from 'src/pages/login'
+import { Onboarding } from 'src/pages/onboarding'
 import { Profile } from 'src/pages/profile'
 import { Settings } from 'src/pages/settings'
 import { storage } from 'src/storage'
@@ -34,6 +35,17 @@ export function Router() {
             <PublicLayout>
               <Login />
             </PublicLayout>
+          )
+        }}
+      />
+
+      <Route
+        path={routerPaths.onboarding.path}
+        component={() => {
+          return (
+            <PrivateLayout noLayout>
+              <Onboarding />
+            </PrivateLayout>
           )
         }}
       />
@@ -89,7 +101,13 @@ function PublicLayout({ children }: { children: ReactNode }) {
   return <>{children}</>
 }
 
-function PrivateLayout({ children }: { children: ReactNode }) {
+function PrivateLayout({
+  children,
+  noLayout = false
+}: {
+  children: ReactNode
+  noLayout?: boolean
+}) {
   useLayoutEffect(() => {
     const token = storage.auth.getToken()
 
@@ -97,6 +115,8 @@ function PrivateLayout({ children }: { children: ReactNode }) {
       routerPaths.login.navigate()
     }
   }, [])
+
+  if (noLayout) return children
 
   return (
     <>
