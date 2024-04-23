@@ -143,6 +143,9 @@ export function RepositoriesSection() {
       ]
     }, [configuration])
 
+  const tableErrorMessage =
+    errorForConfiguration?.message || errorForRepositories?.message
+
   return (
     <>
       <Card>
@@ -186,7 +189,7 @@ export function RepositoriesSection() {
             rows={repositories}
             numberOfVisibleRows={6}
             isLoading={isLoadingForRepositories}
-            errorMessage={errorForRepositories?.message}
+            errorMessage={tableErrorMessage}
           />
         </CardBody>
       </Card>

@@ -42,12 +42,13 @@ export function ProfileSection() {
       <Card position="relative">
         <Box position="absolute" top={4} right={4}>
           <Skeleton isLoaded={!isLoading}>
-            <IconButton
-              aria-label="update profile"
-              isDisabled={!user}
-              onClick={onOpenForUpdateDrawer}
-              icon={<Icon variant="edit" />}
-            />
+            {!!user && (
+              <IconButton
+                aria-label="update profile"
+                onClick={onOpenForUpdateDrawer}
+                icon={<Icon variant="edit" />}
+              />
+            )}
           </Skeleton>
         </Box>
 
