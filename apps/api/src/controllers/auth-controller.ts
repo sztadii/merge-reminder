@@ -70,10 +70,20 @@ export class AuthController {
         })
       }
 
-      return this.getTokenFromUser(createdUser)
+      const token = this.getTokenFromUser(createdUser)
+
+      return {
+        token,
+        isNewUser: true
+      }
     }
 
-    return this.getTokenFromUser(user)
+    const token = this.getTokenFromUser(user)
+
+    return {
+      token,
+      isNewUser: false
+    }
   }
 
   async deleteCurrentUser(userId: string): Promise<void> {
@@ -89,7 +99,7 @@ export class AuthController {
     }
   }
 
-  private getTokenFromUser(user: UserDatabaseRecord): LoginResponse {
+  private getTokenFromUser(user: UserDatabaseRecord): string {
     const userFromToken: UserFromToken = {
       id: user._id.toString(),
       expiredAt: addHours(new Date(), 6).toString() // Github token expires in 8h
@@ -103,8 +113,6 @@ export class AuthController {
       })
     }
 
-    return {
-      token
-    }
+    return token
   }
 }

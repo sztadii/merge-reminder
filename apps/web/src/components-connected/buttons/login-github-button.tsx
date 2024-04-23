@@ -34,7 +34,11 @@ export function LoginGithubButton() {
 
         storage.auth.setToken(loginResponse.token)
 
-        routerPaths.dashboard.navigate()
+        if (loginResponse.isNewUser) {
+          routerPaths.onboarding.navigate()
+        } else {
+          routerPaths.dashboard.navigate()
+        }
       } catch (e) {
         const error = e as TRPCError
         showErrorToast(error.message)
