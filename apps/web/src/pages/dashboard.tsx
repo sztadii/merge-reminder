@@ -9,36 +9,32 @@ import { trpc } from 'src/trpc'
 export function Dashboard() {
   const { data: user, isLoading, error } = trpc.client.getCurrentUser.useQuery()
 
-  function renderContent() {
-    if (isLoading)
-      return (
-        <Flex justifyContent="center">
-          <SpinnerWithLabel label="Loading" />
-        </Flex>
-      )
-
-    if (error)
-      return (
-        <Alert status="error">
-          <AlertIcon />
-
-          {error.message}
-        </Alert>
-      )
-
-    if (user?.hasInstallationId === false) return <ConnectReposButton />
-
+  if (isLoading)
     return (
-      <>
-        <Box>
-          <WarningsSection />
-        </Box>
-        <Box mt={8}>
-          <RepositoriesSection />
-        </Box>
-      </>
+      <Flex justifyContent="center">
+        <SpinnerWithLabel label="Loading" />
+      </Flex>
     )
-  }
 
-  return <>{renderContent()}</>
+  if (error)
+    return (
+      <Alert status="error">
+        <AlertIcon />
+
+        {error.message}
+      </Alert>
+    )
+
+  if (user?.hasInstallationId === false) return <ConnectReposButton />
+
+  return (
+    <>
+      <Box>
+        <WarningsSection />
+      </Box>
+      <Box mt={8}>
+        <RepositoriesSection />
+      </Box>
+    </>
+  )
 }
