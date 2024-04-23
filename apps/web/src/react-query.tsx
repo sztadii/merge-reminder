@@ -10,12 +10,15 @@ import { logout } from 'src/helpers'
 import { showErrorToast } from 'src/toasts'
 import { TRPCError } from 'src/trpc'
 
+const fiveMinutes = 1000 * 60 * 5
+
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: 2,
       retryDelay: 200,
-      refetchOnWindowFocus: false
+      refetchOnWindowFocus: false,
+      staleTime: fiveMinutes
     }
   },
   queryCache: new QueryCache({
