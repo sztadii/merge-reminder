@@ -26,9 +26,10 @@ export function UpdateEmailDrawer({
   const { mutateAsync: updateEmailMutation } =
     trpc.client.updateCurrentEmail.useMutation()
 
-  const hasDifferentData = user?.email !== email
+  const trimmedEmail = trimObjectValues(email)
+  const hasDifferentData = user?.email !== trimmedEmail
   const hasCorrectEmail =
-    !!email?.length && hasDifferentData && isValidEmail(email)
+    !!trimmedEmail?.length && hasDifferentData && isValidEmail(trimmedEmail)
 
   useEffect(() => {
     if (!user) return
@@ -44,7 +45,7 @@ export function UpdateEmailDrawer({
       setIsPending(true)
 
       await updateEmailMutation({
-        email: trimObjectValues(email)
+        email: trimmedEmail
       })
 
       await queryClient.invalidateQueries(
