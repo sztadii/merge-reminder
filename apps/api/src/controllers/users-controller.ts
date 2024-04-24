@@ -43,7 +43,8 @@ export class UsersController {
 
     try {
       await this.usersRepository.updateById(id, {
-        email
+        email,
+        confirmedEmail: ''
       })
     } catch {
       throw new TRPCError({
