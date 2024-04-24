@@ -5,14 +5,14 @@ import {
   FormHelperText,
   FormLabel,
   Input,
-  Switch
+  Switch,
+  Tag
 } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { getQueryKey } from '@trpc/react-query'
 import { useEffect, useState } from 'react'
 
 import { Drawer } from 'src/components/drawer'
-import { Icon } from 'src/components/icon'
 import { trimObjectValues } from 'src/helpers'
 import {
   RepoConfigurationResponse,
@@ -108,32 +108,8 @@ export function UpdateReposConfigurationDrawer({
             <FormHelperText>Usually the production branch:</FormHelperText>
 
             <Flex alignItems="center" gap={2} mt={2}>
-              <Button
-                size="xs"
-                onClick={() => {
-                  setFormValues({
-                    ...formValues,
-                    headBranch: 'master'
-                  })
-                }}
-                isDisabled={formValues?.headBranch === 'master'}
-                rightIcon={<Icon variant="check" />}
-              >
-                master
-              </Button>
-              <Button
-                size="xs"
-                onClick={() => {
-                  setFormValues({
-                    ...formValues,
-                    headBranch: 'main'
-                  })
-                }}
-                isDisabled={formValues?.headBranch === 'main'}
-                rightIcon={<Icon variant="check" />}
-              >
-                main
-              </Button>
+              <Tag>master</Tag>
+              <Tag>main</Tag>
             </Flex>
           </FormControl>
 
@@ -153,19 +129,7 @@ export function UpdateReposConfigurationDrawer({
             <FormHelperText>Usually the development branch:</FormHelperText>
 
             <Flex alignItems="center" gap={2} mt={2}>
-              <Button
-                size="xs"
-                onClick={() => {
-                  setFormValues({
-                    ...formValues,
-                    baseBranch: 'develop'
-                  })
-                }}
-                isDisabled={formValues?.baseBranch === 'develop'}
-                rightIcon={<Icon variant="check" />}
-              >
-                develop
-              </Button>
+              <Tag>develop</Tag>
             </Flex>
           </FormControl>
 
