@@ -97,13 +97,17 @@ export class UsersController {
   }
 
   protected mapRecordToResponse(user: UserDatabaseRecord): UserResponse {
+    const isEmailConfirmed =
+      !!user.email?.length &&
+      !!user.confirmedEmail?.length &&
+      user.email === user.confirmedEmail
+
     return {
       id: user._id.toString(),
       avatarUrl: user.avatarUrl,
       email: user.email,
       hasInstallationId: !!user.githubAppInstallationId,
-      isEmailConfirmed:
-        !!user.email?.length && user.email === user.confirmedEmail
+      isEmailConfirmed
     }
   }
 }
