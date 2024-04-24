@@ -105,7 +105,7 @@ export function UpdateReposConfigurationDrawer({
               }
             />
 
-            <FormHelperText>Usually the production branch:</FormHelperText>
+            <FormHelperText>Usually the production branch</FormHelperText>
 
             <Flex alignItems="center" gap={2} mt={2}>
               <Tag>master</Tag>
@@ -126,7 +126,7 @@ export function UpdateReposConfigurationDrawer({
               }
             />
 
-            <FormHelperText>Usually the development branch:</FormHelperText>
+            <FormHelperText>Usually the development branch</FormHelperText>
 
             <Flex alignItems="center" gap={2} mt={2}>
               <Tag>develop</Tag>
