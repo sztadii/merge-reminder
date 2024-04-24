@@ -13,7 +13,11 @@ const configSchema = z.object({
   }),
   isUnderMaintenance: z.boolean(),
   apiKeyForPublicEndpoints: z.string(),
-  appWebDomain: z.string()
+  appWebDomain: z.string(),
+  token: z.object({
+    encryptionKey: z.string().length(32),
+    initVector: z.string().length(16)
+  })
 })
 
 export const config = configSchema.parse({
@@ -29,5 +33,9 @@ export const config = configSchema.parse({
   },
   isUnderMaintenance: process.env.IS_UNDER_MAINTENENCE === 'true',
   apiKeyForPublicEndpoints: process.env.API_KEY_FOR_PUBLIC_ENDPOINTS,
-  appWebDomain: process.env.APP_WEB_DOMAIN
+  appWebDomain: process.env.APP_WEB_DOMAIN,
+  token: {
+    encryptionKey: process.env.AUTH_ENCRIPTION_KEY,
+    initVector: process.env.AUTH_INIT_VECTOR
+  }
 })
