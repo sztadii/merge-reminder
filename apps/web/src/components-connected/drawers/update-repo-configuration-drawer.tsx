@@ -220,10 +220,15 @@ export function UpdateRepoConfigurationDrawer({
       }
       footer={
         <>
-          <Button colorScheme="gray" variant="outline" onClick={handleClose}>
+          <Button variant="outline" onClick={handleClose}>
             Cancel
           </Button>
-          <Button ml={2} isLoading={isPending} onClick={updateConfiguration}>
+          <Button
+            colorScheme="blue"
+            ml={2}
+            isLoading={isPending}
+            onClick={updateConfiguration}
+          >
             Save
           </Button>
         </>

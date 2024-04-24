@@ -62,7 +62,6 @@ export function LoginGithubButton() {
 
   return (
     <Button
-      colorScheme="gray"
       isLoading={isLoading}
       onClick={redirectToGithub}
       rightIcon={<Icon variant="chevronRight" />}

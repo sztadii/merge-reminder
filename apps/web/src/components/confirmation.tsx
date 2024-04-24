@@ -40,7 +40,7 @@ export function Confirmation({
         <ModalBody>{description}</ModalBody>
 
         <ModalFooter>
-          <Button colorScheme="gray" variant="ghost" onClick={onClose} mr={3}>
+          <Button variant="ghost" onClick={onClose} mr={3}>
             Close
           </Button>
 

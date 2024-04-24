@@ -11,6 +11,7 @@ export function RefreshWarningsButton() {
 
   return (
     <IconButton
+      colorScheme="blue"
       isDisabled={isFetching}
       aria-label="refresh warning"
       icon={<Icon variant="repeat" />}

@@ -86,7 +86,7 @@ export function UpdateEmailDrawer({
       }
       footer={
         <Flex>
-          <Button colorScheme="gray" variant="outline" onClick={handleClose}>
+          <Button variant="outline" onClick={handleClose}>
             Cancel
           </Button>
           <Button
@@ -94,6 +94,7 @@ export function UpdateEmailDrawer({
             isLoading={isPending}
             isDisabled={!hasCorrectEmail}
             onClick={updateUser}
+            colorScheme="blue"
           >
             Save
           </Button>
