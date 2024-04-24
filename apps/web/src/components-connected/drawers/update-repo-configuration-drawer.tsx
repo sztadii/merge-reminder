@@ -5,7 +5,8 @@ import {
   FormHelperText,
   FormLabel,
   Input,
-  Switch
+  Switch,
+  Tag
 } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { getQueryKey } from '@trpc/react-query'
@@ -186,31 +187,11 @@ export function UpdateRepoConfigurationDrawer({
                   }
                 />
 
-                <FormHelperText>Usually the production branch:</FormHelperText>
+                <FormHelperText>Usually the production branch</FormHelperText>
 
                 <Flex alignItems="center" gap={2} mt={2}>
-                  <Button
-                    size="xs"
-                    onClick={() => {
-                      setFormValues({
-                        ...formValues,
-                        headBranch: 'master'
-                      })
-                    }}
-                  >
-                    master
-                  </Button>
-                  <Button
-                    size="xs"
-                    onClick={() => {
-                      setFormValues({
-                        ...formValues,
-                        headBranch: 'main'
-                      })
-                    }}
-                  >
-                    main
-                  </Button>
+                  <Tag>master</Tag>
+                  <Tag>main</Tag>
                 </Flex>
               </FormControl>
 
@@ -227,20 +208,10 @@ export function UpdateRepoConfigurationDrawer({
                   }
                 />
 
-                <FormHelperText>Usually the development branch:</FormHelperText>
+                <FormHelperText>Usually the development branch</FormHelperText>
 
                 <Flex alignItems="center" gap={2} mt={2}>
-                  <Button
-                    size="xs"
-                    onClick={() => {
-                      setFormValues({
-                        ...formValues,
-                        baseBranch: 'develop'
-                      })
-                    }}
-                  >
-                    develop
-                  </Button>
+                  <Tag>develop</Tag>
                 </Flex>
               </FormControl>
             </>
@@ -249,7 +220,7 @@ export function UpdateRepoConfigurationDrawer({
       }
       footer={
         <>
-          <Button variant="outline" onClick={handleClose}>
+          <Button colorScheme="gray" variant="outline" onClick={handleClose}>
             Cancel
           </Button>
           <Button ml={2} isLoading={isPending} onClick={updateConfiguration}>

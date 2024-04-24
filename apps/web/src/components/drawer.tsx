@@ -1,6 +1,7 @@
 import {
   Drawer as ChakraDrawer,
   DrawerBody,
+  DrawerCloseButton,
   DrawerContent,
   DrawerFooter,
   DrawerHeader,
@@ -21,6 +22,7 @@ export function Drawer({ isOpen, onClose, header, body, footer }: DrawerProps) {
     <ChakraDrawer size="md" isOpen={isOpen} placement="right" onClose={onClose}>
       <DrawerOverlay />
       <DrawerContent>
+        <DrawerCloseButton />
         <DrawerHeader>{header}</DrawerHeader>
 
         <DrawerBody>{body}</DrawerBody>
