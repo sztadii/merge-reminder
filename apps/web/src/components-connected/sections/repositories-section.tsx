@@ -108,7 +108,8 @@ export function RepositoriesSection() {
               }
 
               return (
-                <Flex
+                <Box
+                  display="inline-flex"
                   cursor="pointer"
                   onClick={openEditDrawer}
                   gap={2}
@@ -135,7 +136,7 @@ export function RepositoriesSection() {
                     <Button size="xs">N/A</Button>
                   )}
                   <Icon variant="edit" color="gray.500" />
-                </Flex>
+                </Box>
               )
             }
           }
