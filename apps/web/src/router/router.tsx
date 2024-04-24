@@ -43,7 +43,7 @@ export function Router() {
         path={routerPaths.onboarding.path}
         component={() => {
           return (
-            <PrivateLayout noLayout>
+            <PrivateLayout hasCustomLayout>
               <Onboarding />
             </PrivateLayout>
           )
@@ -103,10 +103,10 @@ function PublicLayout({ children }: { children: ReactNode }) {
 
 function PrivateLayout({
   children,
-  noLayout = false
+  hasCustomLayout = false
 }: {
   children: ReactNode
-  noLayout?: boolean
+  hasCustomLayout?: boolean
 }) {
   useLayoutEffect(() => {
     const token = storage.auth.getToken()
@@ -116,7 +116,7 @@ function PrivateLayout({
     }
   }, [])
 
-  if (noLayout) return children
+  if (hasCustomLayout) return children
 
   return (
     <>
