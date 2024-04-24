@@ -1,6 +1,7 @@
 import {
   AddIcon,
   BellIcon,
+  CheckIcon,
   ChevronDownIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -25,7 +26,8 @@ const icons = {
   warning: WarningTwoIcon,
   delete: DeleteIcon,
   bell: BellIcon,
-  repeat: RepeatIcon
+  repeat: RepeatIcon,
+  check: CheckIcon
 }
 
 const sizes = {

@@ -12,6 +12,7 @@ import { getQueryKey } from '@trpc/react-query'
 import { useEffect, useState } from 'react'
 
 import { Drawer } from 'src/components/drawer'
+import { Icon } from 'src/components/icon'
 import { trimObjectValues } from 'src/helpers'
 import {
   RepoConfigurationResponse,
@@ -115,6 +116,8 @@ export function UpdateReposConfigurationDrawer({
                     headBranch: 'master'
                   })
                 }}
+                isDisabled={formValues?.headBranch === 'master'}
+                rightIcon={<Icon variant="check" />}
               >
                 master
               </Button>
@@ -126,6 +129,8 @@ export function UpdateReposConfigurationDrawer({
                     headBranch: 'main'
                   })
                 }}
+                isDisabled={formValues?.headBranch === 'main'}
+                rightIcon={<Icon variant="check" />}
               >
                 main
               </Button>
@@ -156,6 +161,8 @@ export function UpdateReposConfigurationDrawer({
                     baseBranch: 'develop'
                   })
                 }}
+                isDisabled={formValues?.baseBranch === 'develop'}
+                rightIcon={<Icon variant="check" />}
               >
                 develop
               </Button>

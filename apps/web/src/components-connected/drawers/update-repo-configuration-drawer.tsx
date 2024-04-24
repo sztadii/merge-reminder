@@ -12,6 +12,7 @@ import { getQueryKey } from '@trpc/react-query'
 import { useEffect, useMemo, useState } from 'react'
 
 import { Drawer } from 'src/components/drawer'
+import { Icon } from 'src/components/icon'
 import { trimObjectValues } from 'src/helpers'
 import { RepoConfigurationResponse, RepositoryResponse } from 'src/schemas'
 import { showErrorToast } from 'src/toasts'
@@ -186,7 +187,7 @@ export function UpdateRepoConfigurationDrawer({
                   }
                 />
 
-                <FormHelperText>Usually the production branch:</FormHelperText>
+                <FormHelperText>Usually the production branch</FormHelperText>
 
                 <Flex alignItems="center" gap={2} mt={2}>
                   <Button
@@ -197,6 +198,8 @@ export function UpdateRepoConfigurationDrawer({
                         headBranch: 'master'
                       })
                     }}
+                    isDisabled={formValues?.headBranch === 'master'}
+                    rightIcon={<Icon variant="check" />}
                   >
                     master
                   </Button>
@@ -208,6 +211,8 @@ export function UpdateRepoConfigurationDrawer({
                         headBranch: 'main'
                       })
                     }}
+                    isDisabled={formValues?.headBranch === 'main'}
+                    rightIcon={<Icon variant="check" />}
                   >
                     main
                   </Button>
@@ -227,7 +232,7 @@ export function UpdateRepoConfigurationDrawer({
                   }
                 />
 
-                <FormHelperText>Usually the development branch:</FormHelperText>
+                <FormHelperText>Usually the development branch</FormHelperText>
 
                 <Flex alignItems="center" gap={2} mt={2}>
                   <Button
@@ -238,6 +243,8 @@ export function UpdateRepoConfigurationDrawer({
                         baseBranch: 'develop'
                       })
                     }}
+                    isDisabled={formValues?.baseBranch === 'develop'}
+                    rightIcon={<Icon variant="check" />}
                   >
                     develop
                   </Button>
