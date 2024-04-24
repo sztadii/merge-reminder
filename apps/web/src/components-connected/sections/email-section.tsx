@@ -5,15 +5,16 @@ import {
   CardBody,
   IconButton,
   Skeleton,
+  Tag,
   useDisclosure
 } from '@chakra-ui/react'
 
-import { UpdateUserDrawer } from 'src/components-connected/drawers/update-user-drawer'
+import { UpdateEmailDrawer } from 'src/components-connected/drawers/update-email-drawer'
 import { DetailsGrid, DetailsGridProps } from 'src/components/details-grid'
 import { Icon } from 'src/components/icon'
 import { trpc } from 'src/trpc'
 
-export function ProfileSection() {
+export function EmailSection() {
   const { data: user, isLoading, error } = trpc.client.getCurrentUser.useQuery()
 
   const {
@@ -22,10 +23,11 @@ export function ProfileSection() {
     onClose: onCloseForUpdateDrawer
   } = useDisclosure()
 
-  const details: DetailsGridProps['details'] = [
-    {
-      heading: 'Email',
-      text: user?.email || (
+  function renderEmailContent() {
+    if (!user) return
+
+    if (!user.email)
+      return (
         <Button
           variant="link"
           colorScheme="red"
@@ -34,6 +36,21 @@ export function ProfileSection() {
           Please provide the email
         </Button>
       )
+
+    const { isEmailConfirmed } = user
+
+    return (
+      <>
+        {user.email}{' '}
+        {!isEmailConfirmed && <Tag colorScheme="red">Not confirmed</Tag>}
+      </>
+    )
+  }
+
+  const details: DetailsGridProps['details'] = [
+    {
+      heading: 'Email',
+      text: renderEmailContent()
     }
   ]
 
@@ -61,7 +78,7 @@ export function ProfileSection() {
         </CardBody>
       </Card>
 
-      <UpdateUserDrawer
+      <UpdateEmailDrawer
         user={user}
         isOpen={isOpenForUpdateDrawer}
         onClose={onCloseForUpdateDrawer}

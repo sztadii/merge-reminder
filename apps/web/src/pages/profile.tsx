@@ -1,6 +1,6 @@
 import { Box } from '@chakra-ui/react'
 
-import { ProfileSection } from 'src/components-connected/sections/profile-section'
+import { EmailSection } from 'src/components-connected/sections/email-section'
 import { Breadcrumbs } from 'src/components/breadcrumbs'
 
 export function Profile() {
@@ -10,7 +10,7 @@ export function Profile() {
         <Breadcrumbs currentPage="Profile" />
       </Box>
 
-      <ProfileSection />
+      <EmailSection />
     </>
   )
 }

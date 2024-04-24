@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 
 import { Drawer } from 'src/components/drawer'
 import { isValidEmail, trimObjectValues } from 'src/helpers'
-import { UserResponse, UserUpdateRequest } from 'src/schemas'
+import { UserResponse } from 'src/schemas'
 import { showErrorToast } from 'src/toasts'
 import { trpc } from 'src/trpc'
 
@@ -15,45 +15,43 @@ type UpdateUserDrawerProps = {
   onClose: () => void
 }
 
-type FormValuesRequired = UserUpdateRequest
-
-type FormValuesInitial = Partial<FormValuesRequired>
-
-export function UpdateUserDrawer({
+export function UpdateEmailDrawer({
   user,
   isOpen,
   onClose
 }: UpdateUserDrawerProps) {
   const [isPending, setIsPending] = useState(false)
-  const [formValues, setFormValues] = useState<FormValuesInitial | undefined>()
+  const [email, setEmail] = useState<string | undefined>()
   const queryClient = useQueryClient()
-  const { mutateAsync: updateUserMutation } =
-    trpc.client.updateCurrentUser.useMutation()
+  const { mutateAsync: updateEmailMutation } =
+    trpc.client.updateCurrentEmail.useMutation()
 
-  const hasCorrectData =
-    !!formValues?.email?.length && isValidEmail(formValues?.email)
+  const hasDifferentData = user?.email !== email
+  const hasCorrectEmail =
+    !!email?.length && hasDifferentData && isValidEmail(email)
 
   useEffect(() => {
     if (!user) return
 
-    setFormValues(user)
+    setEmail(user?.email)
   }, [user, isOpen])
 
   async function updateUser() {
     if (!user) return
-    if (!hasCorrectData) return
+    if (!hasCorrectEmail) return
 
     try {
       setIsPending(true)
 
-      const trimmedValues = trimObjectValues(formValues)
-      await updateUserMutation(trimmedValues as FormValuesRequired)
+      await updateEmailMutation({
+        email: trimObjectValues(email)
+      })
 
       await queryClient.invalidateQueries(
         getQueryKey(trpc.client.getCurrentUser)
       )
 
-      setFormValues(undefined)
+      setEmail(undefined)
 
       handleClose()
     } catch {
@@ -64,7 +62,7 @@ export function UpdateUserDrawer({
   }
 
   function handleClose() {
-    setFormValues(undefined)
+    setEmail(undefined)
     onClose()
   }
 
@@ -78,14 +76,9 @@ export function UpdateUserDrawer({
           <FormControl>
             <FormLabel>Email</FormLabel>
             <Input
-              value={formValues?.email || ''}
+              value={email || ''}
               placeholder="Type..."
-              onChange={e =>
-                setFormValues({
-                  ...formValues,
-                  email: e.target.value
-                })
-              }
+              onChange={e => setEmail(e.target.value)}
             />
           </FormControl>
         </>
@@ -98,7 +91,7 @@ export function UpdateUserDrawer({
           <Button
             ml={2}
             isLoading={isPending}
-            isDisabled={!hasCorrectData}
+            isDisabled={!hasCorrectEmail}
             onClick={updateUser}
           >
             Save

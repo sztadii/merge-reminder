@@ -4,7 +4,8 @@ export const UserResponseSchema = z.object({
   id: z.string(),
   avatarUrl: z.string(),
   email: z.string().email().optional(),
-  hasInstallationId: z.boolean()
+  hasInstallationId: z.boolean(),
+  isEmailConfirmed: z.boolean()
 })
 
 export type UserResponse = z.infer<typeof UserResponseSchema>
@@ -17,11 +18,17 @@ export const UserCreateRequestSchema = z.object({
 
 export type UserCreateRequest = z.infer<typeof UserCreateRequestSchema>
 
-export const UserUpdateRequestSchema = z.object({
+export const EmailUpdateRequestSchema = z.object({
   email: z.string().email()
 })
 
-export type UserUpdateRequest = z.infer<typeof UserUpdateRequestSchema>
+export type EmailUpdateRequest = z.infer<typeof EmailUpdateRequestSchema>
+
+export const EmailConfirmRequestSchema = z.object({
+  token: z.string()
+})
+
+export type EmailConfirmRequest = z.infer<typeof EmailConfirmRequestSchema>
 
 export const WarningResponseSchema = z.object({
   repo: z.string(),

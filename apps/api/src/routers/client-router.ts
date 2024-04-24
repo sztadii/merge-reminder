@@ -6,12 +6,13 @@ import { createUsersController } from '../factories/create-users-controller'
 import { createWarningsController } from '../factories/create-warnings-controller'
 import {
   ConnectRepositoriesRequestSchema,
+  EmailConfirmRequestSchema,
+  EmailUpdateRequestSchema,
   EmptyResponseSchema,
   RepoConfigurationResponseSchema,
   RepoConfigurationUpdateRequestSchema,
   RepositoriesResponseSchema,
   UserResponseSchema,
-  UserUpdateRequestSchema,
   WarningsResponseSchema
 } from '../schemas'
 import { router, tokenProtectedProcedure } from '../trpc'
@@ -24,13 +25,21 @@ export const clientRouter = router({
 
       return usersController.getById(opts.ctx.user.id)
     }),
-  updateCurrentUser: tokenProtectedProcedure
-    .input(UserUpdateRequestSchema)
+  updateCurrentEmail: tokenProtectedProcedure
+    .input(EmailUpdateRequestSchema)
     .output(EmptyResponseSchema)
     .mutation(opts => {
       const usersController = createUsersController(opts.ctx)
 
-      return usersController.updateById(opts.ctx.user.id, opts.input)
+      return usersController.updateEmail(opts.ctx.user.id, opts.input)
+    }),
+  confirmCurrentEmail: tokenProtectedProcedure
+    .input(EmailConfirmRequestSchema)
+    .output(EmptyResponseSchema)
+    .mutation(opts => {
+      const usersController = createUsersController(opts.ctx)
+
+      return usersController.confirmEmail(opts.ctx.user.id, opts.input)
     }),
   connectRepositories: tokenProtectedProcedure
     .input(ConnectRepositoriesRequestSchema)
