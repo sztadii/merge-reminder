@@ -24,7 +24,7 @@ export function Navigation() {
     <Box>
       <Container>
         <Flex py={4} alignItems="center" justifyContent="space-between">
-          <Link to={routerPaths.dashboard.path}>
+          <Link to={routerPaths.landing.path}>
             <Heading size="sm" color="gray.500">
               Merge Reminder
             </Heading>
@@ -32,11 +32,12 @@ export function Navigation() {
 
           <Flex alignItems="center" gap={4}>
             <Menu>
-              <MenuButton>
-                <Skeleton borderRadius="50%" isLoaded={!isLoading}>
+              <Skeleton borderRadius="50%" isLoaded={!isLoading}>
+                <MenuButton>
                   <Avatar size="sm" src={user?.avatarUrl} />
-                </Skeleton>
-              </MenuButton>
+                </MenuButton>
+              </Skeleton>
+
               <MenuList>
                 <MenuItem as={Link} to={routerPaths.profile.path}>
                   Profile

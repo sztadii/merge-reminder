@@ -17,16 +17,17 @@ export function Onboarding() {
   const { mutateAsync: updateEmailMutation } =
     trpc.client.updateCurrentEmail.useMutation()
 
-  const hasCorrectData = email.length && isValidEmail(email)
+  const trimmedEmail = trimObjectValues(email)
+  const hasCorrectEmail = trimmedEmail.length && isValidEmail(trimmedEmail)
 
   async function updateEmailValue() {
-    if (!hasCorrectData) return
+    if (!hasCorrectEmail) return
 
     try {
       setIsPending(true)
 
       await updateEmailMutation({
-        email: trimObjectValues(email)
+        email: trimmedEmail
       })
 
       await queryClient.invalidateQueries(
@@ -67,7 +68,7 @@ export function Onboarding() {
           <Button
             width="200px"
             isLoading={isPending}
-            isDisabled={!hasCorrectData}
+            isDisabled={!hasCorrectEmail}
             onClick={updateEmailValue}
           >
             Save

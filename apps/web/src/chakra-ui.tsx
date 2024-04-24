@@ -14,15 +14,27 @@ export const theme = extendTheme({
         }
       }
     },
+    Button: {
+      defaultProps: {
+        colorScheme: 'blue'
+      }
+    },
+    Switch: {
+      defaultProps: {
+        colorScheme: 'blue'
+      }
+    },
     Card: {
       baseStyle: {
         container: {
+          backgroundColor: 'gray.50',
           boxShadow: 'none',
           borderWidth: '1px',
           borderStyle: 'solid',
           borderColor: 'gray.200',
           _dark: {
-            borderColor: 'gray.700'
+            borderColor: 'gray.700',
+            backgroundColor: 'gray.700'
           }
         }
       }
