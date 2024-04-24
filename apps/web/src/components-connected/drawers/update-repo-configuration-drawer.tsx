@@ -97,8 +97,9 @@ export function UpdateRepoConfigurationDrawer({
     if (!repo) return []
     if (!configuration) return []
 
+    const isIgnored = !!formValues?.isIgnored
     const trimmedValues = trimObjectValues({
-      isIgnored: !!formValues?.isIgnored,
+      isIgnored,
       headBranch: formValues?.headBranch,
       baseBranch: formValues?.baseBranch
     })
@@ -115,6 +116,11 @@ export function UpdateRepoConfigurationDrawer({
     const updatedRepo = {
       repoId: repo.id,
       ...trimmedValues
+    }
+
+    if (isIgnored) {
+      updatedRepo.headBranch = undefined
+      updatedRepo.baseBranch = undefined
     }
 
     // Update repo in configuration
@@ -152,77 +158,6 @@ export function UpdateRepoConfigurationDrawer({
       body={
         <>
           <FormControl>
-            <FormLabel>Head branch</FormLabel>
-            <Input
-              value={formValues?.headBranch || ''}
-              placeholder="Type..."
-              onChange={e =>
-                setFormValues({
-                  ...formValues,
-                  headBranch: e.target.value
-                })
-              }
-            />
-
-            <FormHelperText>Usually the production branch:</FormHelperText>
-
-            <Flex alignItems="center" gap={2} mt={2}>
-              <Button
-                size="xs"
-                onClick={() => {
-                  setFormValues({
-                    ...formValues,
-                    headBranch: 'master'
-                  })
-                }}
-              >
-                master
-              </Button>
-              <Button
-                size="xs"
-                onClick={() => {
-                  setFormValues({
-                    ...formValues,
-                    headBranch: 'main'
-                  })
-                }}
-              >
-                main
-              </Button>
-            </Flex>
-          </FormControl>
-
-          <FormControl mt={8}>
-            <FormLabel>Base branch</FormLabel>
-            <Input
-              value={formValues?.baseBranch || ''}
-              placeholder="Type..."
-              onChange={e =>
-                setFormValues({
-                  ...formValues,
-                  baseBranch: e.target.value
-                })
-              }
-            />
-
-            <FormHelperText>Usually the development branch:</FormHelperText>
-
-            <Flex alignItems="center" gap={2} mt={2}>
-              <Button
-                size="xs"
-                onClick={() => {
-                  setFormValues({
-                    ...formValues,
-                    baseBranch: 'develop'
-                  })
-                }}
-              >
-                develop
-              </Button>
-            </Flex>
-          </FormControl>
-
-          <FormControl mt={8}>
             <FormLabel>Ignore repository</FormLabel>
             <Switch
               size="lg"
@@ -235,6 +170,81 @@ export function UpdateRepoConfigurationDrawer({
               }
             />
           </FormControl>
+
+          {!formValues?.isIgnored && (
+            <>
+              <FormControl mt={8}>
+                <FormLabel>Head branch</FormLabel>
+                <Input
+                  value={formValues?.headBranch || ''}
+                  placeholder="Type..."
+                  onChange={e =>
+                    setFormValues({
+                      ...formValues,
+                      headBranch: e.target.value
+                    })
+                  }
+                />
+
+                <FormHelperText>Usually the production branch:</FormHelperText>
+
+                <Flex alignItems="center" gap={2} mt={2}>
+                  <Button
+                    size="xs"
+                    onClick={() => {
+                      setFormValues({
+                        ...formValues,
+                        headBranch: 'master'
+                      })
+                    }}
+                  >
+                    master
+                  </Button>
+                  <Button
+                    size="xs"
+                    onClick={() => {
+                      setFormValues({
+                        ...formValues,
+                        headBranch: 'main'
+                      })
+                    }}
+                  >
+                    main
+                  </Button>
+                </Flex>
+              </FormControl>
+
+              <FormControl mt={8}>
+                <FormLabel>Base branch</FormLabel>
+                <Input
+                  value={formValues?.baseBranch || ''}
+                  placeholder="Type..."
+                  onChange={e =>
+                    setFormValues({
+                      ...formValues,
+                      baseBranch: e.target.value
+                    })
+                  }
+                />
+
+                <FormHelperText>Usually the development branch:</FormHelperText>
+
+                <Flex alignItems="center" gap={2} mt={2}>
+                  <Button
+                    size="xs"
+                    onClick={() => {
+                      setFormValues({
+                        ...formValues,
+                        baseBranch: 'develop'
+                      })
+                    }}
+                  >
+                    develop
+                  </Button>
+                </Flex>
+              </FormControl>
+            </>
+          )}
         </>
       }
       footer={
