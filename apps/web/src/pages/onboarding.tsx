@@ -14,8 +14,8 @@ export function Onboarding() {
   const [email, setEmail] = useState('')
 
   const queryClient = useQueryClient()
-  const { mutateAsync: updateUserMutation } =
-    trpc.client.updateCurrentUser.useMutation()
+  const { mutateAsync: updateEmailMutation } =
+    trpc.client.updateCurrentEmail.useMutation()
 
   const hasCorrectData = email.length && isValidEmail(email)
 
@@ -25,7 +25,7 @@ export function Onboarding() {
     try {
       setIsPending(true)
 
-      await updateUserMutation({
+      await updateEmailMutation({
         email: trimObjectValues(email)
       })
 

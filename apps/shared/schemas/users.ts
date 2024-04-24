@@ -17,11 +17,11 @@ export const UserCreateRequestSchema = z.object({
 
 export type UserCreateRequest = z.infer<typeof UserCreateRequestSchema>
 
-export const UserUpdateRequestSchema = z.object({
+export const EmailUpdateRequestSchema = z.object({
   email: z.string().email()
 })
 
-export type UserUpdateRequest = z.infer<typeof UserUpdateRequestSchema>
+export type EmailUpdateRequest = z.infer<typeof EmailUpdateRequestSchema>
 
 export const WarningResponseSchema = z.object({
   repo: z.string(),

@@ -2,7 +2,7 @@ import { TRPCError } from '@trpc/server'
 
 import { UserDatabaseRecord } from '../database'
 import { UsersRepository } from '../repositories/users-repository'
-import { UserResponse, UserUpdateRequest } from '../schemas'
+import { EmailUpdateRequest, UserResponse } from '../schemas'
 
 export class UsersController {
   constructor(private usersRepository: UsersRepository) {}
@@ -25,7 +25,7 @@ export class UsersController {
     return this.mapRecordToResponse(record)
   }
 
-  async updateById(id: string, userData: UserUpdateRequest): Promise<void> {
+  async updateEmail(id: string, userData: EmailUpdateRequest): Promise<void> {
     try {
       await this.usersRepository.updateById(id, {
         email: userData.email

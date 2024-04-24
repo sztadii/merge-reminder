@@ -8,12 +8,12 @@ import {
   useDisclosure
 } from '@chakra-ui/react'
 
-import { UpdateUserDrawer } from 'src/components-connected/drawers/update-user-drawer'
+import { UpdateEmailDrawer } from 'src/components-connected/drawers/update-email-drawer'
 import { DetailsGrid, DetailsGridProps } from 'src/components/details-grid'
 import { Icon } from 'src/components/icon'
 import { trpc } from 'src/trpc'
 
-export function ProfileSection() {
+export function EmailSection() {
   const { data: user, isLoading, error } = trpc.client.getCurrentUser.useQuery()
 
   const {
@@ -61,7 +61,7 @@ export function ProfileSection() {
         </CardBody>
       </Card>
 
-      <UpdateUserDrawer
+      <UpdateEmailDrawer
         user={user}
         isOpen={isOpenForUpdateDrawer}
         onClose={onCloseForUpdateDrawer}
