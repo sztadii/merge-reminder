@@ -24,7 +24,7 @@ export function Navigation() {
     <Box>
       <Container>
         <Flex py={4} alignItems="center" justifyContent="space-between">
-          <Link to={routerPaths.dashboard.path}>
+          <Link to={routerPaths.landing.path}>
             <Heading size="sm" color="gray.500">
               Merge Reminder
             </Heading>
