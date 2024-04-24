@@ -5,6 +5,7 @@ import {
   CardBody,
   IconButton,
   Skeleton,
+  Tag,
   useDisclosure
 } from '@chakra-ui/react'
 
@@ -22,10 +23,11 @@ export function EmailSection() {
     onClose: onCloseForUpdateDrawer
   } = useDisclosure()
 
-  const details: DetailsGridProps['details'] = [
-    {
-      heading: 'Email',
-      text: user?.email || (
+  function renderEmailContent() {
+    if (!user) return
+
+    if (!user.email)
+      return (
         <Button
           variant="link"
           colorScheme="red"
@@ -34,6 +36,21 @@ export function EmailSection() {
           Please provide the email
         </Button>
       )
+
+    const { isEmailConfirmed } = user
+
+    return (
+      <>
+        {user.email}{' '}
+        {!isEmailConfirmed && <Tag colorScheme="red">Not confirmed</Tag>}
+      </>
+    )
+  }
+
+  const details: DetailsGridProps['details'] = [
+    {
+      heading: 'Email',
+      text: renderEmailContent()
     }
   ]
 

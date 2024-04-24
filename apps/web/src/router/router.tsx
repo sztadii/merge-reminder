@@ -5,6 +5,7 @@ import { Redirect, Route, Switch } from 'wouter'
 import { Container } from 'src/components/container'
 import { Navigation } from 'src/components/navigation'
 import { Dashboard } from 'src/pages/dashboard'
+import { EmailConfirmation } from 'src/pages/email-confirmation'
 import { Landing } from 'src/pages/landing'
 import { Login } from 'src/pages/login'
 import { Onboarding } from 'src/pages/onboarding'
@@ -78,6 +79,17 @@ export function Router() {
           return (
             <PrivateLayout>
               <Profile />
+            </PrivateLayout>
+          )
+        }}
+      />
+
+      <Route
+        path={routerPaths.emailConfirmation.path}
+        component={() => {
+          return (
+            <PrivateLayout>
+              <EmailConfirmation />
             </PrivateLayout>
           )
         }}

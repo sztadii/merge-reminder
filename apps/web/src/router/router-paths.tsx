@@ -1,3 +1,4 @@
+import { useParams } from 'wouter'
 import { navigate as wouterNavigate } from 'wouter/use-browser-location'
 
 export const routerPaths = {
@@ -6,7 +7,13 @@ export const routerPaths = {
   onboarding: createPage('/onboarding'),
   dashboard: createPage('/dashboard'),
   settings: createPage('/settings'),
-  profile: createPage('/profile')
+  profile: createPage('/profile'),
+  emailConfirmation: {
+    path: '/email-confirmation/:token',
+    useParams() {
+      return useParams<{ token: string }>()
+    }
+  }
 }
 
 function createPage(path: string) {

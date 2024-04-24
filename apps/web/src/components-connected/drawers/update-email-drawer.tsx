@@ -26,7 +26,9 @@ export function UpdateEmailDrawer({
   const { mutateAsync: updateEmailMutation } =
     trpc.client.updateCurrentEmail.useMutation()
 
-  const hasCorrectEmail = !!email?.length && isValidEmail(email)
+  const hasDifferentData = user?.email !== email
+  const hasCorrectEmail =
+    !!email?.length && hasDifferentData && isValidEmail(email)
 
   useEffect(() => {
     if (!user) return

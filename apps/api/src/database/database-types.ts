@@ -11,6 +11,7 @@ export type UserDatabaseValues = {
   avatarUrl: string
   role: 'admin' | 'client'
   email?: string
+  confirmedEmail?: string
   githubAppInstallationId?: number | null
 }
 

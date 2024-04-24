@@ -6,6 +6,7 @@ import { createUsersController } from '../factories/create-users-controller'
 import { createWarningsController } from '../factories/create-warnings-controller'
 import {
   ConnectRepositoriesRequestSchema,
+  EmailConfirmRequestSchema,
   EmailUpdateRequestSchema,
   EmptyResponseSchema,
   RepoConfigurationResponseSchema,
@@ -31,6 +32,14 @@ export const clientRouter = router({
       const usersController = createUsersController(opts.ctx)
 
       return usersController.updateEmail(opts.ctx.user.id, opts.input)
+    }),
+  confirmCurrentEmail: tokenProtectedProcedure
+    .input(EmailConfirmRequestSchema)
+    .output(EmptyResponseSchema)
+    .mutation(opts => {
+      const usersController = createUsersController(opts.ctx)
+
+      return usersController.confirmEmail(opts.ctx.user.id, opts.input)
     }),
   connectRepositories: tokenProtectedProcedure
     .input(ConnectRepositoriesRequestSchema)
