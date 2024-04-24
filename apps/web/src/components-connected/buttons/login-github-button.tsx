@@ -12,6 +12,7 @@ import { TRPCError, trpc } from 'src/trpc'
 export function LoginGithubButton() {
   const params = new URLSearchParams(window.location.search)
   const code = params.get('code')
+  const error = params.get('error')
 
   const [isLoading, setIsLoading] = useState(!!code)
 
@@ -26,7 +27,7 @@ export function LoginGithubButton() {
   }
 
   useEffect(() => {
-    async function login() {
+    async function handleLogin() {
       if (!code) return
 
       try {
@@ -48,11 +49,20 @@ export function LoginGithubButton() {
       setIsLoading(false)
     }
 
-    login()
+    function handleError() {
+      if (!error) return
+
+      showErrorToast('Access denied.')
+      removeSearchParamsFromURL()
+    }
+
+    handleLogin()
+    handleError()
   }, [])
 
   return (
     <Button
+      colorScheme="gray"
       isLoading={isLoading}
       onClick={redirectToGithub}
       rightIcon={<Icon variant="chevronRight" />}

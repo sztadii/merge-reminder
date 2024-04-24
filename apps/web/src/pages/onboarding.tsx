@@ -36,7 +36,7 @@ export function Onboarding() {
 
       routerPaths.dashboard.navigate()
     } catch {
-      showErrorToast('Something went wrong')
+      showErrorToast('Something went wrong.')
     } finally {
       setIsPending(false)
     }
