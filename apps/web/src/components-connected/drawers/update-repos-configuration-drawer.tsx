@@ -152,7 +152,7 @@ export function UpdateReposConfigurationDrawer({
       }
       footer={
         <>
-          <Button colorScheme="gray" variant="outline" onClick={handleClose}>
+          <Button variant="outline" onClick={handleClose}>
             Cancel
           </Button>
           <Button
@@ -160,6 +160,7 @@ export function UpdateReposConfigurationDrawer({
             isLoading={isPending}
             isDisabled={hasMissingFormValues}
             onClick={updateConfiguration}
+            colorScheme="blue"
           >
             Save
           </Button>

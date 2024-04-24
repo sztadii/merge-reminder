@@ -123,17 +123,19 @@ export function RepositoriesSection() {
                         </Button>
                       ) : (
                         <>
-                          <Button size="xs">
+                          <Button colorScheme="blue" size="xs">
                             {repoConfiguration.headBranch}
                           </Button>
-                          <Button size="xs">
+                          <Button colorScheme="blue" size="xs">
                             {repoConfiguration.baseBranch}
                           </Button>
                         </>
                       )}
                     </>
                   ) : (
-                    <Button size="xs">N/A</Button>
+                    <Button colorScheme="blue" size="xs">
+                      N/A
+                    </Button>
                   )}
                   <Icon variant="edit" color="gray.500" />
                 </Box>
@@ -167,6 +169,7 @@ export function RepositoriesSection() {
                   <ResetReposConfigurationsButton />
                 )}
                 <IconButton
+                  colorScheme="blue"
                   aria-label="update configuration"
                   onClick={onOpenForUpdateAllDrawer}
                   icon={<Icon variant="edit" />}

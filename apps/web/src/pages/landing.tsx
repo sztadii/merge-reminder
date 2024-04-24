@@ -22,7 +22,7 @@ export function Landing() {
       </Heading>
 
       <Box position="absolute" right={4} top={4}>
-        <Button colorScheme="gray" as={Link} to={routerPaths.dashboard.path}>
+        <Button as={Link} to={routerPaths.dashboard.path}>
           Dashaboard
         </Button>
       </Box>

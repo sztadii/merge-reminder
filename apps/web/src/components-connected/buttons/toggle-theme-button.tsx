@@ -13,6 +13,7 @@ export function ToggleThemeButton() {
         base: '100%',
         md: 'auto'
       }}
+      colorScheme="blue"
     >
       {colorMode === 'light' ? 'Dark' : 'Light'}
     </Button>

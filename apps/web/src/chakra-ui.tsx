@@ -14,16 +14,6 @@ export const theme = extendTheme({
         }
       }
     },
-    Button: {
-      defaultProps: {
-        colorScheme: 'blue'
-      }
-    },
-    Switch: {
-      defaultProps: {
-        colorScheme: 'blue'
-      }
-    },
     Card: {
       baseStyle: {
         container: {
