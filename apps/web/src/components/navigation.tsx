@@ -32,7 +32,7 @@ export function Navigation() {
 
           <Flex alignItems="center" gap={4}>
             <Menu>
-              <MenuButton>
+              <MenuButton disabled={isLoading}>
                 <Skeleton borderRadius="50%" isLoaded={!isLoading}>
                   <Avatar size="sm" src={user?.avatarUrl} />
                 </Skeleton>
