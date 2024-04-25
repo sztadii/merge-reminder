@@ -1,4 +1,4 @@
-import { Button, useDisclosure } from '@chakra-ui/react'
+import { Button, Tooltip, useDisclosure } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { getQueryKey } from '@trpc/react-query'
 import { useState } from 'react'
@@ -15,6 +15,7 @@ type DisconnectReposButtonProps = {
 
 export function DisconnectReposButton({ user }: DisconnectReposButtonProps) {
   const [isPending, setIsPending] = useState(false)
+
   const { mutateAsync: disconnectRepositoriesMutation } =
     trpc.client.disconnectRepositories.useMutation()
 
@@ -45,21 +46,34 @@ export function DisconnectReposButton({ user }: DisconnectReposButtonProps) {
     }
   }
 
+  function getDisabledMessage() {
+    const hasInstallationId = user?.hasInstallationId === true
+
+    if (!hasInstallationId)
+      return 'You do not have any connected repositories yet.'
+
+    return undefined
+  }
+
+  const disabledMessage = getDisabledMessage()
+
   return (
     <>
-      <Button
-        isDisabled={!user || !user.hasInstallationId}
-        isLoading={isPending}
-        onClick={onOpenForConfirmModal}
-        colorScheme="red"
-        width={{
-          base: '100%',
-          md: 'auto'
-        }}
-        rightIcon={<Icon variant="warning" />}
-      >
-        Disconnect
-      </Button>
+      <Tooltip label={disabledMessage} placement="top">
+        <Button
+          isDisabled={!!disabledMessage}
+          isLoading={isPending}
+          onClick={onOpenForConfirmModal}
+          colorScheme="red"
+          width={{
+            base: '100%',
+            md: 'auto'
+          }}
+          rightIcon={<Icon variant="warning" />}
+        >
+          Disconnect
+        </Button>
+      </Tooltip>
 
       <Confirmation
         isOpen={isOpenForConfirmModal}
