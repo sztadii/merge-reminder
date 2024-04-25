@@ -7,8 +7,8 @@ import { routerPaths } from 'src/router'
 export function Landing() {
   return (
     <Flex
-      height="100vh"
-      width="100vw"
+      height="100dvh"
+      width="100dvw"
       alignItems="center"
       justifyContent="center"
       flexDirection="column"

@@ -43,7 +43,7 @@ export function Onboarding() {
   }
 
   return (
-    <Flex height="100vh" alignItems="center" justifyContent="center">
+    <Flex height="100dvh" alignItems="center" justifyContent="center">
       <Box textAlign="center" width="100%" maxWidth={500} p={2}>
         <Heading size="lg" mb={4}>
           Welcome
