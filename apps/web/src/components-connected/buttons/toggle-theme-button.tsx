@@ -8,7 +8,7 @@ export function ToggleThemeButton() {
   return (
     <IconButton
       onClick={toggleColorMode}
-      icon={<Icon variant={colorMode === 'light' ? 'moon' : 'sun'} />}
+      icon={<Icon variant={colorMode === 'light' ? 'sun' : 'moon'} />}
       aria-label=""
     />
   )
