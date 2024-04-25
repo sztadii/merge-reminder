@@ -2,7 +2,6 @@ import { Card, CardBody } from '@chakra-ui/react'
 
 import { DeleteUserButton } from 'src/components-connected/buttons/delete-user-button'
 import { DisconnectReposButton } from 'src/components-connected/buttons/disconnect-repos-button'
-import { SubscribeButton } from 'src/components-connected/buttons/subscribe-button'
 import { ToggleThemeButton } from 'src/components-connected/buttons/toggle-theme-button'
 import { DetailsGrid, DetailsGridProps } from 'src/components/details-grid'
 import { trpc } from 'src/trpc'
@@ -14,10 +13,6 @@ export function BasicSettingsSection() {
     {
       heading: 'Change theme',
       text: <ToggleThemeButton />
-    },
-    {
-      heading: 'Subscribe and pay',
-      text: <SubscribeButton />
     },
     {
       heading: 'Disconnect repositories',
