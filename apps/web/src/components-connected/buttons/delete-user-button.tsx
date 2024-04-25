@@ -12,7 +12,7 @@ type DeleteUserButtonProps = {
 }
 
 export function DeleteUserButton({ user }: DeleteUserButtonProps) {
-  const { mutateAsync: removeCurrentAccountMutation } =
+  const { mutateAsync: removeCurrentAccountMutation, isLoading } =
     trpc.client.removeCurrentAccount.useMutation()
 
   const {
@@ -37,6 +37,7 @@ export function DeleteUserButton({ user }: DeleteUserButtonProps) {
     <>
       <Button
         isDisabled={!user}
+        isLoading={isLoading}
         onClick={onOpenForConfirmModal}
         colorScheme="red"
         width={{
