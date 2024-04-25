@@ -7,6 +7,11 @@ export const theme = extendTheme({
     useSystemColorMode: false
   },
   components: {
+    Switch: {
+      defaultProps: {
+        colorScheme: 'teal'
+      }
+    },
     Alert: {
       baseStyle: {
         container: {
@@ -23,7 +28,7 @@ export const theme = extendTheme({
           borderStyle: 'solid',
           borderColor: 'gray.200',
           _dark: {
-            borderColor: 'gray.700',
+            borderColor: 'whiteAlpha.200',
             backgroundColor: 'gray.700'
           }
         }
