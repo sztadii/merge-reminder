@@ -17,6 +17,10 @@ const configSchema = z.object({
   token: z.object({
     encryptionKey: z.string().length(32),
     initVector: z.string().length(16)
+  }),
+  stripe: z.object({
+    apiKey: z.string(),
+    monthlyProductId: z.string()
   })
 })
 
@@ -37,5 +41,9 @@ export const config = configSchema.parse({
   token: {
     encryptionKey: process.env.AUTH_ENCRIPTION_KEY,
     initVector: process.env.AUTH_INIT_VECTOR
+  },
+  stripe: {
+    apiKey: process.env.STRIPE_API_KEY,
+    monthlyProductId: process.env.STRIPE_MONTHLY_PRODUCT_ID
   }
 })

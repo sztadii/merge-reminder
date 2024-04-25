@@ -5,12 +5,12 @@ import { useEffect, useState } from 'react'
 
 import { Icon } from 'src/components/icon'
 import { config } from 'src/config'
-import { removeSearchParamsFromURL } from 'src/helpers'
+import { getSearchParams, removeSearchParamsFromURL } from 'src/helpers'
 import { showErrorToast } from 'src/toasts'
 import { TRPCError, trpc } from 'src/trpc'
 
 export function ConnectReposButton() {
-  const params = new URLSearchParams(window.location.search)
+  const params = getSearchParams()
   const installationId = params.get('installation_id')
 
   const [isLoading, setIsLoading] = useState(!!installationId)

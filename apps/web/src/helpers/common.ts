@@ -29,3 +29,7 @@ export function isValidEmail(email: string) {
 
   return emailPattern.test(email)
 }
+
+export function getSearchParams() {
+  return new URLSearchParams(window.location.search)
+}

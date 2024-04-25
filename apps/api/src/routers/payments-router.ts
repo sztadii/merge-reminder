@@ -15,8 +15,10 @@ export const paymentsRouter = router({
 
       return paymentsController.handleWebhookEvents(opts.input)
     }),
-  createSubscribeUrl: publicProcedure.output(StringResponseSchema).query(() => {
-    const paymentsController = createPaymentsController()
-    return paymentsController.createSubscribeUrl()
-  })
+  createSubscribeUrl: publicProcedure
+    .output(StringResponseSchema)
+    .mutation(() => {
+      const paymentsController = createPaymentsController()
+      return paymentsController.createSubscribeUrl()
+    })
 })
