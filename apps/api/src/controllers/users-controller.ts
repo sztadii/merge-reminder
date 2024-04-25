@@ -54,12 +54,12 @@ export class UsersController {
     }
 
     try {
-      const { appWebDomain } = config
+      const { webDomain } = config.app
       const emailDataToken: EmailDataToken = {
         confirmedEmail: email
       }
       const token = convertJSONToToken(emailDataToken)
-      const confirmationLink = `${appWebDomain}/email-confirmation/${token}`
+      const confirmationLink = `${webDomain}/email-confirmation/${token}`
       await this.emailService.sendEmail({
         to: email,
         subject: 'Confirm your email',

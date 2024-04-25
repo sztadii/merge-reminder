@@ -1,6 +1,16 @@
 import * as z from 'zod'
 
 const configSchema = z.object({
+  app: z.object({
+    apiKeyForPublicEndpoints: z.string(),
+    isUnderMaintenance: z.boolean(),
+    webDomain: z.string(),
+    mode: z.string(),
+    port: z.string()
+  }),
+  mongo: z.object({
+    url: z.string()
+  }),
   github: z.object({
     authClientId: z.string(),
     authClientSecret: z.string(),
@@ -11,10 +21,7 @@ const configSchema = z.object({
     domainName: z.string(),
     apiKey: z.string()
   }),
-  isUnderMaintenance: z.boolean(),
-  apiKeyForPublicEndpoints: z.string(),
-  appWebDomain: z.string(),
-  token: z.object({
+  auth: z.object({
     encryptionKey: z.string().length(32),
     initVector: z.string().length(16)
   }),
@@ -25,6 +32,16 @@ const configSchema = z.object({
 })
 
 export const config = configSchema.parse({
+  app: {
+    apiKeyForPublicEndpoints: process.env.APP_API_KEY_FOR_PUBLIC_ENDPOINTS,
+    isUnderMaintenance: process.env.APP_IS_UNDER_MAINTENENCE === 'true',
+    webDomain: process.env.APP_WEB_DOMAIN,
+    mode: process.env.APP_MODE,
+    port: process.env.APP_PORT
+  },
+  mongo: {
+    url: process.env.MONGO_URL
+  },
   github: {
     authClientId: process.env.GITHUB_AUTH_CLIENT_ID,
     authClientSecret: process.env.GITHUB_AUTH_CLIENT_SECRET,
@@ -35,10 +52,7 @@ export const config = configSchema.parse({
     domainName: process.env.MAILGUN_DOMAIN_NAME,
     apiKey: process.env.MAILGUN_API_KEY
   },
-  isUnderMaintenance: process.env.IS_UNDER_MAINTENENCE === 'true',
-  apiKeyForPublicEndpoints: process.env.API_KEY_FOR_PUBLIC_ENDPOINTS,
-  appWebDomain: process.env.APP_WEB_DOMAIN,
-  token: {
+  auth: {
     encryptionKey: process.env.AUTH_ENCRIPTION_KEY,
     initVector: process.env.AUTH_INIT_VECTOR
   },

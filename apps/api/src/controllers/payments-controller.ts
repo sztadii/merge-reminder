@@ -17,7 +17,7 @@ export class PaymentsController {
   }
 
   async createSubscribeUrl(): Promise<string> {
-    const { appWebDomain } = config
+    const { webDomain } = config.app
 
     const session = await this.stripe.checkout.sessions.create({
       mode: 'subscription',
@@ -27,8 +27,8 @@ export class PaymentsController {
           quantity: 1
         }
       ],
-      success_url: `${appWebDomain}/settings/?success=true`,
-      cancel_url: `${appWebDomain}/settings`
+      success_url: `${webDomain}/settings/?success=true`,
+      cancel_url: `${webDomain}/settings`
     })
 
     if (!session.url) {

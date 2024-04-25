@@ -3,12 +3,13 @@ import cors from 'cors'
 import 'dotenv/config'
 import express from 'express'
 
+import { config } from './src/config'
 import { initDatabase } from './src/database'
 import { appRouter } from './src/routers'
 import { createContext } from './src/trpc'
 
 async function init() {
-  await initDatabase(process.env.MONGO_URL)
+  await initDatabase(config.mongo.url)
 
   const app = express()
 
@@ -22,7 +23,7 @@ async function init() {
     })
   )
 
-  const port = process.env.PORT || 3000
+  const port = config.app.port || 3000
 
   app.listen(port, () => {
     console.log(`API running at http://localhost:${port}`)

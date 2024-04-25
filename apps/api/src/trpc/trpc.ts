@@ -14,7 +14,7 @@ export const apiKeyProtectedProcedure = t.procedure.use(opts => {
 
   throwIfUnderMaintenance()
 
-  const isAuthorized = ctx.apiKey === config.apiKeyForPublicEndpoints
+  const isAuthorized = ctx.apiKey === config.app.apiKeyForPublicEndpoints
 
   if (!isAuthorized) {
     throw new TRPCError({ code: 'UNAUTHORIZED' })
@@ -39,7 +39,7 @@ export const tokenProtectedProcedure = t.procedure.use(opts => {
 })
 
 function throwIfUnderMaintenance() {
-  const isUnderMaintenance = config.isUnderMaintenance
+  const { isUnderMaintenance } = config.app
 
   if (isUnderMaintenance) {
     throw new TRPCError({ code: 'PRECONDITION_FAILED' })

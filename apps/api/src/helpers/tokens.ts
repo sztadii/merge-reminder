@@ -58,8 +58,8 @@ export function convertTokenToJSON<T>(token: string): T | undefined {
 function encrypt(text: string) {
   const cipher = crypto.createCipheriv(
     'aes-256-cbc',
-    Buffer.from(config.token.encryptionKey),
-    Buffer.from(config.token.initVector)
+    Buffer.from(config.auth.encryptionKey),
+    Buffer.from(config.auth.initVector)
   )
   let crypted = cipher.update(text, 'utf8', 'hex')
   crypted += cipher.final('hex')
@@ -69,8 +69,8 @@ function encrypt(text: string) {
 function decrypt(text: string) {
   const decipher = crypto.createDecipheriv(
     'aes-256-cbc',
-    Buffer.from(config.token.encryptionKey),
-    Buffer.from(config.token.initVector)
+    Buffer.from(config.auth.encryptionKey),
+    Buffer.from(config.auth.initVector)
   )
   let dec = decipher.update(text, 'hex', 'utf8')
   dec += decipher.final('utf8')
