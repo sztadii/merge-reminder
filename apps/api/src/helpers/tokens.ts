@@ -2,6 +2,32 @@ import crypto from 'crypto'
 
 import { config } from '../config'
 
+class TokenCache {
+  private values: Record<string, unknown> = {}
+  private size: number = 0
+  private maxSize = 100
+
+  public getValue(key: string): unknown | undefined {
+    return this.values[key]
+  }
+
+  public setValue(key: string, value: unknown): void {
+    this.cleanIfNeeded()
+
+    this.values[key] = value
+    this.size = this.size + 1
+  }
+
+  private cleanIfNeeded(): void {
+    if (this.size < this.maxSize) return
+
+    this.values = {}
+    this.size = 0
+  }
+}
+
+const tokenCache = new TokenCache()
+
 export function convertJSONToToken(
   json: Record<string, string | number>
 ): string | undefined {
@@ -15,8 +41,15 @@ export function convertJSONToToken(
 
 export function convertTokenToJSON<T>(token: string): T | undefined {
   try {
+    const cachedToken = tokenCache.getValue(token) as T
+    if (cachedToken) return cachedToken
+
     const jsonString = decrypt(token)
-    return JSON.parse(jsonString)
+    const jsonValue = JSON.parse(jsonString)
+
+    tokenCache.setValue(token, jsonValue)
+
+    return jsonValue
   } catch {
     return undefined
   }
