@@ -1,11 +1,4 @@
-import {
-  Alert,
-  AlertIcon,
-  Box,
-  Skeleton,
-  Text,
-  useBreakpointValue
-} from '@chakra-ui/react'
+import { Alert, AlertIcon, Box, Skeleton, Text } from '@chakra-ui/react'
 import { ReactNode } from 'react'
 
 type Breakpoints = {
@@ -55,14 +48,6 @@ export function Table<T extends unknown[]>({
 
   const headerSpace = rowHeight + marginsSpace
   const tableHeight = headerSpace + rowsSpace + marginBottom
-
-  // On the phones, where table has a scroll we do not want to hide the content.
-  // So we need a small padding.
-  // For larger devices we do not need it.
-  const paddingBottomValue = useBreakpointValue({
-    base: '20px',
-    lg: '0px'
-  })
 
   function renderContent() {
     if (!isLoading && errorMessage)
@@ -154,7 +139,7 @@ export function Table<T extends unknown[]>({
             })}
           </Box>
         </Box>
-        <Box overflow="auto" height={contentHeight + 'px'}>
+        <Box height={contentHeight + 'px'}>
           {rows.map((row, index) => {
             const isLast = rows.length - 1 === index
             return (
@@ -186,7 +171,7 @@ export function Table<T extends unknown[]>({
   }
 
   return (
-    <Box overflowX="auto" pb={paddingBottomValue}>
+    <Box overflow="auto">
       <Box height={tableHeight}>{renderContent()}</Box>
     </Box>
   )
