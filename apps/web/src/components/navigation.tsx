@@ -4,16 +4,16 @@ import {
   Divider,
   Flex,
   Heading,
-  IconButton,
   Menu,
   MenuButton,
+  MenuDivider,
   MenuItem,
   MenuList,
-  Skeleton
+  Skeleton,
+  useColorMode
 } from '@chakra-ui/react'
 import { Link } from 'wouter'
 
-import { ToggleThemeButton } from 'src/components-connected/buttons/toggle-theme-button'
 import { Container } from 'src/components/container'
 import { Icon } from 'src/components/icon'
 import { logout } from 'src/helpers'
@@ -22,6 +22,7 @@ import { trpc } from 'src/trpc'
 
 export function Navigation() {
   const { data: user, isLoading } = trpc.client.getCurrentUser.useQuery()
+  const { toggleColorMode, colorMode } = useColorMode()
 
   return (
     <Box>
@@ -34,15 +35,6 @@ export function Navigation() {
           </Link>
 
           <Flex alignItems="center" gap={4}>
-            <ToggleThemeButton />
-
-            <IconButton
-              icon={<Icon variant="settings" />}
-              aria-label=""
-              as={Link}
-              to={routerPaths.settings.path}
-            />
-
             <Menu>
               <Skeleton borderRadius="50%" isLoaded={!isLoading}>
                 <MenuButton>
@@ -51,7 +43,28 @@ export function Navigation() {
               </Skeleton>
 
               <MenuList>
-                <MenuItem onClick={logout}>Logout</MenuItem>
+                <MenuItem
+                  icon={
+                    <Icon variant={colorMode === 'light' ? 'moon' : 'sun'} />
+                  }
+                  onClick={toggleColorMode}
+                >
+                  {colorMode === 'light' ? 'Dark theme' : 'Light theme'}
+                </MenuItem>
+
+                <MenuItem
+                  icon={<Icon variant="settings" />}
+                  as={Link}
+                  to={routerPaths.settings.path}
+                >
+                  Settings
+                </MenuItem>
+
+                <MenuDivider />
+
+                <MenuItem icon={<Icon variant="lock" />} onClick={logout}>
+                  Logout
+                </MenuItem>
               </MenuList>
             </Menu>
           </Flex>

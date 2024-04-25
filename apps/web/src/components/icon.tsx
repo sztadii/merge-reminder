@@ -7,6 +7,7 @@ import {
   DeleteIcon,
   EditIcon,
   ExternalLinkIcon,
+  LockIcon,
   MoonIcon,
   RepeatIcon,
   SettingsIcon,
@@ -27,7 +28,8 @@ const icons = {
   delete: DeleteIcon,
   bell: BellIcon,
   repeat: RepeatIcon,
-  settings: SettingsIcon
+  settings: SettingsIcon,
+  lock: LockIcon
 }
 
 const sizes = {
