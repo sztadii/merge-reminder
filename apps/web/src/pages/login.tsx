@@ -6,8 +6,8 @@ import { Text } from 'src/components/text'
 export function Login() {
   return (
     <Flex
-      height="100vh"
-      width="100vw"
+      height="100dvh"
+      width="100dvw"
       alignItems="center"
       justifyContent="center"
       flexDirection="column"
