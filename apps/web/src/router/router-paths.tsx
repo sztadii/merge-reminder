@@ -7,7 +7,6 @@ export const routerPaths = {
   onboarding: createPage('/onboarding'),
   dashboard: createPage('/dashboard'),
   settings: createPage('/settings'),
-  profile: createPage('/profile'),
   emailConfirmation: {
     path: '/email-confirmation/:token',
     useParams() {

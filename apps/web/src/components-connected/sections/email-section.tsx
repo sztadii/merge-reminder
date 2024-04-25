@@ -70,7 +70,7 @@ export function EmailSection() {
           </Skeleton>
         </Box>
 
-        <CardBody minHeight="300px">
+        <CardBody minHeight="200px">
           <DetailsGrid
             details={details}
             isLoading={isLoading}

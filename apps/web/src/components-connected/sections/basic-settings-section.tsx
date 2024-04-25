@@ -27,7 +27,7 @@ export function BasicSettingsSection() {
   return (
     <>
       <Card>
-        <CardBody minHeight="300px">
+        <CardBody minHeight="200px">
           <DetailsGrid
             details={details}
             isLoading={isLoading}
