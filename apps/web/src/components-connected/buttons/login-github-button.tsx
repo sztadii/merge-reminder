@@ -23,6 +23,8 @@ export function LoginGithubButton() {
 
     const params = `?client_id=${config.github.authClientId}`
     const url = `https://github.com/login/oauth/authorize${params}`
+
+    setIsLoading(false)
     window.location.assign(url)
   }
 
