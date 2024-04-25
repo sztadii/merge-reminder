@@ -23,7 +23,7 @@ async function init() {
     })
   )
 
-  const port = config.app.port || 3000
+  const port = config.app.port
 
   app.listen(port, () => {
     console.log(`API running at http://localhost:${port}`)

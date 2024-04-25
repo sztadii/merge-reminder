@@ -6,7 +6,7 @@ const configSchema = z.object({
     isUnderMaintenance: z.boolean(),
     webDomain: z.string(),
     mode: z.string(),
-    port: z.string()
+    port: z.number()
   }),
   mongo: z.object({
     url: z.string()
@@ -37,7 +37,7 @@ export const config = configSchema.parse({
     isUnderMaintenance: process.env.APP_IS_UNDER_MAINTENENCE === 'true',
     webDomain: process.env.APP_WEB_DOMAIN,
     mode: process.env.APP_MODE,
-    port: process.env.APP_PORT
+    port: Number(process.env.APP_PORT)
   },
   mongo: {
     url: process.env.MONGO_URL
