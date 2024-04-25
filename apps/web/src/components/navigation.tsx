@@ -4,6 +4,7 @@ import {
   Divider,
   Flex,
   Heading,
+  IconButton,
   Menu,
   MenuButton,
   MenuItem,
@@ -12,7 +13,9 @@ import {
 } from '@chakra-ui/react'
 import { Link } from 'wouter'
 
+import { ToggleThemeButton } from 'src/components-connected/buttons/toggle-theme-button'
 import { Container } from 'src/components/container'
+import { Icon } from 'src/components/icon'
 import { logout } from 'src/helpers'
 import { routerPaths } from 'src/router'
 import { trpc } from 'src/trpc'
@@ -31,6 +34,15 @@ export function Navigation() {
           </Link>
 
           <Flex alignItems="center" gap={4}>
+            <ToggleThemeButton />
+
+            <IconButton
+              icon={<Icon variant="settings" />}
+              aria-label=""
+              as={Link}
+              to={routerPaths.settings.path}
+            />
+
             <Menu>
               <Skeleton borderRadius="50%" isLoaded={!isLoading}>
                 <MenuButton>
@@ -39,10 +51,6 @@ export function Navigation() {
               </Skeleton>
 
               <MenuList>
-                <MenuItem as={Link} to={routerPaths.settings.path}>
-                  Settings
-                </MenuItem>
-
                 <MenuItem onClick={logout}>Logout</MenuItem>
               </MenuList>
             </Menu>
