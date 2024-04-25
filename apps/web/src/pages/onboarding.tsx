@@ -70,7 +70,7 @@ export function Onboarding() {
             isLoading={isPending}
             isDisabled={!hasCorrectEmail}
             onClick={updateEmailValue}
-            colorScheme="blue"
+            colorScheme="teal"
           >
             Save
           </Button>

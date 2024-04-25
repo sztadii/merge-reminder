@@ -61,7 +61,7 @@ export function EmailSection() {
           <Skeleton isLoaded={!isLoading}>
             {!!user && (
               <IconButton
-                colorScheme="blue"
+                colorScheme="teal"
                 aria-label="update profile"
                 onClick={onOpenForUpdateDrawer}
                 icon={<Icon variant="edit" />}
