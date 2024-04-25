@@ -7,8 +7,10 @@ import {
   DeleteIcon,
   EditIcon,
   ExternalLinkIcon,
+  LockIcon,
   MoonIcon,
   RepeatIcon,
+  SettingsIcon,
   SunIcon,
   WarningTwoIcon
 } from '@chakra-ui/icons'
@@ -25,7 +27,9 @@ const icons = {
   warning: WarningTwoIcon,
   delete: DeleteIcon,
   bell: BellIcon,
-  repeat: RepeatIcon
+  repeat: RepeatIcon,
+  settings: SettingsIcon,
+  lock: LockIcon
 }
 
 const sizes = {

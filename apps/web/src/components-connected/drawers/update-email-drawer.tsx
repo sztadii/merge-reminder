@@ -94,7 +94,7 @@ export function UpdateEmailDrawer({
             isLoading={isPending}
             isDisabled={!hasCorrectEmail}
             onClick={updateUser}
-            colorScheme="blue"
+            colorScheme="teal"
           >
             Save
           </Button>

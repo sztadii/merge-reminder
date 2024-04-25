@@ -224,7 +224,7 @@ export function UpdateRepoConfigurationDrawer({
             Cancel
           </Button>
           <Button
-            colorScheme="blue"
+            colorScheme="teal"
             ml={2}
             isLoading={isPending}
             onClick={updateConfiguration}

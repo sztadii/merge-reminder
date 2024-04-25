@@ -9,7 +9,6 @@ import { EmailConfirmation } from 'src/pages/email-confirmation'
 import { Landing } from 'src/pages/landing'
 import { Login } from 'src/pages/login'
 import { Onboarding } from 'src/pages/onboarding'
-import { Profile } from 'src/pages/profile'
 import { Settings } from 'src/pages/settings'
 import { storage } from 'src/storage'
 
@@ -68,17 +67,6 @@ export function Router() {
           return (
             <PrivateLayout>
               <Settings />
-            </PrivateLayout>
-          )
-        }}
-      />
-
-      <Route
-        path={routerPaths.profile.path}
-        component={() => {
-          return (
-            <PrivateLayout>
-              <Profile />
             </PrivateLayout>
           )
         }}

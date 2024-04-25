@@ -6,19 +6,23 @@ import {
   Heading,
   Menu,
   MenuButton,
+  MenuDivider,
   MenuItem,
   MenuList,
-  Skeleton
+  Skeleton,
+  useColorMode
 } from '@chakra-ui/react'
 import { Link } from 'wouter'
 
 import { Container } from 'src/components/container'
+import { Icon } from 'src/components/icon'
 import { logout } from 'src/helpers'
 import { routerPaths } from 'src/router'
 import { trpc } from 'src/trpc'
 
 export function Navigation() {
   const { data: user, isLoading } = trpc.client.getCurrentUser.useQuery()
+  const { toggleColorMode, colorMode } = useColorMode()
 
   return (
     <Box>
@@ -39,15 +43,28 @@ export function Navigation() {
               </Skeleton>
 
               <MenuList>
-                <MenuItem as={Link} to={routerPaths.profile.path}>
-                  Profile
+                <MenuItem
+                  icon={
+                    <Icon variant={colorMode === 'light' ? 'moon' : 'sun'} />
+                  }
+                  onClick={toggleColorMode}
+                >
+                  {colorMode === 'light' ? 'Dark theme' : 'Light theme'}
                 </MenuItem>
 
-                <MenuItem as={Link} to={routerPaths.settings.path}>
+                <MenuItem
+                  icon={<Icon variant="settings" />}
+                  as={Link}
+                  to={routerPaths.settings.path}
+                >
                   Settings
                 </MenuItem>
 
-                <MenuItem onClick={logout}>Logout</MenuItem>
+                <MenuDivider />
+
+                <MenuItem icon={<Icon variant="lock" />} onClick={logout}>
+                  Logout
+                </MenuItem>
               </MenuList>
             </Menu>
           </Flex>

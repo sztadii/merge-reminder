@@ -61,7 +61,7 @@ export function EmailSection() {
           <Skeleton isLoaded={!isLoading}>
             {!!user && (
               <IconButton
-                colorScheme="blue"
+                colorScheme="teal"
                 aria-label="update profile"
                 onClick={onOpenForUpdateDrawer}
                 icon={<Icon variant="edit" />}
@@ -70,7 +70,7 @@ export function EmailSection() {
           </Skeleton>
         </Box>
 
-        <CardBody minHeight="300px">
+        <CardBody minHeight="200px">
           <DetailsGrid
             details={details}
             isLoading={isLoading}

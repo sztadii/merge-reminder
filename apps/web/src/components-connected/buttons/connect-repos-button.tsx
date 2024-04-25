@@ -65,7 +65,7 @@ export function ConnectReposButton() {
         base: '100%',
         md: 'auto'
       }}
-      colorScheme="blue"
+      colorScheme="teal"
     >
       Connect repositories
     </Button>

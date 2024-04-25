@@ -1,6 +1,7 @@
 import { Button, useDisclosure } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { getQueryKey } from '@trpc/react-query'
+import { useState } from 'react'
 
 import { Confirmation } from 'src/components/confirmation'
 import { Icon } from 'src/components/icon'
@@ -13,10 +14,9 @@ type DisconnectReposButtonProps = {
 }
 
 export function DisconnectReposButton({ user }: DisconnectReposButtonProps) {
-  const {
-    mutateAsync: disconnectRepositoriesMutation,
-    isLoading: isLoadingForDisconnecting
-  } = trpc.client.disconnectRepositories.useMutation()
+  const [isPending, setIsPending] = useState(false)
+  const { mutateAsync: disconnectRepositoriesMutation } =
+    trpc.client.disconnectRepositories.useMutation()
 
   const queryClient = useQueryClient()
 
@@ -30,14 +30,18 @@ export function DisconnectReposButton({ user }: DisconnectReposButtonProps) {
     if (!user) return
 
     try {
-      await disconnectRepositoriesMutation()
+      setIsPending(true)
       onCloseForConfirmModal()
+
+      await disconnectRepositoriesMutation()
       await queryClient.invalidateQueries(
         getQueryKey(trpc.client.getCurrentUser)
       )
       showSuccessToast('Successfully disconnected repositories.')
     } catch {
       showErrorToast('Cannot disconnect repositories.')
+    } finally {
+      setIsPending(false)
     }
   }
 
@@ -45,7 +49,7 @@ export function DisconnectReposButton({ user }: DisconnectReposButtonProps) {
     <>
       <Button
         isDisabled={!user || !user.hasInstallationId}
-        isLoading={isLoadingForDisconnecting}
+        isLoading={isPending}
         onClick={onOpenForConfirmModal}
         colorScheme="red"
         width={{

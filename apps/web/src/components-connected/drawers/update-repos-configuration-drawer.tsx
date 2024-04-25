@@ -160,7 +160,7 @@ export function UpdateReposConfigurationDrawer({
             isLoading={isPending}
             isDisabled={hasMissingFormValues}
             onClick={updateConfiguration}
-            colorScheme="blue"
+            colorScheme="teal"
           >
             Save
           </Button>
