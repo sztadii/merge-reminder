@@ -2,7 +2,7 @@ import { Button } from '@chakra-ui/react'
 import { useEffect } from 'react'
 
 import { Icon } from 'src/components/icon'
-import { getSearchParams } from 'src/helpers'
+import { getSearchParams, removeSearchParamsFromURL } from 'src/helpers'
 import { showErrorToast, showSuccessToast } from 'src/toasts'
 import { trpc } from 'src/trpc'
 
@@ -17,6 +17,7 @@ export function SubscribeButton() {
     if (!isSuccess) return
 
     showSuccessToast('Subscription confirmed')
+    removeSearchParamsFromURL()
   }, [isSuccess])
 
   async function redirectToCheckout() {
