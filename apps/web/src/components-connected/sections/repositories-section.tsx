@@ -55,15 +55,15 @@ export function RepositoriesSection() {
   const details: DetailsGridProps['details'] = [
     {
       heading: 'Default head branch',
-      text: configuration?.headBranch
+      content: configuration?.headBranch
     },
     {
       heading: 'Default base branch',
-      text: configuration?.baseBranch
+      content: configuration?.baseBranch
     },
     {
       heading: 'Ignore repos without required branches',
-      text: configuration?.excludeReposWithoutRequiredBranches ? 'Yes' : 'No'
+      content: configuration?.excludeReposWithoutRequiredBranches ? 'Yes' : 'No'
     }
   ]
 

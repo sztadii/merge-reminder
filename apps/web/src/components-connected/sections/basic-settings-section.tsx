@@ -11,11 +11,11 @@ export function BasicSettingsSection() {
   const details: DetailsGridProps['details'] = [
     {
       heading: 'Disconnect repositories',
-      text: <DisconnectReposButton user={user} />
+      content: <DisconnectReposButton user={user} />
     },
     {
       heading: 'Delete profile',
-      text: <DeleteUserButton user={user} />
+      content: <DeleteUserButton user={user} />
     }
   ]
 

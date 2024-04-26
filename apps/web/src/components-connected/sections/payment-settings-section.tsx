@@ -10,7 +10,7 @@ export function PaymentSettingsSection() {
   const details: DetailsGridProps['details'] = [
     {
       heading: 'Subscribe',
-      text: <SubscribeButton />
+      content: <SubscribeButton />
     }
   ]
 

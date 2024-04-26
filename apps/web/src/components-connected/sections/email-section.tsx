@@ -50,7 +50,7 @@ export function EmailSection() {
   const details: DetailsGridProps['details'] = [
     {
       heading: 'Email',
-      text: renderEmailContent()
+      content: renderEmailContent()
     }
   ]
 
