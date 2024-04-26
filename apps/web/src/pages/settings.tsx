@@ -17,11 +17,11 @@ export function Settings() {
       </Box>
 
       <Box mt={4}>
-        <BasicSettingsSection />
+        <PaymentSettingsSection />
       </Box>
 
       <Box mt={4}>
-        <PaymentSettingsSection />
+        <BasicSettingsSection />
       </Box>
     </>
   )
