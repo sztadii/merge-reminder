@@ -1,6 +1,7 @@
 import { Card, CardBody } from '@chakra-ui/react'
 
 import { SubscribeButton } from 'src/components-connected/buttons/subscribe-button'
+import { UnsubscribeButton } from 'src/components-connected/buttons/unsubscribe-button'
 import { DetailsGrid, DetailsGridProps } from 'src/components/details-grid'
 import { trpc } from 'src/trpc'
 
@@ -11,6 +12,10 @@ export function PaymentSettingsSection() {
     {
       heading: 'Subscribe',
       content: <SubscribeButton />
+    },
+    {
+      heading: 'Unsubscribe',
+      content: <UnsubscribeButton />
     }
   ]
 

@@ -1,4 +1,6 @@
 import { Button, Tooltip } from '@chakra-ui/react'
+import { useQueryClient } from '@tanstack/react-query'
+import { getQueryKey } from '@trpc/react-query'
 import { useEffect } from 'react'
 
 import { Icon } from 'src/components/icon'
@@ -9,6 +11,8 @@ import { trpc } from 'src/trpc'
 export function SubscribeButton() {
   const params = getSearchParams()
   const sessionId = params.get('session_id')
+
+  const queryClient = useQueryClient()
 
   const { data: user, isLoading: isLoadingForUser } =
     trpc.client.getCurrentUser.useQuery()
@@ -29,6 +33,11 @@ export function SubscribeButton() {
 
       try {
         await updateCurrentCheckoutSessionId({ sessionId })
+
+        queryClient
+          .invalidateQueries(getQueryKey(trpc.client.getCurrentUser))
+          .then()
+
         showSuccessToast('Subscription confirmed.')
       } catch {
         showErrorToast('Something went wrong.')
@@ -42,8 +51,8 @@ export function SubscribeButton() {
 
   async function redirectToCheckout() {
     try {
-      const subscribeUrl = await createSubscribeUrl()
-      window.location.assign(subscribeUrl)
+      const url = await createSubscribeUrl()
+      window.location.assign(url)
     } catch {
       showErrorToast('Something went wrong.')
     }

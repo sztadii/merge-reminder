@@ -44,8 +44,8 @@ export class PaymentsController {
     }
   }
 
-  async createSubscribeUrl(): Promise<string> {
-    const url = await this.paymentsRepository.createSubscribeUrl()
+  async createSubscribeUrl(userId: string): Promise<string> {
+    const url = await this.paymentsRepository.createSubscribeUrl(userId).catch()
 
     if (!url) {
       throw new TRPCError({
@@ -55,5 +55,9 @@ export class PaymentsController {
     }
 
     return url
+  }
+
+  async unsubscribe(userId: string): Promise<void> {
+    await this.paymentsRepository.unsubscribe(userId)
   }
 }

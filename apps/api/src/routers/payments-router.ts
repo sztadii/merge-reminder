@@ -20,7 +20,13 @@ export const paymentsRouter = router({
     .output(StringResponseSchema)
     .mutation(opts => {
       const paymentsController = createPaymentsController(opts.ctx)
-      return paymentsController.createSubscribeUrl()
+      return paymentsController.createSubscribeUrl(opts.ctx.user.id)
+    }),
+  unsubscribe: tokenProtectedProcedure
+    .output(EmptyResponseSchema)
+    .mutation(opts => {
+      const paymentsController = createPaymentsController(opts.ctx)
+      return paymentsController.unsubscribe(opts.ctx.user.id)
     }),
   updateCurrentCheckoutSessionId: tokenProtectedProcedure
     .input(UpdateCheckoutSessionSchema)

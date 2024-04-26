@@ -24,7 +24,7 @@ export class PaymentsRepository {
     })
   }
 
-  async createSubscribeUrl(): Promise<string | null> {
+  async createSubscribeUrl(userId: string): Promise<string | null> {
     const { webDomain } = config.app
 
     const session = await this.stripe.checkout.sessions.create({
@@ -36,9 +36,35 @@ export class PaymentsRepository {
         }
       ],
       success_url: `${webDomain}/settings/?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${webDomain}/settings`
+      cancel_url: `${webDomain}/settings`,
+      client_reference_id: userId
     })
 
     return session.url
+  }
+
+  async unsubscribe(userId: string): Promise<void> {
+    const { webDomain } = config.app
+    const user = await this.usersRepository.getById(userId).catch()
+
+    const stripeCheckoutSessionId = user?.stripeCheckoutSessionId
+
+    if (!stripeCheckoutSessionId) {
+      throw new Error('No stripeCheckoutSessionId')
+    }
+
+    const session = await this.stripe.checkout.sessions
+      .retrieve(stripeCheckoutSessionId)
+      .catch()
+
+    const subscriptionId = session?.subscription
+
+    if (typeof subscriptionId !== 'string') {
+      throw new Error('No subscriptionId')
+    }
+
+    await this.stripe.subscriptions.update(subscriptionId, {
+      cancel_at_period_end: true
+    })
   }
 }
