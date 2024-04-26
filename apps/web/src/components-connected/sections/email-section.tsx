@@ -8,7 +8,7 @@ import {
   Tag,
   useDisclosure
 } from '@chakra-ui/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { UpdateEmailDrawer } from 'src/components-connected/drawers/update-email-drawer'
 import { DetailsGrid, DetailsGridProps } from 'src/components/details-grid'
@@ -17,7 +17,7 @@ import { showErrorToast, showSuccessToast } from 'src/toasts'
 import { trpc } from 'src/trpc'
 
 export function EmailSection() {
-  const [resendClicked, setResendClicked] = useState(false)
+  const [isResendVisible, setIsResendVisible] = useState(false)
 
   const {
     data: user,
@@ -36,6 +36,14 @@ export function EmailSection() {
     onClose: onCloseForUpdateDrawer
   } = useDisclosure()
 
+  useEffect(() => {
+    if (!user || !user.email || user.isEmailConfirmed) return
+
+    setTimeout(() => {
+      setIsResendVisible(true)
+    }, 5_000)
+  }, [user])
+
   async function resendConfirmation() {
     const userEmail = user?.email
     if (!userEmail) return
@@ -44,7 +52,7 @@ export function EmailSection() {
       await sendEmailConfirmationMutation({
         email: userEmail
       })
-      setResendClicked(true)
+      setIsResendVisible(false)
       showSuccessToast('Confirmation send.')
     } catch {
       showErrorToast('Could not resend the email.')
@@ -77,7 +85,7 @@ export function EmailSection() {
               <Tag colorScheme="red">Not confirmed</Tag>
             </Box>
 
-            {!resendClicked && (
+            {isResendVisible && (
               <Box mt={2}>
                 <Button
                   isLoading={isLoadingForEmailConfirmation}
