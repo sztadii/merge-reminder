@@ -44,7 +44,6 @@ export class PaymentsRepository {
   }
 
   async unsubscribe(userId: string): Promise<void> {
-    const { webDomain } = config.app
     const user = await this.usersRepository.getById(userId).catch()
 
     const stripeCheckoutSessionId = user?.stripeCheckoutSessionId
@@ -63,8 +62,6 @@ export class PaymentsRepository {
       throw new Error('No subscriptionId')
     }
 
-    await this.stripe.subscriptions.update(subscriptionId, {
-      cancel_at_period_end: true
-    })
+    await this.stripe.subscriptions.cancel(subscriptionId)
   }
 }
