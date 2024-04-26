@@ -63,5 +63,9 @@ export class PaymentsRepository {
     }
 
     await this.stripe.subscriptions.cancel(subscriptionId)
+
+    await this.usersRepository.updateById(userId, {
+      stripeCheckoutSessionId: null
+    })
   }
 }
