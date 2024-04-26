@@ -25,6 +25,14 @@ export class PaymentsRepository {
   }
 
   async createSubscribeUrl(userId: string): Promise<string | null> {
+    const user = await this.usersRepository.getById(userId).catch()
+
+    const userEmail = user?.email
+
+    if (!userEmail) {
+      throw new Error('No userEmail')
+    }
+
     const { webDomain } = config.app
 
     const session = await this.stripe.checkout.sessions.create({
@@ -36,7 +44,8 @@ export class PaymentsRepository {
         }
       ],
       success_url: `${webDomain}/settings/?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${webDomain}/settings`
+      cancel_url: `${webDomain}/settings`,
+      customer_email: userEmail
     })
 
     return session.url
