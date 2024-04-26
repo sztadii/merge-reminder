@@ -47,7 +47,7 @@ export function SubscribeButton() {
     }
 
     updateSession()
-  }, [sessionId])
+  }, [])
 
   async function redirectToCheckout() {
     try {
