@@ -4,7 +4,7 @@ import {
   PaymentWebhookSchema,
   StringResponseSchema
 } from '../schemas'
-import { publicProcedure, router } from '../trpc'
+import { publicProcedure, router, tokenProtectedProcedure } from '../trpc'
 
 export const paymentsRouter = router({
   webhook: publicProcedure
@@ -15,7 +15,7 @@ export const paymentsRouter = router({
 
       return paymentsController.handleWebhookEvents(opts.input)
     }),
-  createSubscribeUrl: publicProcedure
+  createSubscribeUrl: tokenProtectedProcedure
     .output(StringResponseSchema)
     .mutation(() => {
       const paymentsController = createPaymentsController()
