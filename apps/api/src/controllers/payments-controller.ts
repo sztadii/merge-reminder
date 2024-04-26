@@ -2,42 +2,41 @@ import { TRPCError } from '@trpc/server'
 import Stripe from 'stripe'
 
 import { config } from '../config'
+import { PaymentsRepository } from '../repositories/payments-repository'
 import { PaymentWebhook } from '../schemas'
 import { EmailService } from '../services/email-service'
 
 export class PaymentsController {
   private stripe: Stripe
 
-  constructor(private emailService: EmailService) {
+  constructor(
+    private emailService: EmailService,
+    private paymentsRepository: PaymentsRepository
+  ) {
     this.stripe = new Stripe(config.stripe.apiKey)
   }
 
   async handleWebhookEvents(paymentWebhook: PaymentWebhook): Promise<void> {
-    console.log({ paymentWebhook })
+    try {
+      await this.paymentsRepository.handleWebhookEvents(paymentWebhook)
+    } catch {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'An error occurred while getting webhook event.'
+      })
+    }
   }
 
   async createSubscribeUrl(): Promise<string> {
-    const { webDomain } = config.app
+    const url = await this.paymentsRepository.createSubscribeUrl()
 
-    const session = await this.stripe.checkout.sessions.create({
-      mode: 'subscription',
-      line_items: [
-        {
-          price: config.stripe.monthlyProductId,
-          quantity: 1
-        }
-      ],
-      success_url: `${webDomain}/settings/?success=true`,
-      cancel_url: `${webDomain}/settings`
-    })
-
-    if (!session.url) {
+    if (!url) {
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'An error occurred while creating subscribe url.'
       })
     }
 
-    return session.url
+    return url
   }
 }
