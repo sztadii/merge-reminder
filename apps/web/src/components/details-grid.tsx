@@ -23,7 +23,7 @@ export function DetailsGrid({ details, isLoading, error }: DetailsGridProps) {
   }
 
   return (
-    <SimpleGrid columns={{ sm: 1, lg: 2, xl: 4 }} spacing={4}>
+    <SimpleGrid columns={{ sm: 1, md: 2, xl: 4 }} spacing={4}>
       {details.map(detail => {
         return (
           <Box key={detail.heading}>
