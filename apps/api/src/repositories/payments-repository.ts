@@ -56,9 +56,7 @@ export class PaymentsRepository {
 
     const stripeCheckoutSessionId = user?.stripeCheckoutSessionId
 
-    if (!stripeCheckoutSessionId) {
-      throw new Error('No stripeCheckoutSessionId')
-    }
+    if (!stripeCheckoutSessionId) return
 
     const session = await this.stripe.checkout.sessions
       .retrieve(stripeCheckoutSessionId)

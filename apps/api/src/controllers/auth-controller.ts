@@ -95,11 +95,10 @@ export class AuthController {
   async deleteCurrentUser(userId: string): Promise<void> {
     try {
       const user = await this.usersRepository.getById(userId)
-      const githubAccessToken = user?.githubAccessToken
+      if (!user) throw new Error()
 
-      if (!githubAccessToken) {
-        throw new Error()
-      }
+      const githubAccessToken = user.githubAccessToken
+      if (!githubAccessToken) throw new Error()
 
       await this.paymentsRepository.unsubscribe(userId)
       await this.installationRepository.disconnectRepositories(userId)
