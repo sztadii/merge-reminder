@@ -22,14 +22,13 @@ export function EmailConfirmation() {
 
   const queryClient = useQueryClient()
 
-  const { mutateAsync: confirmEmailMutation } =
-    trpc.client.confirmCurrentEmail.useMutation()
+  const { mutateAsync: confirmEmail } = trpc.client.confirmEmail.useMutation()
   const params = routerPaths.emailConfirmation.useParams()
 
   useEffect(() => {
     async function confirm() {
       try {
-        await confirmEmailMutation({
+        await confirmEmail({
           token: params.token
         })
 

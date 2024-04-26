@@ -26,6 +26,14 @@ export const EmailUpdateRequestSchema = z.object({
 
 export type EmailUpdateRequest = z.infer<typeof EmailUpdateRequestSchema>
 
+export const SendEmailConfirmationRequestSchema = z.object({
+  email: z.string().email()
+})
+
+export type SendEmailConfirmationRequest = z.infer<
+  typeof SendEmailConfirmationRequestSchema
+>
+
 export const EmailConfirmRequestSchema = z.object({
   token: z.string()
 })

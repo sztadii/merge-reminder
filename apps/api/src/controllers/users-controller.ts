@@ -7,6 +7,7 @@ import { UsersRepository } from '../repositories/users-repository'
 import {
   EmailConfirmRequest,
   EmailUpdateRequest,
+  SendEmailConfirmationRequest,
   UserResponse
 } from '../schemas'
 import { EmailService } from '../services/email-service'
@@ -36,13 +37,13 @@ export class UsersController {
   }
 
   async updateEmail(
-    id: string,
-    emailUpdateRequest: EmailUpdateRequest
+    userId: string,
+    request: EmailUpdateRequest
   ): Promise<void> {
-    const { email } = emailUpdateRequest
+    const { email } = request
 
     try {
-      await this.usersRepository.updateById(id, {
+      await this.usersRepository.updateById(userId, {
         email,
         confirmedEmail: ''
       })
@@ -53,9 +54,19 @@ export class UsersController {
       })
     }
 
+    this.sendEmailConfirmation(userId, request).catch()
+  }
+
+  async sendEmailConfirmation(
+    userId: string,
+    request: SendEmailConfirmationRequest
+  ): Promise<void> {
+    const { email } = request
+
     try {
       const { webDomain } = config.app
       const emailDataToken: EmailDataToken = {
+        userId,
         confirmedEmail: email
       }
       const token = convertJSONToToken(emailDataToken)
@@ -68,11 +79,8 @@ export class UsersController {
     } catch {}
   }
 
-  async confirmEmail(
-    id: string,
-    emailConfirmRequest: EmailConfirmRequest
-  ): Promise<void> {
-    const token = emailConfirmRequest.token
+  async confirmEmail(request: EmailConfirmRequest): Promise<void> {
+    const token = request.token
     const data = convertTokenToJSON<EmailDataToken>(token)
 
     if (!data) {
@@ -83,9 +91,9 @@ export class UsersController {
     }
 
     try {
-      const { confirmedEmail } = data
+      const { userId, confirmedEmail } = data
 
-      await this.usersRepository.updateById(id, {
+      await this.usersRepository.updateById(userId, {
         confirmedEmail
       })
     } catch {
@@ -114,5 +122,6 @@ export class UsersController {
 }
 
 type EmailDataToken = {
+  userId: string
   confirmedEmail: string
 }
