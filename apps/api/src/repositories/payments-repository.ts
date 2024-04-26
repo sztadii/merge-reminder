@@ -25,7 +25,7 @@ export class PaymentsRepository {
           quantity: 1
         }
       ],
-      success_url: `${webDomain}/settings/?success=true`,
+      success_url: `${webDomain}/settings/?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${webDomain}/settings`
     })
 

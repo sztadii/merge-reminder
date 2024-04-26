@@ -8,7 +8,7 @@ import { trpc } from 'src/trpc'
 
 export function SubscribeButton() {
   const params = getSearchParams()
-  const isSuccess = params.get('success')
+  const sessionId = params.get('session_id')
 
   const { data: user, isLoading: isLoadingForUser } =
     trpc.client.getCurrentUser.useQuery()
@@ -19,11 +19,11 @@ export function SubscribeButton() {
   } = trpc.payments.createSubscribeUrl.useMutation()
 
   useEffect(() => {
-    if (!isSuccess) return
+    if (!sessionId) return
 
     showSuccessToast('Subscription confirmed')
     removeSearchParamsFromURL()
-  }, [isSuccess])
+  }, [sessionId])
 
   async function redirectToCheckout() {
     try {

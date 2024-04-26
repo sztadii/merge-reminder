@@ -2,20 +2,27 @@ import { Box } from '@chakra-ui/react'
 
 import { BasicSettingsSection } from 'src/components-connected/sections/basic-settings-section'
 import { EmailSection } from 'src/components-connected/sections/email-section'
+import { PaymentSettingsSection } from 'src/components-connected/sections/payment-settings-section'
 import { Breadcrumbs } from 'src/components/breadcrumbs'
 
 export function Settings() {
   return (
     <>
-      <Box mb={4}>
+      <Box>
         <Breadcrumbs currentPage="Settings" />
       </Box>
 
-      <Box mb={4}>
+      <Box mt={4}>
         <EmailSection />
       </Box>
 
-      <BasicSettingsSection />
+      <Box mt={4}>
+        <BasicSettingsSection />
+      </Box>
+
+      <Box mt={4}>
+        <PaymentSettingsSection />
+      </Box>
     </>
   )
 }
