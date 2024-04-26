@@ -101,13 +101,11 @@ export class AuthController {
         throw new Error()
       }
 
-      await Promise.all([
-        this.installationRepository.disconnectRepositories(userId),
-        this.usersRepository.deleteById(userId),
-        this.reposConfigurationsRepository.deleteByUserId(userId),
-        this.githubAuthRepository.removeAccess(githubAccessToken),
-        this.paymentsRepository.unsubscribe(userId)
-      ])
+      await this.paymentsRepository.unsubscribe(userId)
+      await this.installationRepository.disconnectRepositories(userId)
+      await this.githubAuthRepository.removeAccess(githubAccessToken)
+      await this.reposConfigurationsRepository.deleteByUserId(userId)
+      await this.usersRepository.deleteById(userId)
     } catch {
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
