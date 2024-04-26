@@ -5,6 +5,7 @@ import { UserDatabaseRecord } from '../database'
 import { convertJSONToToken } from '../helpers'
 import { GithubAuthRepository } from '../repositories/github-auth-repository'
 import { InstallationRepository } from '../repositories/installation-repository'
+import { PaymentsRepository } from '../repositories/payments-repository'
 import { ReposConfigurationsRepository } from '../repositories/repos-configurations-repository'
 import { UsersRepository } from '../repositories/users-repository'
 import {
@@ -20,7 +21,8 @@ export class AuthController {
     private usersRepository: UsersRepository,
     private reposConfigurationsRepository: ReposConfigurationsRepository,
     private githubAuthRepository: GithubAuthRepository,
-    private installationRepository: InstallationRepository
+    private installationRepository: InstallationRepository,
+    private paymentsRepository: PaymentsRepository
   ) {}
 
   async login(request: LoginRequest): Promise<LoginResponse> {
@@ -103,7 +105,8 @@ export class AuthController {
         this.installationRepository.disconnectRepositories(userId),
         this.usersRepository.deleteById(userId),
         this.reposConfigurationsRepository.deleteByUserId(userId),
-        this.githubAuthRepository.removeAccess(githubAccessToken)
+        this.githubAuthRepository.removeAccess(githubAccessToken),
+        this.paymentsRepository.unsubscribe(userId)
       ])
     } catch {
       throw new TRPCError({

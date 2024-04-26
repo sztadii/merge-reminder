@@ -1,6 +1,7 @@
 import { AuthController } from '../controllers/auth-controller'
 import { GithubAuthRepository } from '../repositories/github-auth-repository'
 import { InstallationRepository } from '../repositories/installation-repository'
+import { PaymentsRepository } from '../repositories/payments-repository'
 import { ReposConfigurationsRepository } from '../repositories/repos-configurations-repository'
 import { UsersRepository } from '../repositories/users-repository'
 import { Context } from '../trpc'
@@ -15,11 +16,13 @@ export function createAuthController(ctx: Context) {
     usersRepository,
     reposConfigurationsRepository
   )
+  const paymentsRepository = new PaymentsRepository(usersRepository)
 
   return new AuthController(
     usersRepository,
     reposConfigurationsRepository,
     githubAuthRepository,
-    installationRepository
+    installationRepository,
+    paymentsRepository
   )
 }
