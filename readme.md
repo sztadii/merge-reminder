@@ -1,6 +1,15 @@
 # merge-reminder
 
 ## How to start?
+Please create .env files 
+```
+/apps/api/.env
+/apps/web/.env
+/apps/cron/.env
+```
+Please look at .env.example.
+They should be place in the same folder, with the same properties, but different values.
+
 Please install dependencies by
 ```
 npm install
