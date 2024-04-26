@@ -13,6 +13,7 @@ export type UserDatabaseValues = {
   email?: string
   confirmedEmail?: string
   githubAppInstallationId?: number | null
+  stripeCheckoutSessionId?: string | null
 }
 
 export type ReposConfigurationDatabaseValues = {

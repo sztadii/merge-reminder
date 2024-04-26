@@ -71,3 +71,9 @@ export const PaymentWebhookSchema = z.object({
 })
 
 export type PaymentWebhook = z.infer<typeof PaymentWebhookSchema>
+
+export const UpdateCheckoutSessionSchema = z.object({
+  sessionId: z.string().nullable()
+})
+
+export type UpdateCheckoutSession = z.infer<typeof UpdateCheckoutSessionSchema>

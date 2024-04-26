@@ -2,7 +2,8 @@ import { createPaymentsController } from '../factories/create-payments-controlle
 import {
   EmptyResponseSchema,
   PaymentWebhookSchema,
-  StringResponseSchema
+  StringResponseSchema,
+  UpdateCheckoutSessionSchema
 } from '../schemas'
 import { publicProcedure, router, tokenProtectedProcedure } from '../trpc'
 
@@ -11,14 +12,24 @@ export const paymentsRouter = router({
     .input(PaymentWebhookSchema)
     .output(EmptyResponseSchema)
     .mutation(opts => {
-      const paymentsController = createPaymentsController()
+      const paymentsController = createPaymentsController(opts.ctx)
 
       return paymentsController.handleWebhookEvents(opts.input)
     }),
   createSubscribeUrl: tokenProtectedProcedure
     .output(StringResponseSchema)
-    .mutation(() => {
-      const paymentsController = createPaymentsController()
+    .mutation(opts => {
+      const paymentsController = createPaymentsController(opts.ctx)
       return paymentsController.createSubscribeUrl()
+    }),
+  updateCurrentCheckoutSessionId: tokenProtectedProcedure
+    .input(UpdateCheckoutSessionSchema)
+    .output(EmptyResponseSchema)
+    .mutation(opts => {
+      const paymentsController = createPaymentsController(opts.ctx)
+      return paymentsController.updateCheckoutSessionId(
+        opts.ctx.user.id,
+        opts.input
+      )
     })
 })

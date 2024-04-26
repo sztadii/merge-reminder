@@ -18,11 +18,26 @@ export function SubscribeButton() {
     isLoading: isLoadingForSubscribeUrl
   } = trpc.payments.createSubscribeUrl.useMutation()
 
-  useEffect(() => {
-    if (!sessionId) return
+  const {
+    mutateAsync: updateCurrentCheckoutSessionId,
+    isLoading: isLoadingForUpdatingSession
+  } = trpc.payments.updateCurrentCheckoutSessionId.useMutation()
 
-    showSuccessToast('Subscription confirmed')
-    removeSearchParamsFromURL()
+  useEffect(() => {
+    async function updateSession() {
+      if (!sessionId) return
+
+      try {
+        await updateCurrentCheckoutSessionId({ sessionId })
+        showSuccessToast('Subscription confirmed.')
+      } catch {
+        showErrorToast('Something went wrong.')
+      } finally {
+        removeSearchParamsFromURL()
+      }
+    }
+
+    updateSession()
   }, [sessionId])
 
   async function redirectToCheckout() {
@@ -30,19 +45,22 @@ export function SubscribeButton() {
       const subscribeUrl = await createSubscribeUrl()
       window.location.assign(subscribeUrl)
     } catch {
-      showErrorToast('Something went wrong')
+      showErrorToast('Something went wrong.')
     }
   }
 
   function getDisabledMessage() {
     const isEmailConfirmed = user?.isEmailConfirmed === true
-
     if (!isEmailConfirmed) return 'Your email is not confirmed yet.'
+
+    const hasCheckoutSessionId = user?.stripeCheckoutSessionId
+    if (hasCheckoutSessionId) return 'You are already subscribing.'
 
     return undefined
   }
 
-  const isLoading = isLoadingForUser || isLoadingForSubscribeUrl
+  const isLoading =
+    isLoadingForUser || isLoadingForSubscribeUrl || isLoadingForUpdatingSession
   const disabledMessage = getDisabledMessage()
 
   return (

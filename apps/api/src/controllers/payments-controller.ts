@@ -3,7 +3,7 @@ import Stripe from 'stripe'
 
 import { config } from '../config'
 import { PaymentsRepository } from '../repositories/payments-repository'
-import { PaymentWebhook } from '../schemas'
+import { PaymentWebhook, UpdateCheckoutSession } from '../schemas'
 import { EmailService } from '../services/email-service'
 
 export class PaymentsController {
@@ -22,7 +22,24 @@ export class PaymentsController {
     } catch {
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
-        message: 'An error occurred while getting webhook event.'
+        message: 'An error occurred while receiving webhook event.'
+      })
+    }
+  }
+
+  async updateCheckoutSessionId(
+    userId: string,
+    checkoutSession: UpdateCheckoutSession
+  ): Promise<void> {
+    try {
+      await this.paymentsRepository.updateCheckoutSessionId(
+        userId,
+        checkoutSession
+      )
+    } catch {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'An error occurred while updating checkout session.'
       })
     }
   }

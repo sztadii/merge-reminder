@@ -107,7 +107,8 @@ export class UsersController {
       avatarUrl: user.avatarUrl,
       email: user.email,
       hasInstallationId: !!user.githubAppInstallationId,
-      isEmailConfirmed
+      isEmailConfirmed,
+      stripeCheckoutSessionId: user.stripeCheckoutSessionId
     }
   }
 }

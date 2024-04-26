@@ -1,17 +1,27 @@
 import Stripe from 'stripe'
 
 import { config } from '../config'
-import { PaymentWebhook } from '../schemas'
+import { PaymentWebhook, UpdateCheckoutSession } from '../schemas'
+import { UsersRepository } from './users-repository'
 
 export class PaymentsRepository {
   private stripe: Stripe
 
-  constructor() {
+  constructor(private usersRepository: UsersRepository) {
     this.stripe = new Stripe(config.stripe.apiKey)
   }
 
   async handleWebhookEvents(paymentWebhook: PaymentWebhook): Promise<void> {
     console.log({ paymentWebhook })
+  }
+
+  async updateCheckoutSessionId(
+    userId: string,
+    checkoutSession: UpdateCheckoutSession
+  ): Promise<void> {
+    await this.usersRepository.updateById(userId, {
+      stripeCheckoutSessionId: checkoutSession.sessionId
+    })
   }
 
   async createSubscribeUrl(): Promise<string | null> {
