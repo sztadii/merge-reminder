@@ -36,8 +36,7 @@ export class PaymentsRepository {
         }
       ],
       success_url: `${webDomain}/settings/?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${webDomain}/settings`,
-      client_reference_id: userId
+      cancel_url: `${webDomain}/settings`
     })
 
     return session.url
@@ -57,12 +56,18 @@ export class PaymentsRepository {
       .catch()
 
     const subscriptionId = session?.subscription
+    const customerId = session?.customer
 
     if (typeof subscriptionId !== 'string') {
       throw new Error('No subscriptionId')
     }
 
+    if (typeof customerId !== 'string') {
+      throw new Error('No customerId')
+    }
+
     await this.stripe.subscriptions.cancel(subscriptionId)
+    await this.stripe.customers.del(customerId)
 
     await this.usersRepository.updateById(userId, {
       stripeCheckoutSessionId: null
