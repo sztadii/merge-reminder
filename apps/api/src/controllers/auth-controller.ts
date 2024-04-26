@@ -24,9 +24,8 @@ export class AuthController {
   ) {}
 
   async login(request: LoginRequest): Promise<LoginResponse> {
-    const githubUser = await this.githubAuthRepository
-      .getAuthUser(request.code)
-      .catch(() => {
+    const { user: githubUser, accessToken: githubAccessToken } =
+      await this.githubAuthRepository.getAuthUser(request.code).catch(() => {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: `An error occurred while fetching the GitHub user.`
@@ -42,55 +41,70 @@ export class AuthController {
         })
       })
 
-    if (!user) {
-      const validatedUser = await UserCreateRequestSchema.parseAsync({
-        role: 'client',
-        avatarUrl: githubUser.avatar_url,
-        githubId: githubUser.id
-      } as UserCreateRequest).catch(() => {
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: `The GitHub API sent unexpected data. Please wait, we are working on it.`
-        })
+    if (user) {
+      await this.usersRepository.updateById(user._id.toString(), {
+        githubAccessToken
       })
 
-      const createdUser = await this.usersRepository
-        .create(validatedUser)
-        .catch(() => {
-          throw new TRPCError({
-            code: 'INTERNAL_SERVER_ERROR',
-            message: `An error occurred while creating the user.`
-          })
-        })
-
-      if (!createdUser) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: `The user not found.`
-        })
-      }
-
-      const token = this.getTokenFromUser(createdUser)
+      const token = this.getTokenFromUser(user)
 
       return {
         token,
-        isNewUser: true
+        isNewUser: false
       }
     }
 
-    const token = this.getTokenFromUser(user)
+    const validatedUser = await UserCreateRequestSchema.parseAsync({
+      role: 'client',
+      avatarUrl: githubUser.avatar_url,
+      githubId: githubUser.id,
+      githubAccessToken
+    } as UserCreateRequest).catch(() => {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: `The GitHub API sent unexpected data. Please wait, we are working on it.`
+      })
+    })
+
+    const createdUser = await this.usersRepository
+      .create(validatedUser)
+      .catch(() => {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: `An error occurred while creating the user.`
+        })
+      })
+
+    if (!createdUser) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: `The user not found.`
+      })
+    }
+
+    const token = this.getTokenFromUser(createdUser)
 
     return {
       token,
-      isNewUser: false
+      isNewUser: true
     }
   }
 
   async deleteCurrentUser(userId: string): Promise<void> {
     try {
-      await this.installationRepository.disconnectRepositories(userId)
-      await this.usersRepository.deleteById(userId)
-      await this.reposConfigurationsRepository.deleteByUserId(userId)
+      const user = await this.usersRepository.getById(userId)
+      const githubAccessToken = user?.githubAccessToken
+
+      if (!githubAccessToken) {
+        throw new Error()
+      }
+
+      await Promise.all([
+        this.installationRepository.disconnectRepositories(userId),
+        this.usersRepository.deleteById(userId),
+        this.reposConfigurationsRepository.deleteByUserId(userId),
+        this.githubAuthRepository.removeAccess(githubAccessToken)
+      ])
     } catch {
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',

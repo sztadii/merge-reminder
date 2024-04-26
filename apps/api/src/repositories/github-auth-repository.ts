@@ -1,34 +1,43 @@
 import { RestEndpointMethodTypes } from '@octokit/rest'
-import axios from 'axios'
-import { Octokit } from 'octokit'
+import { OAuthApp, Octokit } from 'octokit'
 
 import { config } from '../config'
 
 export class GithubAuthRepository {
   async getAuthUser(code: string): Promise<AuthUser> {
-    const accessToken = await this.getAccessToken(code)
+    const auth = new OAuthApp({
+      clientId: config.github.authClientId,
+      clientSecret: config.github.authClientSecret
+    })
+
+    const tokenResponse = await auth.createToken({
+      code
+    })
+
+    const accessToken = tokenResponse.authentication.token
+
     const octokit = new Octokit({ auth: accessToken })
     const response = await octokit.rest.users.getAuthenticated()
 
-    return response.data
+    return {
+      user: response.data,
+      accessToken
+    }
   }
 
-  private async getAccessToken(code: string): Promise<string> {
-    const params = `?client_id=${config.github.authClientId}&client_secret=${config.github.authClientSecret}&code=${code}`
+  async removeAccess(accessToken: string): Promise<void> {
+    const auth = new OAuthApp({
+      clientId: config.github.authClientId,
+      clientSecret: config.github.authClientSecret
+    })
 
-    const accessTokenResponse = await axios.post(
-      `https://github.com/login/oauth/access_token${params}`,
-      null,
-      {
-        headers: {
-          accept: 'application/json'
-        }
-      }
-    )
-
-    return accessTokenResponse.data.access_token
+    await auth.deleteAuthorization({
+      token: accessToken
+    })
   }
 }
 
-type AuthUser =
-  RestEndpointMethodTypes['users']['getAuthenticated']['response']['data']
+type AuthUser = {
+  user: RestEndpointMethodTypes['users']['getAuthenticated']['response']['data']
+  accessToken: string
+}

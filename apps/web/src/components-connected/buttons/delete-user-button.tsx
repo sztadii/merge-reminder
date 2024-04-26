@@ -24,9 +24,10 @@ export function DeleteUserButton({ user }: DeleteUserButtonProps) {
   async function deleteUser() {
     if (!user) return
 
+    onCloseForConfirmModal()
+
     try {
       await removeCurrentAccountMutation()
-      onCloseForConfirmModal()
       logout()
     } catch {
       showErrorToast('Can not delete profile.')
