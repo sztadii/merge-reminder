@@ -16,7 +16,7 @@ import {
   UserResponseSchema,
   WarningsResponseSchema
 } from '../schemas'
-import { router, tokenProtectedProcedure } from '../trpc'
+import { publicProcedure, router, tokenProtectedProcedure } from '../trpc'
 
 export const clientRouter = router({
   getCurrentUser: tokenProtectedProcedure
@@ -34,7 +34,7 @@ export const clientRouter = router({
 
       return usersController.updateEmail(opts.ctx.user.id, opts.input)
     }),
-  confirmEmail: tokenProtectedProcedure
+  confirmEmail: publicProcedure
     .input(EmailConfirmRequestSchema)
     .output(EmptyResponseSchema)
     .mutation(opts => {

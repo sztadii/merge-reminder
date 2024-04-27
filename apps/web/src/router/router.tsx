@@ -76,9 +76,9 @@ export function Router() {
         path={routerPaths.emailConfirmation.path}
         component={() => {
           return (
-            <PrivateLayout>
+            <PublicLayout>
               <EmailConfirmation />
-            </PrivateLayout>
+            </PublicLayout>
           )
         }}
       />
