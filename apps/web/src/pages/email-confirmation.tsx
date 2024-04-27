@@ -2,7 +2,6 @@ import {
   Alert,
   AlertIcon,
   Box,
-  Button,
   Container,
   Heading,
   Skeleton
@@ -11,6 +10,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { getQueryKey } from '@trpc/react-query'
 import { useEffect, useState } from 'react'
 
+import { FullPage } from 'src/components/full-page'
 import { routerPaths } from 'src/router'
 import { trpc } from 'src/trpc'
 
@@ -52,9 +52,11 @@ export function EmailConfirmation() {
   }, [])
 
   return (
-    <Container>
-      <Box textAlign="center">
-        <Heading>Welcome back :)</Heading>
+    <FullPage>
+      <Container textAlign="center">
+        <Skeleton display="inline-block" isLoaded={!!message}>
+          <Heading>Welcome back</Heading>
+        </Skeleton>
 
         <Box mt={4}>
           <Skeleton isLoaded={!!message}>
@@ -64,19 +66,7 @@ export function EmailConfirmation() {
             </Alert>
           </Skeleton>
         </Box>
-
-        <Box mt={4}>
-          <Skeleton display="inline-block" isLoaded={!!message}>
-            <Button
-              onClick={() => {
-                routerPaths.dashboard.navigate()
-              }}
-            >
-              Go to dashboard
-            </Button>
-          </Skeleton>
-        </Box>
-      </Box>
-    </Container>
+      </Container>
+    </FullPage>
   )
 }

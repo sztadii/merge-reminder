@@ -1,8 +1,17 @@
-import { Box, Button, Divider, Flex, Heading, Input } from '@chakra-ui/react'
+import {
+  Box,
+  Button,
+  Container,
+  Divider,
+  Flex,
+  Heading,
+  Input
+} from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { getQueryKey } from '@trpc/react-query'
 import { useState } from 'react'
 
+import { FullPage } from 'src/components/full-page'
 import { Text } from 'src/components/text'
 import { isValidEmail, trimObjectValues } from 'src/helpers'
 import { routerPaths } from 'src/router'
@@ -43,8 +52,8 @@ export function Onboarding() {
   }
 
   return (
-    <Flex height="100dvh" alignItems="center" justifyContent="center">
-      <Box textAlign="center" width="100%" maxWidth={500} p={2}>
+    <FullPage>
+      <Container textAlign="center">
         <Heading size="lg" mb={4}>
           Welcome
         </Heading>
@@ -84,7 +93,7 @@ export function Onboarding() {
         >
           Setup later
         </Button>
-      </Box>
-    </Flex>
+      </Container>
+    </FullPage>
   )
 }
