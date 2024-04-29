@@ -13,6 +13,7 @@ export type UserResponse = z.infer<typeof UserResponseSchema>
 
 export const UserCreateRequestSchema = z.object({
   githubId: z.number(),
+  githubLogin: z.string(),
   githubAccessToken: z.string(),
   avatarUrl: z.string(),
   role: z.enum(['client', 'admin'])

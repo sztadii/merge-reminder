@@ -60,6 +60,7 @@ export class AuthController {
       role: 'client',
       avatarUrl: githubUser.avatar_url,
       githubId: githubUser.id,
+      githubLogin: githubUser.login,
       githubAccessToken
     } as UserCreateRequest).catch(() => {
       throw new TRPCError({
