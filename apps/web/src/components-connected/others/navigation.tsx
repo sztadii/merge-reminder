@@ -26,6 +26,9 @@ export function Navigation() {
   const { data: user, isLoading } = trpc.client.getCurrentUser.useQuery()
   const { toggleColorMode, colorMode } = useColorMode()
 
+  const showFreeTrialEnded = user?.isActiveSubscription === false
+  const showFreeTrialCounter = !showFreeTrialEnded && user?.isActiveFreeTrial
+
   return (
     <Box>
       <Container>
@@ -37,7 +40,7 @@ export function Navigation() {
           </Link>
 
           <Flex alignItems="center" gap={4}>
-            {user?.isActiveFreeTrial && (
+            {showFreeTrialCounter && (
               <Button
                 size="xs"
                 colorScheme="teal"
@@ -48,7 +51,7 @@ export function Navigation() {
                 Free trial ends in {user.countOfFreeTrialDays} days
               </Button>
             )}
-            {user?.isActiveSubscription === false && (
+            {showFreeTrialEnded && (
               <Button
                 size="xs"
                 colorScheme="red"
