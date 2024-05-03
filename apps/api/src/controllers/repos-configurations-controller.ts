@@ -1,4 +1,3 @@
-import { ReposConfigurationRecord } from '../database'
 import { UnexpectedError } from '../errors/common-errors'
 import { ConfigurationNotFoundError } from '../errors/repos-errors'
 import { ReposConfigurationsRepository } from '../repositories/repos-configurations-repository'
@@ -13,7 +12,7 @@ export class ReposConfigurationsController {
   ) {}
 
   async getByUserId(id: string): Promise<RepoConfigurationResponse> {
-    const record = await this.reposConfigurationsRepository
+    const configuration = await this.reposConfigurationsRepository
       .getByUserId(id)
       .catch(() => {
         throw new UnexpectedError(
@@ -21,11 +20,19 @@ export class ReposConfigurationsController {
         )
       })
 
-    if (!record) {
+    if (!configuration) {
       throw new ConfigurationNotFoundError()
     }
 
-    return this.mapRecordToResponse(record)
+    return {
+      id: configuration._id.toString(),
+      userId: configuration.userId,
+      headBranch: configuration.headBranch,
+      baseBranch: configuration.baseBranch,
+      excludeReposWithoutRequiredBranches:
+        configuration.excludeReposWithoutRequiredBranches,
+      repos: configuration.repos
+    }
   }
 
   async updateByUserId(
@@ -41,20 +48,6 @@ export class ReposConfigurationsController {
       throw new UnexpectedError(
         'An error occurred while updating the repo configuration.'
       )
-    }
-  }
-
-  protected mapRecordToResponse(
-    configuration: ReposConfigurationRecord
-  ): RepoConfigurationResponse {
-    return {
-      id: configuration._id.toString(),
-      userId: configuration.userId,
-      headBranch: configuration.headBranch,
-      baseBranch: configuration.baseBranch,
-      excludeReposWithoutRequiredBranches:
-        configuration.excludeReposWithoutRequiredBranches,
-      repos: configuration.repos
     }
   }
 }
