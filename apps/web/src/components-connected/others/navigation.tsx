@@ -1,6 +1,7 @@
 import {
   Avatar,
   Box,
+  Button,
   Divider,
   Flex,
   Heading,
@@ -10,6 +11,7 @@ import {
   MenuItem,
   MenuList,
   Skeleton,
+  Tag,
   useColorMode
 } from '@chakra-ui/react'
 import { Link } from 'wouter'
@@ -35,6 +37,28 @@ export function Navigation() {
           </Link>
 
           <Flex alignItems="center" gap={4}>
+            {user?.isActiveFreeTrial && (
+              <Button
+                size="xs"
+                colorScheme="teal"
+                onClick={() => {
+                  routerPaths.settings.navigate()
+                }}
+              >
+                Free trial ends in {user.countOfFreeTrialDays} days
+              </Button>
+            )}
+            {user?.isActiveSubscription === false && (
+              <Button
+                size="xs"
+                colorScheme="red"
+                onClick={() => {
+                  routerPaths.settings.navigate()
+                }}
+              >
+                Free trial ended
+              </Button>
+            )}
             <Menu>
               <Skeleton borderRadius="50%" isLoaded={!isLoading}>
                 <MenuButton>

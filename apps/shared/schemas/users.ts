@@ -7,7 +7,10 @@ export const UserResponseSchema = z.object({
   hasInstallationId: z.boolean(),
   isEmailConfirmed: z.boolean(),
   stripeCheckoutSessionId: z.string().nullable().optional(),
-  isDeleted: z.boolean()
+  isDeleted: z.boolean(),
+  countOfFreeTrialDays: z.number(),
+  isActiveFreeTrial: z.boolean(),
+  isActiveSubscription: z.boolean()
 })
 
 export type UserResponse = z.infer<typeof UserResponseSchema>

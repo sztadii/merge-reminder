@@ -1,4 +1,5 @@
 import { TRPCError } from '@trpc/server'
+import { differenceInDays } from 'date-fns'
 
 import { config } from '../config'
 import { UserDatabaseRecord } from '../database'
@@ -117,11 +118,18 @@ export class UsersController {
     }
   }
 
-  protected mapRecordToResponse(user: UserDatabaseRecord): UserResponse {
+  private mapRecordToResponse(user: UserDatabaseRecord): UserResponse {
     const isEmailConfirmed =
       !!user.email?.length &&
       !!user.confirmedEmail?.length &&
       user.email === user.confirmedEmail
+
+    const countOfFreeTrialDays = this.getCountOfFreeTrialDays(user)
+    const isActiveFreeTrial = countOfFreeTrialDays > 0
+    const isActiveSubscription = this.isActiveSubscription(
+      isActiveFreeTrial,
+      user
+    )
 
     return {
       id: user._id.toString(),
@@ -130,8 +138,26 @@ export class UsersController {
       hasInstallationId: !!user.githubAppInstallationId,
       isEmailConfirmed,
       stripeCheckoutSessionId: user.stripeCheckoutSessionId,
-      isDeleted: !!user.deletedDate
+      isDeleted: !!user.deletedDate,
+      countOfFreeTrialDays,
+      isActiveFreeTrial,
+      isActiveSubscription
     }
+  }
+
+  private getCountOfFreeTrialDays(user: UserDatabaseRecord): number {
+    const today = new Date()
+    const daysSinceCreation = differenceInDays(today, user.createdAt)
+
+    return config.app.freeTrialLengthInDays - daysSinceCreation
+  }
+
+  private isActiveSubscription(
+    isActiveFreeTrial: boolean,
+    user: UserDatabaseRecord
+  ): boolean {
+    const isStripeInvoicePaid = false
+    return isActiveFreeTrial || isStripeInvoicePaid
   }
 }
 

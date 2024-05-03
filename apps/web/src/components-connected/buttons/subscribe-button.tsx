@@ -59,6 +59,9 @@ export function SubscribeButton() {
   }
 
   function getDisabledMessage() {
+    const hasProvidedEmail = user?.email
+    if (!hasProvidedEmail) return 'You did not provide any email yet.'
+
     const isEmailConfirmed = user?.isEmailConfirmed === true
     if (!isEmailConfirmed) return 'Your email is not confirmed yet.'
 
