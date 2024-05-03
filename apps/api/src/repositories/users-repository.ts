@@ -1,3 +1,6 @@
+import { differenceInDays } from 'date-fns'
+
+import { config } from '../config'
 import {
   Database,
   DatabaseId,
@@ -21,9 +24,9 @@ export class UsersRepository extends DatabaseRepository<UserDatabaseRecord> {
     return this.collection.find().toArray()
   }
 
-  getById(id: string): Promise<UserDatabaseRecord | null> {
+  getById(userId: string): Promise<UserDatabaseRecord | null> {
     return this.collection.findOne({
-      _id: new DatabaseId(id)
+      _id: new DatabaseId(userId)
     })
   }
 
@@ -45,11 +48,11 @@ export class UsersRepository extends DatabaseRepository<UserDatabaseRecord> {
   }
 
   async updateById(
-    id: string,
+    userId: string,
     data: Partial<UserDatabaseValues>
   ): Promise<void> {
     await this.collection.updateOne(
-      { _id: new DatabaseId(id) },
+      { _id: new DatabaseId(userId) },
       {
         $set: {
           ...data,
@@ -59,9 +62,29 @@ export class UsersRepository extends DatabaseRepository<UserDatabaseRecord> {
     )
   }
 
-  async deleteById(id: string): Promise<void> {
-    await this.updateById(id, {
+  async deleteById(userId: string): Promise<void> {
+    await this.updateById(userId, {
       deletedDate: new Date()
     })
+  }
+
+  async getUserSubscriptionInfo(userId: string) {
+    const user = (await this.getById(userId))!
+
+    const isStripeInvoicePaid = false
+
+    const today = new Date()
+    const daysSinceCreation = differenceInDays(today, user.createdAt)
+    const countOfFreeTrialDays =
+      config.app.freeTrialLengthInDays - daysSinceCreation
+    const isActiveFreeTrial = countOfFreeTrialDays > 0
+
+    const isActiveSubscription = isActiveFreeTrial || isStripeInvoicePaid
+
+    return {
+      isActiveSubscription,
+      isActiveFreeTrial,
+      countOfFreeTrialDays
+    }
   }
 }

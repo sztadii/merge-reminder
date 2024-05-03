@@ -1,8 +1,6 @@
 import { TRPCError } from '@trpc/server'
-import { differenceInDays } from 'date-fns'
 
 import { config } from '../config'
-import { UserDatabaseRecord } from '../database'
 import { convertJSONToToken, convertTokenToJSON } from '../helpers'
 import { UsersRepository } from '../repositories/users-repository'
 import {
@@ -20,21 +18,40 @@ export class UsersController {
   ) {}
 
   async getById(id: string): Promise<UserResponse> {
-    const record = await this.usersRepository.getById(id).catch(() => {
+    const user = await this.usersRepository.getById(id).catch(() => {
       throw new TRPCError({
         code: 'INTERNAL_SERVER_ERROR',
         message: 'An error occurred while getting the user.'
       })
     })
 
-    if (!record) {
+    if (!user) {
       throw new TRPCError({
         code: 'NOT_FOUND',
         message: `The user not found.`
       })
     }
 
-    return this.mapRecordToResponse(record)
+    const isEmailConfirmed =
+      !!user.email?.length &&
+      !!user.confirmedEmail?.length &&
+      user.email === user.confirmedEmail
+
+    const { isActiveSubscription, isActiveFreeTrial, countOfFreeTrialDays } =
+      await this.usersRepository.getUserSubscriptionInfo(user._id.toString())
+
+    return {
+      id: user._id.toString(),
+      avatarUrl: user.avatarUrl,
+      email: user.email,
+      hasInstallationId: !!user.githubAppInstallationId,
+      isEmailConfirmed,
+      stripeCheckoutSessionId: user.stripeCheckoutSessionId,
+      isDeleted: !!user.deletedDate,
+      isActiveFreeTrial,
+      countOfFreeTrialDays,
+      isActiveSubscription
+    }
   }
 
   async updateEmail(
@@ -116,48 +133,6 @@ export class UsersController {
         message: 'An error occurred while stop deletion.'
       })
     }
-  }
-
-  private mapRecordToResponse(user: UserDatabaseRecord): UserResponse {
-    const isEmailConfirmed =
-      !!user.email?.length &&
-      !!user.confirmedEmail?.length &&
-      user.email === user.confirmedEmail
-
-    const countOfFreeTrialDays = this.getCountOfFreeTrialDays(user)
-    const isActiveFreeTrial = countOfFreeTrialDays > 0
-    const isActiveSubscription = this.isActiveSubscription(
-      isActiveFreeTrial,
-      user
-    )
-
-    return {
-      id: user._id.toString(),
-      avatarUrl: user.avatarUrl,
-      email: user.email,
-      hasInstallationId: !!user.githubAppInstallationId,
-      isEmailConfirmed,
-      stripeCheckoutSessionId: user.stripeCheckoutSessionId,
-      isDeleted: !!user.deletedDate,
-      countOfFreeTrialDays,
-      isActiveFreeTrial,
-      isActiveSubscription
-    }
-  }
-
-  private getCountOfFreeTrialDays(user: UserDatabaseRecord): number {
-    const today = new Date()
-    const daysSinceCreation = differenceInDays(today, user.createdAt)
-
-    return config.app.freeTrialLengthInDays - daysSinceCreation
-  }
-
-  private isActiveSubscription(
-    isActiveFreeTrial: boolean,
-    user: UserDatabaseRecord
-  ): boolean {
-    const isStripeInvoicePaid = false
-    return isActiveFreeTrial || isStripeInvoicePaid
   }
 }
 
