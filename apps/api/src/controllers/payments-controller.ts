@@ -1,7 +1,7 @@
-import { TRPCError } from '@trpc/server'
 import Stripe from 'stripe'
 
 import { config } from '../config'
+import { UnexpectedError } from '../errors/common-errors'
 import { PaymentsRepository } from '../repositories/payments-repository'
 import { PaymentWebhook, UpdateCheckoutSession } from '../schemas'
 import { EmailService } from '../services/email-service'
@@ -20,10 +20,9 @@ export class PaymentsController {
     try {
       await this.paymentsRepository.handleWebhookEvents(paymentWebhook)
     } catch {
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: 'An error occurred while receiving webhook event.'
-      })
+      throw new UnexpectedError(
+        'An error occurred while receiving webhook event.'
+      )
     }
   }
 
@@ -37,10 +36,9 @@ export class PaymentsController {
         checkoutSession
       )
     } catch {
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: 'An error occurred while updating checkout session.'
-      })
+      throw new UnexpectedError(
+        'An error occurred while updating checkout session.'
+      )
     }
   }
 
@@ -48,10 +46,9 @@ export class PaymentsController {
     const url = await this.paymentsRepository.createSubscribeUrl(userId).catch()
 
     if (!url) {
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: 'An error occurred while creating subscribe url.'
-      })
+      throw new UnexpectedError(
+        'An error occurred while creating subscribe url.'
+      )
     }
 
     return url

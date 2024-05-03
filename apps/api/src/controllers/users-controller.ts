@@ -1,6 +1,6 @@
-import { TRPCError } from '@trpc/server'
-
 import { config } from '../config'
+import { UnexpectedError } from '../errors/common-errors'
+import { UserNotFoundError, WrongUserTokenError } from '../errors/user-errors'
 import { convertJSONToToken, convertTokenToJSON } from '../helpers'
 import { UsersRepository } from '../repositories/users-repository'
 import {
@@ -19,17 +19,11 @@ export class UsersController {
 
   async getById(id: string): Promise<UserResponse> {
     const user = await this.usersRepository.getById(id).catch(() => {
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: 'An error occurred while getting the user.'
-      })
+      throw new UnexpectedError('An error occurred while getting the user.')
     })
 
     if (!user) {
-      throw new TRPCError({
-        code: 'NOT_FOUND',
-        message: `The user not found.`
-      })
+      throw new UserNotFoundError()
     }
 
     const isEmailConfirmed =
@@ -41,10 +35,9 @@ export class UsersController {
       await this.usersRepository.getUserSubscriptionInfo(user._id.toString())
 
     if (!userSubscriptionInfo) {
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: `Something went wrong when fetching subscription info.`
-      })
+      throw new UnexpectedError(
+        'Something went wrong when fetching subscription info.'
+      )
     }
 
     return {
@@ -73,10 +66,7 @@ export class UsersController {
         confirmedEmail: ''
       })
     } catch {
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: 'An error occurred while updating the user.'
-      })
+      throw new UnexpectedError('An error occurred while updating the user.')
     }
 
     this.sendEmailConfirmation(userId, request).catch()
@@ -109,10 +99,7 @@ export class UsersController {
     const data = convertTokenToJSON<EmailDataToken>(token)
 
     if (!data) {
-      throw new TRPCError({
-        code: 'BAD_REQUEST',
-        message: 'An error occurred while checking the token.'
-      })
+      throw new WrongUserTokenError()
     }
 
     try {
@@ -122,10 +109,7 @@ export class UsersController {
         confirmedEmail
       })
     } catch {
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: 'An error occurred while updating the user.'
-      })
+      throw new UnexpectedError('An error occurred while updating the user.')
     }
   }
 
@@ -135,10 +119,7 @@ export class UsersController {
         deletedDate: null
       })
     } catch {
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: 'An error occurred while stop deletion.'
-      })
+      throw new UnexpectedError('An error occurred while stop deletion.')
     }
   }
 }

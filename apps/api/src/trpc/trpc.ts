@@ -1,7 +1,9 @@
-import { TRPCError, initTRPC } from '@trpc/server'
+import { initTRPC } from '@trpc/server'
 import { isBefore } from 'date-fns'
 
 import { config } from '../config'
+import { UnauthorizedError } from '../errors/auth-errors'
+import { UnderMaintenanceError } from '../errors/other-errors'
 import { Context } from './create-context'
 
 const t = initTRPC.context<Context>().create()
@@ -17,7 +19,7 @@ export const apiKeyProtectedProcedure = t.procedure.use(opts => {
   const isAuthorized = ctx.apiKey === config.app.apiKeyForPublicEndpoints
 
   if (!isAuthorized) {
-    throw new TRPCError({ code: 'UNAUTHORIZED' })
+    throw new UnauthorizedError()
   }
 
   return opts.next({ ctx })
@@ -32,7 +34,7 @@ export const tokenProtectedProcedure = t.procedure.use(opts => {
     ctx.user && isBefore(new Date(), new Date(ctx.user.expiredAt))
 
   if (!isAuthorized) {
-    throw new TRPCError({ code: 'UNAUTHORIZED' })
+    throw new UnauthorizedError()
   }
 
   return opts.next({ ctx })
@@ -42,6 +44,6 @@ function throwIfUnderMaintenance() {
   const { isUnderMaintenance } = config.app
 
   if (isUnderMaintenance) {
-    throw new TRPCError({ code: 'PRECONDITION_FAILED' })
+    throw new UnderMaintenanceError()
   }
 }

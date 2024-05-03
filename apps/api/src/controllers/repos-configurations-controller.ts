@@ -1,6 +1,6 @@
-import { TRPCError } from '@trpc/server'
-
 import { ReposConfigurationRecord } from '../database'
+import { UnexpectedError } from '../errors/common-errors'
+import { ConfigurationNotFoundError } from '../errors/repos-errors'
 import { ReposConfigurationsRepository } from '../repositories/repos-configurations-repository'
 import {
   RepoConfigurationResponse,
@@ -16,17 +16,13 @@ export class ReposConfigurationsController {
     const record = await this.reposConfigurationsRepository
       .getByUserId(id)
       .catch(() => {
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'An error occurred while getting the configuration.'
-        })
+        throw new UnexpectedError(
+          'An error occurred while getting the configuration.'
+        )
       })
 
     if (!record) {
-      throw new TRPCError({
-        code: 'NOT_FOUND',
-        message: `The configuration not found.`
-      })
+      throw new ConfigurationNotFoundError()
     }
 
     return this.mapRecordToResponse(record)
@@ -42,10 +38,9 @@ export class ReposConfigurationsController {
         configurationData
       )
     } catch {
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: 'An error occurred while updating the repo configuration.'
-      })
+      throw new UnexpectedError(
+        'An error occurred while updating the repo configuration.'
+      )
     }
   }
 

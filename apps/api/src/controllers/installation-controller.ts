@@ -1,5 +1,4 @@
-import { TRPCError } from '@trpc/server'
-
+import { UnexpectedError } from '../errors/common-errors'
 import { InstallationRepository } from '../repositories/installation-repository'
 
 export class InstallationController {
@@ -12,10 +11,9 @@ export class InstallationController {
     await this.installationRepository
       .connectRepositories(userId, installationId)
       .catch(() => {
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'An error occurred while connecting repositories.'
-        })
+        throw new UnexpectedError(
+          'An error occurred while connecting repositories.'
+        )
       })
   }
 
@@ -23,10 +21,9 @@ export class InstallationController {
     await this.installationRepository
       .disconnectRepositories(userId)
       .catch(() => {
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: 'An error occurred while disconnecting repositories.'
-        })
+        throw new UnexpectedError(
+          'An error occurred while disconnecting repositories.'
+        )
       })
   }
 }

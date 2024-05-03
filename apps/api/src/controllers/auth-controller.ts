@@ -1,7 +1,9 @@
-import { TRPCError } from '@trpc/server'
 import { addHours } from 'date-fns'
 
 import { UserDatabaseRecord } from '../database'
+import { UnauthorizedError } from '../errors/auth-errors'
+import { UnexpectedError } from '../errors/common-errors'
+import { UserNotFoundError } from '../errors/user-errors'
 import { convertJSONToToken } from '../helpers'
 import { GithubAuthRepository } from '../repositories/github-auth-repository'
 import { InstallationRepository } from '../repositories/installation-repository'
@@ -28,19 +30,15 @@ export class AuthController {
   async login(request: LoginRequest): Promise<LoginResponse> {
     const { user: githubUser, accessToken: githubAccessToken } =
       await this.githubAuthRepository.getAuthUser(request.code).catch(() => {
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: `An error occurred while fetching the GitHub user.`
-        })
+        throw new UnexpectedError(
+          'An error occurred while fetching the GitHub user.'
+        )
       })
 
     const user = await this.usersRepository
       .getByGithubId(githubUser.id)
       .catch(() => {
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: `An error occurred while fetching the user.`
-        })
+        throw new UnexpectedError('An error occurred while fetching the user.')
       })
 
     if (user) {
@@ -64,26 +62,19 @@ export class AuthController {
       githubLogin: githubUser.login,
       githubAccessToken
     } as UserCreateRequest).catch(() => {
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: `The GitHub API sent unexpected data. Please wait, we are working on it.`
-      })
+      throw new UnexpectedError(
+        'The GitHub API sent unexpected data. Please wait, we are working on it.'
+      )
     })
 
     const createdUser = await this.usersRepository
       .create(validatedUser)
       .catch(() => {
-        throw new TRPCError({
-          code: 'INTERNAL_SERVER_ERROR',
-          message: `An error occurred while creating the user.`
-        })
+        throw new UnexpectedError('An error occurred while creating the user.')
       })
 
     if (!createdUser) {
-      throw new TRPCError({
-        code: 'NOT_FOUND',
-        message: `The user not found.`
-      })
+      throw new UserNotFoundError()
     }
 
     const token = this.getTokenFromUser(createdUser)
@@ -109,10 +100,7 @@ export class AuthController {
       await this.reposConfigurationsRepository.deleteByUserId(userId)
       await this.usersRepository.deleteById(userId)
     } catch {
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: `An error occurred while deleting the user.`
-      })
+      throw new UnexpectedError('An error occurred while deleting the user.')
     }
   }
 
@@ -124,10 +112,7 @@ export class AuthController {
     const token = convertJSONToToken(userFromToken)
 
     if (!token) {
-      throw new TRPCError({
-        code: 'UNAUTHORIZED',
-        message: `Unauthorized to login.`
-      })
+      throw new UnauthorizedError()
     }
 
     return token

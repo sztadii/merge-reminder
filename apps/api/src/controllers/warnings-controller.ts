@@ -3,15 +3,19 @@ import { format } from 'date-fns'
 import { uniq } from 'lodash'
 
 import { config } from '../config'
-import { NoActiveSubscriptionError } from '../errors/common'
+import { UnexpectedError } from '../errors/common-errors'
+import { MissingBranchError } from '../errors/other-errors'
+import { ConfigurationNotFoundError } from '../errors/repos-errors'
+import {
+  NoActiveSubscriptionError,
+  UserNoRepoAccess,
+  UserNotFoundError
+} from '../errors/user-errors'
 import { promiseAllInBatches } from '../helpers'
 import { GithubAppRepository } from '../repositories/github-app-repository'
 import { ReposConfigurationsRepository } from '../repositories/repos-configurations-repository'
 import { UsersRepository } from '../repositories/users-repository'
-import {
-  MissingBranchError,
-  WarningsRepository
-} from '../repositories/warnings-repository'
+import { WarningsRepository } from '../repositories/warnings-repository'
 import { WarningResponse } from '../schemas'
 import { EmailService } from '../services/email-service'
 
@@ -28,17 +32,13 @@ export class WarningsController {
       await this.usersRepository.getUserSubscriptionInfo(userId)
 
     if (!user?.githubAppInstallationId) {
-      throw new TRPCError({
-        code: 'FORBIDDEN',
-        message: `The user has not given access to his repositories yet.`
-      })
+      throw new UserNoRepoAccess()
     }
 
     if (!userSubscriptionInfo) {
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: `Something went wrong when fetching subscription info.`
-      })
+      throw new UnexpectedError(
+        'Something went wrong when fetching subscription info.'
+      )
     }
 
     if (!userSubscriptionInfo.isActiveSubscription) {
@@ -53,10 +53,7 @@ export class WarningsController {
       await this.reposConfigurationsRepository.getByUserId(userId)
 
     if (!reposConfiguration) {
-      throw new TRPCError({
-        code: 'FORBIDDEN',
-        message: `The configuration not found for this user.`
-      })
+      throw new ConfigurationNotFoundError()
     }
 
     const warningsRepository = new WarningsRepository(
@@ -71,10 +68,7 @@ export class WarningsController {
           message: e.message
         })
 
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: 'An error occurred while fetching warnings.'
-      })
+      throw new UnexpectedError('An error occurred while fetching warnings.')
     })
 
     return warnings
@@ -84,10 +78,7 @@ export class WarningsController {
     const user = await this.usersRepository.getById(userId)
 
     if (!user) {
-      throw new TRPCError({
-        code: 'NOT_FOUND',
-        message: `User not found when sending warnings.`
-      })
+      throw new UserNotFoundError()
     }
 
     const warnings = await this.getWarnings(userId).catch(e => {
@@ -136,28 +127,19 @@ export class WarningsController {
         })
       })
     ).catch(() => {
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: `We could not send warnings.`
-      })
+      throw new UnexpectedError('We could not send warnings.')
     })
   }
 
   async sendWarningsForAllUsers(): Promise<void> {
     const users = await this.usersRepository.findAll().catch(() => {
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: `We could not fetch users list.`
-      })
+      throw new UnexpectedError('We could not fetch users list.')
     })
 
     await promiseAllInBatches(
       users.map(user => this.sendWarnings(user._id.toString()))
     ).catch(() => {
-      throw new TRPCError({
-        code: 'INTERNAL_SERVER_ERROR',
-        message: `We could not send warnings to all users.`
-      })
+      throw new UnexpectedError('We could not send warnings to all users.')
     })
   }
 }

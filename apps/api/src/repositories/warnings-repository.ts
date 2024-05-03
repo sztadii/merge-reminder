@@ -1,5 +1,6 @@
 import { differenceInHours } from 'date-fns'
 
+import { MissingBranchError } from '../errors/other-errors'
 import {
   convertHoursToReadableFormat,
   handlePromise,
@@ -121,5 +122,3 @@ type Config = {
     headBranch?: string
   }>
 }
-
-export class MissingBranchError extends Error {}

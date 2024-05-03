@@ -1,5 +1,4 @@
-import { TRPCError } from '@trpc/server'
-
+import { UserNoRepoAccess } from '../errors/user-errors'
 import { GithubAppRepository } from '../repositories/github-app-repository'
 import { UsersRepository } from '../repositories/users-repository'
 import { RepositoryResponse } from '../schemas'
@@ -11,10 +10,7 @@ export class RepositoriesController {
     const user = await this.usersRepository.getById(userId)
 
     if (!user?.githubAppInstallationId) {
-      throw new TRPCError({
-        code: 'FORBIDDEN',
-        message: `The user has not given access to his repositories yet.`
-      })
+      throw new UserNoRepoAccess()
     }
 
     const githubAppRepository = await GithubAppRepository.build(
