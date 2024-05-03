@@ -6,7 +6,8 @@ export const LoginRequestSchema = z.object({
 
 export const LoginResponseSchema = z.object({
   token: z.string(),
-  isNewUser: z.boolean()
+  isNewUser: z.boolean(),
+  isDeletedUser: z.boolean()
 })
 
 export type LoginResponse = z.infer<typeof LoginResponseSchema>

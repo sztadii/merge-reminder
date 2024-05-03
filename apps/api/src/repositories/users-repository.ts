@@ -60,6 +60,8 @@ export class UsersRepository extends DatabaseRepository<UserDatabaseRecord> {
   }
 
   async deleteById(id: string): Promise<void> {
-    await this.collection.deleteOne({ _id: new DatabaseId(id) })
+    await this.updateById(id, {
+      deletedDate: new Date()
+    })
   }
 }

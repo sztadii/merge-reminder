@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/react'
-import { ReactNode, useLayoutEffect } from 'react'
+import { ReactNode, useEffect, useLayoutEffect } from 'react'
 import { Redirect, Route, Switch } from 'wouter'
 
 import { Container } from 'src/components/container'
@@ -10,7 +10,9 @@ import { Landing } from 'src/pages/landing'
 import { Login } from 'src/pages/login'
 import { Onboarding } from 'src/pages/onboarding'
 import { Settings } from 'src/pages/settings'
+import { StopDeletion } from 'src/pages/stop-deletion'
 import { storage } from 'src/storage'
+import { trpc } from 'src/trpc'
 
 import { routerPaths } from './router-paths'
 
@@ -83,6 +85,17 @@ export function Router() {
         }}
       />
 
+      <Route
+        path={routerPaths.stopDeletion.path}
+        component={() => {
+          return (
+            <PublicLayout>
+              <StopDeletion />
+            </PublicLayout>
+          )
+        }}
+      />
+
       <Redirect to={routerPaths.landing.path} />
     </Switch>
   )
@@ -108,6 +121,8 @@ function PrivateLayout({
   children: ReactNode
   hasCustomLayout?: boolean
 }) {
+  const { data: user } = trpc.client.getCurrentUser.useQuery()
+
   useLayoutEffect(() => {
     const token = storage.auth.getToken()
 
@@ -115,6 +130,12 @@ function PrivateLayout({
       routerPaths.login.navigate()
     }
   }, [])
+
+  useEffect(() => {
+    if (user?.isDeleted) {
+      routerPaths.stopDeletion.navigate()
+    }
+  }, [user])
 
   if (hasCustomLayout) return children
 

@@ -104,6 +104,19 @@ export class UsersController {
     }
   }
 
+  async stopDeletion(userId: string): Promise<void> {
+    try {
+      await this.usersRepository.updateById(userId, {
+        deletedDate: null
+      })
+    } catch {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: 'An error occurred while stop deletion.'
+      })
+    }
+  }
+
   protected mapRecordToResponse(user: UserDatabaseRecord): UserResponse {
     const isEmailConfirmed =
       !!user.email?.length &&
@@ -116,7 +129,8 @@ export class UsersController {
       email: user.email,
       hasInstallationId: !!user.githubAppInstallationId,
       isEmailConfirmed,
-      stripeCheckoutSessionId: user.stripeCheckoutSessionId
+      stripeCheckoutSessionId: user.stripeCheckoutSessionId,
+      isDeleted: !!user.deletedDate
     }
   }
 }

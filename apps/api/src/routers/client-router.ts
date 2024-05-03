@@ -34,6 +34,13 @@ export const clientRouter = router({
 
       return usersController.updateEmail(opts.ctx.user.id, opts.input)
     }),
+  stopDeletionProcess: tokenProtectedProcedure
+    .output(EmptyResponseSchema)
+    .mutation(opts => {
+      const usersController = createUsersController(opts.ctx)
+
+      return usersController.stopDeletion(opts.ctx.user.id)
+    }),
   confirmEmail: publicProcedure
     .input(EmailConfirmRequestSchema)
     .output(EmptyResponseSchema)

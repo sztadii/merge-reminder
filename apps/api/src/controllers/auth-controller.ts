@@ -52,7 +52,8 @@ export class AuthController {
 
       return {
         token,
-        isNewUser: false
+        isNewUser: false,
+        isDeletedUser: !!user.deletedDate
       }
     }
 
@@ -89,7 +90,8 @@ export class AuthController {
 
     return {
       token,
-      isNewUser: true
+      isNewUser: true,
+      isDeletedUser: false
     }
   }
 

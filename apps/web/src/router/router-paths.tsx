@@ -5,6 +5,7 @@ export const routerPaths = {
   landing: createPage('/'),
   login: createPage('/login'),
   onboarding: createPage('/onboarding'),
+  stopDeletion: createPage('/stop-deletion'),
   dashboard: createPage('/dashboard'),
   settings: createPage('/settings'),
   emailConfirmation: {

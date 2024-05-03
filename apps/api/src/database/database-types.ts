@@ -16,6 +16,7 @@ export type UserDatabaseValues = {
   confirmedEmail?: string
   githubAppInstallationId?: number | null
   stripeCheckoutSessionId?: string | null
+  deletedDate?: Date | null
 }
 
 export type ReposConfigurationDatabaseValues = {

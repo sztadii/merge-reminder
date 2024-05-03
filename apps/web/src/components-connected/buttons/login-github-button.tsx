@@ -36,7 +36,9 @@ export function LoginGithubButton() {
 
         storage.auth.setToken(loginResponse.token)
 
-        if (loginResponse.isNewUser) {
+        if (loginResponse.isDeletedUser) {
+          routerPaths.stopDeletion.navigate()
+        } else if (loginResponse.isNewUser) {
           routerPaths.onboarding.navigate()
         } else {
           routerPaths.dashboard.navigate()
