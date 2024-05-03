@@ -37,8 +37,15 @@ export class UsersController {
       !!user.confirmedEmail?.length &&
       user.email === user.confirmedEmail
 
-    const { isActiveSubscription, isActiveFreeTrial, countOfFreeTrialDays } =
+    const userSubscriptionInfo =
       await this.usersRepository.getUserSubscriptionInfo(user._id.toString())
+
+    if (!userSubscriptionInfo) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: `Something went wrong when fetching subscription info.`
+      })
+    }
 
     return {
       id: user._id.toString(),
@@ -48,9 +55,9 @@ export class UsersController {
       isEmailConfirmed,
       stripeCheckoutSessionId: user.stripeCheckoutSessionId,
       isDeleted: !!user.deletedDate,
-      isActiveFreeTrial,
-      countOfFreeTrialDays,
-      isActiveSubscription
+      isActiveFreeTrial: userSubscriptionInfo.isActiveFreeTrial,
+      countOfFreeTrialDays: userSubscriptionInfo.countOfFreeTrialDays,
+      isActiveSubscription: userSubscriptionInfo.isActiveSubscription
     }
   }
 

@@ -22,11 +22,27 @@ export class WarningsController {
 
   async getWarnings(userId: string): Promise<WarningResponse[]> {
     const user = await this.usersRepository.getById(userId)
+    const userSubscriptionInfo =
+      await this.usersRepository.getUserSubscriptionInfo(userId)
 
     if (!user?.githubAppInstallationId) {
       throw new TRPCError({
         code: 'FORBIDDEN',
         message: `The user has not given access to his repositories yet.`
+      })
+    }
+
+    if (!userSubscriptionInfo) {
+      throw new TRPCError({
+        code: 'INTERNAL_SERVER_ERROR',
+        message: `Something went wrong when fetching subscription info.`
+      })
+    }
+
+    if (!userSubscriptionInfo.isActiveSubscription) {
+      throw new TRPCError({
+        code: 'FORBIDDEN',
+        message: `Your subscription is not active anymore.`
       })
     }
 

@@ -69,7 +69,8 @@ export class UsersRepository extends DatabaseRepository<UserDatabaseRecord> {
   }
 
   async getUserSubscriptionInfo(userId: string) {
-    const user = (await this.getById(userId))!
+    const user = await this.getById(userId)
+    if (!user) return null
 
     const isStripeInvoicePaid = false
 
