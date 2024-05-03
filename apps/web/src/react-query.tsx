@@ -15,8 +15,7 @@ const fiveMinutes = 1000 * 60 * 5
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: 2,
-      retryDelay: 200,
+      retry: 0,
       refetchOnWindowFocus: false,
       staleTime: fiveMinutes
     }
