@@ -2,6 +2,8 @@ import { TRPCError } from '@trpc/server'
 import { format } from 'date-fns'
 import { uniq } from 'lodash'
 
+import { config } from '../config'
+import { NoActiveSubscriptionError } from '../errors/common'
 import { promiseAllInBatches } from '../helpers'
 import { GithubAppRepository } from '../repositories/github-app-repository'
 import { ReposConfigurationsRepository } from '../repositories/repos-configurations-repository'
@@ -40,10 +42,7 @@ export class WarningsController {
     }
 
     if (!userSubscriptionInfo.isActiveSubscription) {
-      throw new TRPCError({
-        code: 'FORBIDDEN',
-        message: `Your subscription is not active anymore.`
-      })
+      throw new NoActiveSubscriptionError()
     }
 
     const githubAppRepository = await GithubAppRepository.build(
@@ -82,7 +81,32 @@ export class WarningsController {
   }
 
   async sendWarnings(userId: string): Promise<void> {
-    const warnings = await this.getWarnings(userId)
+    const user = await this.usersRepository.getById(userId)
+
+    if (!user) {
+      throw new TRPCError({
+        code: 'NOT_FOUND',
+        message: `User not found when sending warnings.`
+      })
+    }
+
+    const warnings = await this.getWarnings(userId).catch(e => {
+      const isNoActiveSubscriptionError = e instanceof NoActiveSubscriptionError
+
+      if (user.email && isNoActiveSubscriptionError) {
+        const date = new Date()
+        const formattedDate = format(date, 'MMMM d')
+        const { webDomain } = config.app
+
+        this.emailService.sendEmail({
+          to: user.email,
+          subject: `Subscription in ${formattedDate}`,
+          text: `Your subscription is not active anymore. To fix this problem visit our website ${webDomain}`
+        })
+      }
+
+      throw e
+    })
 
     const allAuthors = uniq(warnings.flatMap(warning => warning.authors))
 
