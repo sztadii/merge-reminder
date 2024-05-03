@@ -8,7 +8,7 @@ import { MissingBranchError } from '../errors/other-errors'
 import { ConfigurationNotFoundError } from '../errors/repos-errors'
 import {
   NoActiveSubscriptionError,
-  UserNoRepoAccess,
+  UserNoRepoAccessError,
   UserNotFoundError
 } from '../errors/user-errors'
 import { promiseAllInBatches } from '../helpers'
@@ -32,7 +32,7 @@ export class WarningsController {
       await this.usersRepository.getUserSubscriptionInfo(userId)
 
     if (!user?.githubAppInstallationId) {
-      throw new UserNoRepoAccess()
+      throw new UserNoRepoAccessError()
     }
 
     if (!userSubscriptionInfo) {

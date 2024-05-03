@@ -18,7 +18,7 @@ export class UserNotFoundError extends TRPCError {
   }
 }
 
-export class UserNoRepoAccess extends TRPCError {
+export class UserNoRepoAccessError extends TRPCError {
   constructor() {
     super({
       code: 'FORBIDDEN',

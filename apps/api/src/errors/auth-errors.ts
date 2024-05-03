@@ -1,10 +1,9 @@
 import { TRPCError } from '@trpc/server'
 
 export class UnauthorizedError extends TRPCError {
-  constructor(message?: string) {
+  constructor() {
     super({
-      code: 'UNAUTHORIZED',
-      message
+      code: 'UNAUTHORIZED'
     })
   }
 }
