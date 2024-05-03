@@ -3,7 +3,10 @@ import { addHours } from 'date-fns'
 import { UserDatabaseRecord } from '../database'
 import { UnauthorizedError } from '../errors/auth-errors'
 import { UnexpectedError } from '../errors/common-errors'
-import { UserNotFoundError } from '../errors/user-errors'
+import {
+  UserMissingAccessTokenError,
+  UserNotFoundError
+} from '../errors/user-errors'
 import { convertJSONToToken } from '../helpers'
 import { GithubAuthRepository } from '../repositories/github-auth-repository'
 import { InstallationRepository } from '../repositories/installation-repository'
@@ -87,13 +90,15 @@ export class AuthController {
   }
 
   async deleteCurrentUser(userId: string): Promise<void> {
+    const user = await this.usersRepository.getById(userId).catch(() => {
+      throw new UnexpectedError()
+    })
+    if (!user) throw new UserNotFoundError()
+
+    const githubAccessToken = user.githubAccessToken
+    if (!githubAccessToken) throw new UserMissingAccessTokenError()
+
     try {
-      const user = await this.usersRepository.getById(userId)
-      if (!user) throw new Error()
-
-      const githubAccessToken = user.githubAccessToken
-      if (!githubAccessToken) throw new Error()
-
       await this.paymentsRepository.unsubscribe(userId)
       await this.installationRepository.disconnectRepositories(userId)
       await this.githubAuthRepository.removeAccess(githubAccessToken)

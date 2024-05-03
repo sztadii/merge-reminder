@@ -27,6 +27,15 @@ export class UserNoRepoAccessError extends TRPCError {
   }
 }
 
+export class UserMissingAccessTokenError extends TRPCError {
+  constructor() {
+    super({
+      code: 'FORBIDDEN',
+      message: 'Missing access token.'
+    })
+  }
+}
+
 export class WrongUserTokenError extends TRPCError {
   constructor() {
     super({
