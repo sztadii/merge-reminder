@@ -4,13 +4,17 @@ import { OAuthApp, Octokit } from 'octokit'
 import { config } from '../config'
 
 export class GithubAuthRepository {
-  async getAuthUser(code: string): Promise<AuthUser> {
-    const auth = new OAuthApp({
+  private oAuthApp: OAuthApp
+
+  constructor() {
+    this.oAuthApp = new OAuthApp({
       clientId: config.github.authClientId,
       clientSecret: config.github.authClientSecret
     })
+  }
 
-    const tokenResponse = await auth.createToken({
+  async getAuthUser(code: string): Promise<AuthUser> {
+    const tokenResponse = await this.oAuthApp.createToken({
       code
     })
 
@@ -26,12 +30,7 @@ export class GithubAuthRepository {
   }
 
   async removeAccess(accessToken: string): Promise<void> {
-    const auth = new OAuthApp({
-      clientId: config.github.authClientId,
-      clientSecret: config.github.authClientSecret
-    })
-
-    await auth.deleteAuthorization({
+    await this.oAuthApp.deleteAuthorization({
       token: accessToken
     })
   }
