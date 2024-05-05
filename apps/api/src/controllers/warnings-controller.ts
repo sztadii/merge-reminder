@@ -87,12 +87,11 @@ export class WarningsController {
       if (user.email && isNoActiveSubscriptionError) {
         const date = new Date()
         const formattedDate = format(date, 'MMMM d')
-        const { webDomain } = config.app
 
         this.emailService.sendEmail({
           to: user.email,
           subject: `Subscription in ${formattedDate}`,
-          text: `Your subscription is not active anymore. To fix this problem visit our website ${webDomain}`
+          text: e.message
         })
       }
 
