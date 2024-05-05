@@ -1,3 +1,5 @@
+import { format } from 'date-fns'
+
 export async function wait(delay: number) {
   return new Promise(resolve => setTimeout(resolve, delay))
 }
@@ -68,4 +70,9 @@ export async function promiseAllInBatches<T>(
     results = results.concat(batchResults)
   }
   return results
+}
+
+export function getCurrentFormattedDate() {
+  const date = new Date()
+  return format(date, 'MMMM d')
 }

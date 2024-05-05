@@ -1,8 +1,6 @@
 import { TRPCError } from '@trpc/server'
-import { format } from 'date-fns'
 import { uniq } from 'lodash'
 
-import { config } from '../config'
 import { UnexpectedError } from '../errors/common-errors'
 import { MissingBranchError } from '../errors/other-errors'
 import { ConfigurationNotFoundError } from '../errors/repos-errors'
@@ -11,7 +9,7 @@ import {
   UserNoRepoAccessError,
   UserNotFoundError
 } from '../errors/user-errors'
-import { promiseAllInBatches } from '../helpers'
+import { getCurrentFormattedDate, promiseAllInBatches } from '../helpers'
 import { GithubAppRepository } from '../repositories/github-app-repository'
 import { ReposConfigurationsRepository } from '../repositories/repos-configurations-repository'
 import { UsersRepository } from '../repositories/users-repository'
@@ -85,12 +83,11 @@ export class WarningsController {
       const isNoActiveSubscriptionError = e instanceof NoActiveSubscriptionError
 
       if (user.email && isNoActiveSubscriptionError) {
-        const date = new Date()
-        const formattedDate = format(date, 'MMMM d')
+        const currentFormattedDate = getCurrentFormattedDate()
 
         this.emailService.sendEmail({
           to: user.email,
-          subject: `Subscription in ${formattedDate}`,
+          subject: `Subscription in ${currentFormattedDate}`,
           text: e.message
         })
       }
@@ -116,12 +113,11 @@ export class WarningsController {
             ''
           ])
         ].join('\n')
-        const date = new Date()
-        const formattedDate = format(date, 'MMMM d')
+        const currentFormattedDate = getCurrentFormattedDate()
 
         return this.emailService.sendEmail({
           to: author,
-          subject: `Unmerged changes in ${formattedDate}`,
+          subject: `Unmerged changes in ${currentFormattedDate}`,
           text: message
         })
       })
