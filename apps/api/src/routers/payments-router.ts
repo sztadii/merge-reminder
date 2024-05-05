@@ -14,7 +14,10 @@ export const paymentsRouter = router({
     .mutation(opts => {
       const paymentsController = createPaymentsController(opts.ctx)
 
-      return paymentsController.handleWebhookEvents(opts.input)
+      return paymentsController.handleWebhookEvents(
+        opts.input,
+        opts.ctx.stripeSignature
+      )
     }),
   createSubscribeUrl: tokenProtectedProcedure
     .output(StringResponseSchema)

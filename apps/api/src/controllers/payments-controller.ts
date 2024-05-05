@@ -1,3 +1,4 @@
+import { UnauthorizedError } from '../errors/auth-errors'
 import { UnexpectedError } from '../errors/common-errors'
 import { PaymentsRepository } from '../repositories/payments-repository'
 import { PaymentWebhook, UpdateCheckoutSession } from '../schemas'
@@ -5,9 +6,19 @@ import { PaymentWebhook, UpdateCheckoutSession } from '../schemas'
 export class PaymentsController {
   constructor(private paymentsRepository: PaymentsRepository) {}
 
-  async handleWebhookEvents(paymentWebhook: PaymentWebhook): Promise<void> {
+  async handleWebhookEvents(
+    paymentWebhook: PaymentWebhook,
+    stripeSignature?: string
+  ): Promise<void> {
+    if (!stripeSignature) {
+      throw new UnauthorizedError()
+    }
+
     try {
-      await this.paymentsRepository.handleWebhookEvents(paymentWebhook)
+      await this.paymentsRepository.handleWebhookEvents(
+        paymentWebhook,
+        stripeSignature
+      )
     } catch {
       throw new UnexpectedError(
         'An error occurred while receiving webhook event.'

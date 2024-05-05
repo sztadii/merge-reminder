@@ -9,11 +9,15 @@ export function createContext(opts: trpcExpress.CreateExpressContextOptions) {
   const user = convertTokenToJSON<UserFromToken>(token)!
   const database = getDatabase()
   const apiKey = opts.req.headers['api-key']
+  const stripeSignature = opts.req.headers['stripe-signature'] as
+    | string
+    | undefined
 
   return {
     database,
     user,
-    apiKey
+    apiKey,
+    stripeSignature
   }
 }
 

@@ -11,8 +11,37 @@ export class PaymentsRepository {
     this.stripe = new Stripe(config.stripe.apiKey)
   }
 
-  async handleWebhookEvents(paymentWebhook: PaymentWebhook): Promise<void> {
-    console.log({ paymentWebhook })
+  async handleWebhookEvents(
+    paymentWebhook: PaymentWebhook,
+    stripeSignature: string
+  ): Promise<void> {
+    try {
+      const event = this.stripe.webhooks.constructEvent(
+        paymentWebhook,
+        stripeSignature,
+        config.stripe.webhookSecret
+      )
+
+      // TODO
+      const userId = 'user-1'
+      const activeTillDate = '2024-06-06'
+
+      switch (event.type) {
+        case 'invoice.paid':
+          // implement
+          break
+        case 'invoice.payment_failed':
+          // implement
+          break
+        case 'customer.subscription.deleted':
+          // implement
+          break
+        default:
+          console.log(`Unhandled event type ${event.type}.`)
+      }
+    } catch {
+      throw new Error()
+    }
   }
 
   async updateCheckoutSessionId(

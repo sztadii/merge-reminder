@@ -28,6 +28,7 @@ const configSchema = z.object({
   }),
   stripe: z.object({
     apiKey: z.string(),
+    webhookSecret: z.string(),
     monthlyProductId: z.string()
   })
 })
@@ -60,6 +61,7 @@ export const config = configSchema.parse({
   },
   stripe: {
     apiKey: process.env.STRIPE_API_KEY,
+    webhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
     monthlyProductId: process.env.STRIPE_MONTHLY_PRODUCT_ID
   }
 })
