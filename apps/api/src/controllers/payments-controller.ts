@@ -1,13 +1,9 @@
 import { UnexpectedError } from '../errors/common-errors'
 import { PaymentsRepository } from '../repositories/payments-repository'
 import { PaymentWebhook, UpdateCheckoutSession } from '../schemas'
-import { EmailService } from '../services/email-service'
 
 export class PaymentsController {
-  constructor(
-    private emailService: EmailService,
-    private paymentsRepository: PaymentsRepository
-  ) {}
+  constructor(private paymentsRepository: PaymentsRepository) {}
 
   async handleWebhookEvents(paymentWebhook: PaymentWebhook): Promise<void> {
     try {
