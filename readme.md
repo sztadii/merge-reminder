@@ -20,4 +20,4 @@ npm run dev
 ```
 
 ## Links
-* [production](https://merge-reminder.com) - please keep in mind the server runs on free tier, so cold start can be painful.
+* [production](https://merge-reminder.pages.dev) - keep in mind free tier's cold start can take up to 50s
