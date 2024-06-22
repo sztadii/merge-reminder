@@ -16,7 +16,7 @@ jobs:
       - name: Linter
         run: npm run lint
 
-      - name: Types
+      - name: Check types
         run: npm run check-types
 
       - name: Build
