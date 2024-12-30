@@ -59,6 +59,7 @@ export function convertHoursToReadableFormat(timeInHours: number) {
   }
 }
 
+// TODO Fix it, beecause it is not batching already triggered promises
 export async function promiseAllInBatches<T>(
   promises: Promise<T>[],
   batchSize = 50
