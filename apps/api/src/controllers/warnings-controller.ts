@@ -10,7 +10,6 @@ import {
   UserNotFoundError
 } from '../errors/user-errors'
 import { getCurrentFormattedDate, promiseAllInBatches } from '../helpers'
-import { GithubAppRepository } from '../repositories/github-app-repository'
 import { ReposConfigurationsRepository } from '../repositories/repos-configurations-repository'
 import { UsersRepository } from '../repositories/users-repository'
 import { WarningsRepository } from '../repositories/warnings-repository'
@@ -20,6 +19,7 @@ import { EmailService } from '../services/email-service'
 export class WarningsController {
   constructor(
     private usersRepository: UsersRepository,
+    private warningsRepository: WarningsRepository,
     private reposConfigurationsRepository: ReposConfigurationsRepository,
     private emailService: EmailService
   ) {}
@@ -43,10 +43,6 @@ export class WarningsController {
       throw new NoActiveSubscriptionError()
     }
 
-    const githubAppRepository = await GithubAppRepository.build(
-      user.githubAppInstallationId
-    )
-
     const reposConfiguration =
       await this.reposConfigurationsRepository.getByUserId(userId)
 
@@ -54,20 +50,17 @@ export class WarningsController {
       throw new ConfigurationNotFoundError()
     }
 
-    const warningsRepository = new WarningsRepository(
-      reposConfiguration,
-      githubAppRepository
-    )
+    const warnings = await this.warningsRepository
+      .getWarnings(reposConfiguration, user.githubAppInstallationId)
+      .catch(e => {
+        if (e instanceof MissingBranchError)
+          throw new TRPCError({
+            code: 'NOT_FOUND',
+            message: e.message
+          })
 
-    const warnings = await warningsRepository.getWarnings().catch(e => {
-      if (e instanceof MissingBranchError)
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: e.message
-        })
-
-      throw new UnexpectedError('An error occurred while fetching warnings.')
-    })
+        throw new UnexpectedError('An error occurred while fetching warnings.')
+      })
 
     return warnings
   }

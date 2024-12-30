@@ -5,6 +5,7 @@ import { UsersRepository } from './users-repository'
 export class InstallationRepository {
   constructor(
     private usersRepository: UsersRepository,
+    private githubAppRepository: GithubAppRepository,
     private reposConfigurationsRepository: ReposConfigurationsRepository
   ) {}
 
@@ -28,10 +29,7 @@ export class InstallationRepository {
     const user = await this.usersRepository.getById(userId)
 
     if (user?.githubAppInstallationId) {
-      const githubAppRepository = await GithubAppRepository.build(
-        user.githubAppInstallationId
-      )
-      await githubAppRepository.deleteApp()
+      await this.githubAppRepository.deleteApp(user.githubAppInstallationId)
     }
 
     await this.usersRepository.updateById(userId, {
