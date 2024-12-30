@@ -4,7 +4,10 @@ import { UsersRepository } from '../repositories/users-repository'
 import { RepositoryResponse } from '../schemas'
 
 export class RepositoriesController {
-  constructor(private usersRepository: UsersRepository) {}
+  constructor(
+    private usersRepository: UsersRepository,
+    private githubAppRepository: GithubAppRepository
+  ) {}
 
   async getRepositories(userId: string): Promise<RepositoryResponse[]> {
     const user = await this.usersRepository.getById(userId)
@@ -13,11 +16,9 @@ export class RepositoriesController {
       throw new UserNoRepoAccessError()
     }
 
-    const githubAppRepository = await GithubAppRepository.build(
+    const repos = await this.githubAppRepository.getInstalledRepos(
       user.githubAppInstallationId
     )
-
-    const repos = await githubAppRepository.getInstalledRepos()
 
     return repos.map(repo => {
       return {

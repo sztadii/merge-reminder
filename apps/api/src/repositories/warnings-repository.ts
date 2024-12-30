@@ -10,41 +10,51 @@ import {
 import { GithubAppRepository, Repo } from './github-app-repository'
 
 export class WarningsRepository {
-  constructor(
-    private config: Config,
-    private githubAppRepository: GithubAppRepository
-  ) {}
+  constructor(private githubAppRepository: GithubAppRepository) {}
 
-  public async getWarnings(): Promise<RepoWarning[]> {
-    const allRepos = await this.githubAppRepository.getInstalledRepos()
-    const ignoredRepos = this.config.repos
+  public async getWarnings(
+    config: Config,
+    installationId: number
+  ): Promise<RepoWarning[]> {
+    const allRepos =
+      await this.githubAppRepository.getInstalledRepos(installationId)
+    const ignoredRepos = config.repos
       .filter(repo => repo.isIgnored)
       .map(repo => repo.repoId)
     const notIgnoredRepos = allRepos.filter(
       repo => !ignoredRepos.includes(repo.id)
     )
-    return this.getWarningsFromAffectedBranches(notIgnoredRepos)
+    return this.getWarningsFromAffectedBranches(
+      notIgnoredRepos,
+      config,
+      installationId
+    )
   }
 
   private async getWarningsFromAffectedBranches(
-    repos: Repo[]
+    repos: Repo[],
+    config: Config,
+    installationId: number
   ): Promise<RepoWarning[]> {
     const allBranchesResponses = repos.map(async repo => {
-      const listBranches = await this.githubAppRepository.listBranches({
-        owner: repo.owner.login,
-        repo: repo.name
-      })
+      const listBranches = await this.githubAppRepository.listBranches(
+        installationId,
+        {
+          owner: repo.owner.login,
+          repo: repo.name
+        }
+      )
 
-      const configurationForCurrentRepo = this.config.repos.find(
+      const configurationForCurrentRepo = config.repos.find(
         iteratedRepo => iteratedRepo.repoId === repo.id
       )
 
       const headBranch =
-        configurationForCurrentRepo?.headBranch || this.config.headBranch
+        configurationForCurrentRepo?.headBranch || config.headBranch
       const baseBranch =
-        configurationForCurrentRepo?.baseBranch || this.config.baseBranch
+        configurationForCurrentRepo?.baseBranch || config.baseBranch
 
-      if (!this.config.excludeReposWithoutRequiredBranches) {
+      if (!config.excludeReposWithoutRequiredBranches) {
         const allBranchNames = listBranches.map(branch => branch.name)
 
         const missingBranch = [headBranch, baseBranch].find(
@@ -59,7 +69,7 @@ export class WarningsRepository {
       }
 
       const [compareCommits] = await handlePromise(
-        this.githubAppRepository.compareCommits({
+        this.githubAppRepository.compareCommits(installationId, {
           owner: repo.owner.login,
           repo: repo.name,
           baseBranch,

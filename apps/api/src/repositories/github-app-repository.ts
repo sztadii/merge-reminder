@@ -1,37 +1,25 @@
+import { createAppAuth } from '@octokit/auth-app'
 import { RestEndpointMethodTypes } from '@octokit/rest'
 import { App, Octokit } from 'octokit'
 
 import { config } from '../config'
 
 export class GithubAppRepository {
-  constructor(
-    private app: App,
-    private octokit: Octokit,
-    private installationId: number
-  ) {}
-
-  public static async build(
-    installationId: number
-  ): Promise<GithubAppRepository> {
-    const app = new App({
-      appId: config.github.appId,
-      // There is a problem with multilines private keys.
-      // I found this solution on stackoverflow and seems working.
-      privateKey: config.github.appPrivateKey.replace(/\\n/g, '\n')
-    })
-
-    const octokit = await app.getInstallationOctokit(installationId)
-
-    return new GithubAppRepository(app, octokit, installationId)
-  }
-
-  async listBranches(params: ListBranchesParams): Promise<Branch[]> {
-    const response = await this.octokit.rest.repos.listBranches(params)
+  async listBranches(
+    installationId: number,
+    params: ListBranchesParams
+  ): Promise<Branch[]> {
+    const octokit = this.createGithubOctokitInstance(installationId)
+    const response = await octokit.rest.repos.listBranches(params)
     return response.data
   }
 
-  async compareCommits(params: CompareCommitsParams): Promise<CompareCommits> {
-    const response = await this.octokit.rest.repos.compareCommitsWithBasehead({
+  async compareCommits(
+    installationId: number,
+    params: CompareCommitsParams
+  ): Promise<CompareCommits> {
+    const octokit = this.createGithubOctokitInstance(installationId)
+    const response = await octokit.rest.repos.compareCommitsWithBasehead({
       owner: params.owner,
       repo: params.repo,
       basehead: `${params.baseBranch}...${params.headBranch}`
@@ -39,13 +27,14 @@ export class GithubAppRepository {
     return response.data
   }
 
-  async getInstalledRepos(): Promise<Repo[]> {
+  async getInstalledRepos(installationId: number): Promise<Repo[]> {
+    const octokit = this.createGithubOctokitInstance(installationId)
     const allRepos = []
     let canFetchMoreData = true
 
     for (let i = 1; canFetchMoreData; i++) {
       const responseWithRepos =
-        await this.octokit.rest.apps.listReposAccessibleToInstallation({
+        await octokit.rest.apps.listReposAccessibleToInstallation({
           page: i,
           per_page: 100
         })
@@ -59,9 +48,35 @@ export class GithubAppRepository {
     return allRepos
   }
 
-  async deleteApp(): Promise<void> {
-    await this.app.octokit.rest.apps.deleteInstallation({
-      installation_id: this.installationId
+  async deleteApp(installationId: number): Promise<void> {
+    const app = this.createGithubAppInstance()
+
+    await app.octokit.rest.apps.deleteInstallation({
+      installation_id: installationId
+    })
+  }
+
+  private getPrivateKey() {
+    // There is a problem with multilines private keys.
+    // I found this solution on stackoverflow and seems working.
+    return config.github.appPrivateKey.replace(/\\n/g, '\n')
+  }
+
+  private createGithubAppInstance() {
+    return new App({
+      appId: config.github.appId,
+      privateKey: this.getPrivateKey()
+    })
+  }
+
+  private createGithubOctokitInstance(installationId: number) {
+    return new Octokit({
+      authStrategy: createAppAuth,
+      auth: {
+        appId: config.github.appId,
+        privateKey: this.getPrivateKey(),
+        installationId
+      }
     })
   }
 }
