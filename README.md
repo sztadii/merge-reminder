@@ -35,3 +35,9 @@ Some of these info could be more secure, but since it is pet project I do not mi
 * [deployment dashboard](https://dashboard.render.com)
 * [mail provider](https://app.mailgun.com)
 * [database dashboard](https://cloud.mongodb.com)
+
+## Demo
+https://github.com/user-attachments/assets/dd057f8e-3575-47de-9cef-a3037112049b
+
+
+
