@@ -39,7 +39,7 @@ export const config = configSchema.parse({
     webDomain: process.env.APP_WEB_DOMAIN,
     mode: process.env.APP_MODE,
     port: Number(process.env.APP_PORT),
-    freeTrialLengthInDays: 5
+    freeTrialLengthInDays: 30
   },
   mongo: {
     url: process.env.MONGO_URL
