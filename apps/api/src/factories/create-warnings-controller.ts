@@ -1,5 +1,5 @@
 import { WarningsController } from '../controllers/warnings-controller'
-import { GithubAppRepository } from '../repositories/github-app-repository'
+import { GithubKitRepository } from '../repositories/github-kit-repository'
 import { ReposConfigurationsRepository } from '../repositories/repos-configurations-repository'
 import { UsersRepository } from '../repositories/users-repository'
 import { WarningsRepository } from '../repositories/warnings-repository'
@@ -12,8 +12,8 @@ export function createWarningsController(ctx: Context) {
   const reposConfigurationsRepository = new ReposConfigurationsRepository(
     ctx.database
   )
-  const githubAppRepository = new GithubAppRepository()
-  const warningsRepository = new WarningsRepository(githubAppRepository)
+  const githubKitRepository = new GithubKitRepository()
+  const warningsRepository = new WarningsRepository(githubKitRepository)
 
   return new WarningsController(
     usersRepository,

@@ -7,17 +7,18 @@ import {
   isTruthy,
   promiseAllInBatches
 } from '../helpers'
-import { GithubAppRepository, Repo } from './github-app-repository'
+import { Repo } from './github-app-repository'
+import { GithubKitRepository } from './github-kit-repository'
 
 export class WarningsRepository {
-  constructor(private githubAppRepository: GithubAppRepository) {}
+  constructor(private githubKitRepository: GithubKitRepository) {}
 
   public async getWarnings(
     config: Config,
     installationId: number
   ): Promise<RepoWarning[]> {
     const allRepos =
-      await this.githubAppRepository.getInstalledRepos(installationId)
+      await this.githubKitRepository.getInstalledRepos(installationId)
     const ignoredRepos = config.repos
       .filter(repo => repo.isIgnored)
       .map(repo => repo.repoId)
@@ -37,7 +38,7 @@ export class WarningsRepository {
     installationId: number
   ): Promise<RepoWarning[]> {
     const allBranchesResponses = repos.map(async repo => {
-      const listBranches = await this.githubAppRepository.listBranches(
+      const listBranches = await this.githubKitRepository.listBranches(
         installationId,
         {
           owner: repo.owner.login,
@@ -69,7 +70,7 @@ export class WarningsRepository {
       }
 
       const [compareCommits] = await handlePromise(
-        this.githubAppRepository.compareCommits(installationId, {
+        this.githubKitRepository.compareCommits(installationId, {
           owner: repo.owner.login,
           repo: repo.name,
           baseBranch,

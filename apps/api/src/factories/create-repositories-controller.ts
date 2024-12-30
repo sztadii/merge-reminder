@@ -1,10 +1,10 @@
 import { RepositoriesController } from '../controllers/repositories-controller'
-import { GithubAppRepository } from '../repositories/github-app-repository'
+import { GithubKitRepository } from '../repositories/github-kit-repository'
 import { UsersRepository } from '../repositories/users-repository'
 import { Context } from '../trpc'
 
 export function createRepositoriesController(ctx: Context) {
   const usersRepository = new UsersRepository(ctx.database)
-  const githubAppRepository = new GithubAppRepository()
-  return new RepositoriesController(usersRepository, githubAppRepository)
+  const githubKitRepository = new GithubKitRepository()
+  return new RepositoriesController(usersRepository, githubKitRepository)
 }

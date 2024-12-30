@@ -1,12 +1,12 @@
 import { UserNoRepoAccessError } from '../errors/user-errors'
-import { GithubAppRepository } from '../repositories/github-app-repository'
+import { GithubKitRepository } from '../repositories/github-kit-repository'
 import { UsersRepository } from '../repositories/users-repository'
 import { RepositoryResponse } from '../schemas'
 
 export class RepositoriesController {
   constructor(
     private usersRepository: UsersRepository,
-    private githubAppRepository: GithubAppRepository
+    private githubKitRepository: GithubKitRepository
   ) {}
 
   async getRepositories(userId: string): Promise<RepositoryResponse[]> {
@@ -16,7 +16,7 @@ export class RepositoriesController {
       throw new UserNoRepoAccessError()
     }
 
-    const repos = await this.githubAppRepository.getInstalledRepos(
+    const repos = await this.githubKitRepository.getInstalledRepos(
       user.githubAppInstallationId
     )
 
