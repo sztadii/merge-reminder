@@ -89,7 +89,7 @@ export class AuthController {
     }
   }
 
-  async deleteCurrentUser(userId: string): Promise<void> {
+  async removeAccount(userId: string): Promise<void> {
     const user = await this.usersRepository.getById(userId).catch(() => {
       throw new UnexpectedError()
     })

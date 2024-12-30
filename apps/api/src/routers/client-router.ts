@@ -94,7 +94,7 @@ export const clientRouter = router({
     .mutation(opts => {
       const authController = createAuthController(opts.ctx)
 
-      return authController.deleteCurrentUser(opts.ctx.user.id)
+      return authController.removeAccount(opts.ctx.user.id)
     }),
   getCurrentRepositories: tokenProtectedProcedure
     .output(RepositoriesResponseSchema)
