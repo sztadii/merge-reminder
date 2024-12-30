@@ -10,9 +10,9 @@ import {
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 
-import { UpdateEmailDrawer } from 'src/components-connected/drawers/update-email-drawer'
 import { DetailsGrid, DetailsGridProps } from 'src/components/details-grid'
 import { Icon } from 'src/components/icon'
+import { UpdateEmailDrawer } from 'src/features/drawers/update-email-drawer'
 import { showErrorToast, showSuccessToast } from 'src/toasts'
 import { trpc } from 'src/trpc'
 

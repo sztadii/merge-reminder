@@ -13,13 +13,13 @@ import {
 } from '@chakra-ui/react'
 import { useMemo, useState } from 'react'
 
-import { ResetReposConfigurationsButton } from 'src/components-connected/buttons/reset-repos-configurations-button'
-import { UpdateRepoConfigurationDrawer } from 'src/components-connected/drawers/update-repo-configuration-drawer'
-import { UpdateReposConfigurationDrawer } from 'src/components-connected/drawers/update-repos-configuration-drawer'
 import { DetailsGrid, DetailsGridProps } from 'src/components/details-grid'
 import { ExternalLink } from 'src/components/external-link'
 import { Icon } from 'src/components/icon'
 import { Table, TableProps } from 'src/components/table'
+import { ResetReposConfigurationsButton } from 'src/features/buttons/reset-repos-configurations-button'
+import { UpdateRepoConfigurationDrawer } from 'src/features/drawers/update-repo-configuration-drawer'
+import { UpdateReposConfigurationDrawer } from 'src/features/drawers/update-repos-configuration-drawer'
 import { RepositoryResponse } from 'src/schemas'
 import { trpc } from 'src/trpc'
 

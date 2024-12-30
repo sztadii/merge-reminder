@@ -1,8 +1,8 @@
 import { Box, Heading } from '@chakra-ui/react'
 
-import { LoginGithubButton } from 'src/components-connected/buttons/login-github-button'
 import { FullPage } from 'src/components/full-page'
 import { Text } from 'src/components/text'
+import { LoginGithubButton } from 'src/features/buttons/login-github-button'
 
 export function Login() {
   return (

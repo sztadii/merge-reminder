@@ -8,12 +8,12 @@ import {
 } from '@chakra-ui/react'
 import { useMemo } from 'react'
 
-import { RefreshWarningsButton } from 'src/components-connected/buttons/refresh-warnings-button'
-import { SendWarningsButton } from 'src/components-connected/buttons/send-warnings-button'
 import { ExternalLink } from 'src/components/external-link'
 import { SpinnerWithLabel } from 'src/components/spinner-with-label'
 import { Table, TableProps } from 'src/components/table'
 import { Text } from 'src/components/text'
+import { RefreshWarningsButton } from 'src/features/buttons/refresh-warnings-button'
+import { SendWarningsButton } from 'src/features/buttons/send-warnings-button'
 import { trpc } from 'src/trpc'
 
 export function WarningsSection() {

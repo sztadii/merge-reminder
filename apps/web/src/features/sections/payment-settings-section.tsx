@@ -1,21 +1,21 @@
 import { Card, CardBody } from '@chakra-ui/react'
 
-import { DeleteUserButton } from 'src/components-connected/buttons/delete-user-button'
-import { DisconnectReposButton } from 'src/components-connected/buttons/disconnect-repos-button'
 import { DetailsGrid, DetailsGridProps } from 'src/components/details-grid'
+import { SubscribeButton } from 'src/features/buttons/subscribe-button'
+import { UnsubscribeButton } from 'src/features/buttons/unsubscribe-button'
 import { trpc } from 'src/trpc'
 
-export function BasicSettingsSection() {
+export function PaymentSettingsSection() {
   const { data: user, isLoading, error } = trpc.client.getCurrentUser.useQuery()
 
   const details: DetailsGridProps['details'] = [
     {
-      heading: 'Disconnect repositories',
-      content: <DisconnectReposButton user={user} />
+      heading: 'Subscribe',
+      content: <SubscribeButton />
     },
     {
-      heading: 'Delete profile',
-      content: <DeleteUserButton user={user} />
+      heading: 'Unsubscribe',
+      content: <UnsubscribeButton />
     }
   ]
 
