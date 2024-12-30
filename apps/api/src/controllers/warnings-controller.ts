@@ -9,7 +9,7 @@ import {
   UserNoRepoAccessError,
   UserNotFoundError
 } from '../errors/user-errors'
-import { getCurrentFormattedDate, promiseAllInBatches } from '../helpers'
+import { getCurrentFormattedDate } from '../helpers'
 import { ReposConfigurationsRepository } from '../repositories/repos-configurations-repository'
 import { UsersRepository } from '../repositories/users-repository'
 import { WarningsRepository } from '../repositories/warnings-repository'
@@ -90,7 +90,7 @@ export class WarningsController {
 
     const allAuthors = uniq(warnings.flatMap(warning => warning.authors))
 
-    await promiseAllInBatches(
+    await Promise.all(
       allAuthors.map(author => {
         const reposTouchedByAuthor = warnings.filter(warning =>
           warning.authors.includes(author)
@@ -124,7 +124,7 @@ export class WarningsController {
       throw new UnexpectedError('We could not fetch users list.')
     })
 
-    await promiseAllInBatches(
+    await Promise.all(
       users.map(user => this.sendWarnings(user._id.toString()))
     ).catch(() => {
       throw new UnexpectedError('We could not send warnings to all users.')

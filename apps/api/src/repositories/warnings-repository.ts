@@ -4,8 +4,7 @@ import { MissingBranchError } from '../errors/other-errors'
 import {
   convertHoursToReadableFormat,
   handlePromise,
-  isTruthy,
-  promiseAllInBatches
+  isTruthy
 } from '../helpers'
 import { Repo } from './github-app-repository'
 import { GithubKitRepository } from './github-kit-repository'
@@ -108,7 +107,7 @@ export class WarningsRepository {
       }
     })
 
-    const allBranchesInfos = await promiseAllInBatches(allBranchesResponses)
+    const allBranchesInfos = await Promise.all(allBranchesResponses)
 
     return allBranchesInfos.filter(isTruthy)
   }
