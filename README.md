@@ -28,3 +28,10 @@ Then run development server
 ```
 npm run dev
 ```
+
+## Links
+Some of these info could be more secure, but since it is pet project I do not mind share it
+* [production url](https://merge-reminder.onrender.com)
+* [deployment dashboard](https://dashboard.render.com)
+* [mail provider](https://app.mailgun.com)
+* [database dashboard](https://cloud.mongodb.com)
