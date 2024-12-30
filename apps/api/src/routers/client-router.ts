@@ -1,4 +1,3 @@
-import { createAuthController } from '../factories/create-auth-controller'
 import { createInstallationController } from '../factories/create-installation-controller'
 import { createReposConfigurationsController } from '../factories/create-repos-configurations-controller'
 import { createRepositoriesController } from '../factories/create-repositories-controller'
@@ -88,13 +87,6 @@ export const clientRouter = router({
       const warningsController = createWarningsController(opts.ctx)
 
       return warningsController.sendWarnings(opts.ctx.user.id)
-    }),
-  removeCurrentAccount: tokenProtectedProcedure
-    .output(EmptyResponseSchema)
-    .mutation(opts => {
-      const authController = createAuthController(opts.ctx)
-
-      return authController.removeAccount(opts.ctx.user.id)
     }),
   getCurrentRepositories: tokenProtectedProcedure
     .output(RepositoriesResponseSchema)

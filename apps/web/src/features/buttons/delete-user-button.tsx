@@ -13,7 +13,7 @@ type DeleteUserButtonProps = {
 
 export function DeleteUserButton({ user }: DeleteUserButtonProps) {
   const { mutateAsync: removeCurrentAccountMutation, isLoading } =
-    trpc.client.removeCurrentAccount.useMutation()
+    trpc.auth.removeCurrentAccount.useMutation()
 
   const {
     isOpen: isOpenForConfirmModal,
