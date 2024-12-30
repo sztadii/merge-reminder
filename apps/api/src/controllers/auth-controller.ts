@@ -76,10 +76,6 @@ export class AuthController {
         throw new UnexpectedError('An error occurred while creating the user.')
       })
 
-    if (!createdUser) {
-      throw new UserNotFoundError()
-    }
-
     const token = this.getTokenFromUser(createdUser)
 
     return {
