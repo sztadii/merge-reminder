@@ -76,13 +76,11 @@ export function EmailSection() {
         </Button>
       )
 
-    const { isEmailConfirmed } = user
-
     return (
       <>
         <Box>{user.email}</Box>
 
-        {!isEmailConfirmed && (
+        {!user.isEmailConfirmed && (
           <>
             <Box mt={2}>
               <Tag colorScheme="red">Not confirmed</Tag>

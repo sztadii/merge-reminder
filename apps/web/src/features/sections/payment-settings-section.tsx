@@ -9,7 +9,7 @@ import { UnsubscribeButton } from '@apps/web/features/buttons/unsubscribe-button
 import { trpc } from '@apps/web/libs/trpc'
 
 export function PaymentSettingsSection() {
-  const { data: user, isLoading, error } = trpc.client.getCurrentUser.useQuery()
+  const { isLoading, error } = trpc.client.getCurrentUser.useQuery()
 
   const details: DetailsGridProps['details'] = [
     {
