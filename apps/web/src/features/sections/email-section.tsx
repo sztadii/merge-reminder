@@ -10,11 +10,14 @@ import {
 } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 
-import { DetailsGrid, DetailsGridProps } from 'src/components/details-grid'
-import { Icon } from 'src/components/icon'
-import { UpdateEmailDrawer } from 'src/features/drawers/update-email-drawer'
-import { showErrorToast, showSuccessToast } from 'src/toasts'
-import { trpc } from 'src/trpc'
+import {
+  DetailsGrid,
+  DetailsGridProps
+} from '@apps/web/components/details-grid'
+import { Icon } from '@apps/web/components/icon'
+import { UpdateEmailDrawer } from '@apps/web/features/drawers/update-email-drawer'
+import { showErrorToast, showSuccessToast } from '@apps/web/toasts'
+import { trpc } from '@apps/web/trpc'
 
 export function EmailSection() {
   const [isResendVisible, setIsResendVisible] = useState(false)

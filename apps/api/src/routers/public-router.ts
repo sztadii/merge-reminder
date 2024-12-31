@@ -1,6 +1,7 @@
-import { createWarningsController } from '../factories/create-warnings-controller'
-import { EmptyResponseSchema } from '../schemas'
-import { apiKeyProtectedProcedure, router } from '../trpc'
+import { EmptyResponseSchema } from '@apps/shared/schemas'
+
+import { createWarningsController } from '@apps/api/factories/create-warnings-controller'
+import { apiKeyProtectedProcedure, router } from '@apps/api/trpc'
 
 export const publicRouter = router({
   sendWarningsForAllUsers: apiKeyProtectedProcedure

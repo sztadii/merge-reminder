@@ -11,12 +11,12 @@ import { useQueryClient } from '@tanstack/react-query'
 import { getQueryKey } from '@trpc/react-query'
 import { useState } from 'react'
 
-import { FullPage } from 'src/components/full-page'
-import { Text } from 'src/components/text'
-import { isValidEmail, trimObjectValues } from 'src/helpers'
-import { routerPaths } from 'src/router'
-import { showErrorToast } from 'src/toasts'
-import { trpc } from 'src/trpc'
+import { FullPage } from '@apps/web/components/full-page'
+import { Text } from '@apps/web/components/text'
+import { isValidEmail, trimObjectValues } from '@apps/web/helpers'
+import { routerPaths } from '@apps/web/router'
+import { showErrorToast } from '@apps/web/toasts'
+import { trpc } from '@apps/web/trpc'
 
 export function Onboarding() {
   const [isPending, setIsPending] = useState(false)

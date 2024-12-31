@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { config } from '../config'
+import { config } from '@apps/api/config'
 
 export class EmailService {
   async sendEmail(mail: Mail): Promise<void> {

@@ -1,6 +1,6 @@
 import crypto from 'crypto'
 
-import { config } from '../config'
+import { config } from '@apps/api/config'
 
 class TokenCache {
   private values: Record<string, unknown> = {}

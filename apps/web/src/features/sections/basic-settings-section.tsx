@@ -1,9 +1,12 @@
 import { Card, CardBody } from '@chakra-ui/react'
 
-import { DetailsGrid, DetailsGridProps } from 'src/components/details-grid'
-import { DeleteUserButton } from 'src/features/buttons/delete-user-button'
-import { DisconnectReposButton } from 'src/features/buttons/disconnect-repos-button'
-import { trpc } from 'src/trpc'
+import {
+  DetailsGrid,
+  DetailsGridProps
+} from '@apps/web/components/details-grid'
+import { DeleteUserButton } from '@apps/web/features/buttons/delete-user-button'
+import { DisconnectReposButton } from '@apps/web/features/buttons/disconnect-repos-button'
+import { trpc } from '@apps/web/trpc'
 
 export function BasicSettingsSection() {
   const { data: user, isLoading, error } = trpc.client.getCurrentUser.useQuery()

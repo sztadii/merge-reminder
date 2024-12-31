@@ -13,15 +13,19 @@ import {
 } from '@chakra-ui/react'
 import { useMemo, useState } from 'react'
 
-import { DetailsGrid, DetailsGridProps } from 'src/components/details-grid'
-import { ExternalLink } from 'src/components/external-link'
-import { Icon } from 'src/components/icon'
-import { Table, TableProps } from 'src/components/table'
-import { ResetReposConfigurationsButton } from 'src/features/buttons/reset-repos-configurations-button'
-import { UpdateRepoConfigurationDrawer } from 'src/features/drawers/update-repo-configuration-drawer'
-import { UpdateReposConfigurationDrawer } from 'src/features/drawers/update-repos-configuration-drawer'
-import { RepositoryResponse } from 'src/schemas'
-import { trpc } from 'src/trpc'
+import { RepositoryResponse } from '@apps/shared/schemas'
+
+import {
+  DetailsGrid,
+  DetailsGridProps
+} from '@apps/web/components/details-grid'
+import { ExternalLink } from '@apps/web/components/external-link'
+import { Icon } from '@apps/web/components/icon'
+import { Table, TableProps } from '@apps/web/components/table'
+import { ResetReposConfigurationsButton } from '@apps/web/features/buttons/reset-repos-configurations-button'
+import { UpdateRepoConfigurationDrawer } from '@apps/web/features/drawers/update-repo-configuration-drawer'
+import { UpdateReposConfigurationDrawer } from '@apps/web/features/drawers/update-repos-configuration-drawer'
+import { trpc } from '@apps/web/trpc'
 
 export function RepositoriesSection() {
   const {

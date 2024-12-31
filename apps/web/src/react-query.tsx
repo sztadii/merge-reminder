@@ -6,9 +6,9 @@ import {
 } from '@tanstack/react-query'
 import { ReactNode } from 'react'
 
-import { logout } from 'src/helpers'
-import { showErrorToast } from 'src/toasts'
-import { TRPCError } from 'src/trpc'
+import { logout } from '@apps/web/helpers'
+import { showErrorToast } from '@apps/web/toasts'
+import { TRPCError } from '@apps/web/trpc'
 
 const fiveMinutes = 1000 * 60 * 5
 

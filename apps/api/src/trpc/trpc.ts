@@ -1,9 +1,10 @@
 import { initTRPC } from '@trpc/server'
 import { isBefore } from 'date-fns'
 
-import { config } from '../config'
-import { UnauthorizedError } from '../errors/auth-errors'
-import { UnderMaintenanceError } from '../errors/other-errors'
+import { config } from '@apps/api/config'
+import { UnauthorizedError } from '@apps/api/errors/auth-errors'
+import { UnderMaintenanceError } from '@apps/api/errors/other-errors'
+
 import { Context } from './create-context'
 
 const t = initTRPC.context<Context>().create()

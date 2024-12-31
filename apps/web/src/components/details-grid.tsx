@@ -1,7 +1,7 @@
 import { Alert, AlertIcon, Box, SimpleGrid, Skeleton } from '@chakra-ui/react'
 import { ReactNode } from 'react'
 
-import { Text } from 'src/components/text'
+import { Text } from '@apps/web/components/text'
 
 export type DetailsGridProps = {
   details: Array<{

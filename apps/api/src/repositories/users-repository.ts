@@ -1,12 +1,13 @@
 import { differenceInDays } from 'date-fns'
 
-import { config } from '../config'
+import { config } from '@apps/api/config'
 import {
   Database,
   DatabaseId,
   UserDatabaseRecord,
   UserDatabaseValues
-} from '../database'
+} from '@apps/api/database'
+
 import { DatabaseRepository } from './database-repository'
 
 export class UsersRepository extends DatabaseRepository<UserDatabaseRecord> {

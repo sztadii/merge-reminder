@@ -1,10 +1,11 @@
 import Stripe from 'stripe'
 
-import { config } from '../config'
-import { UnexpectedError } from '../errors/common-errors'
-import { PaymentsRepository } from '../repositories/payments-repository'
-import { PaymentWebhook, UpdateCheckoutSession } from '../schemas'
-import { EmailService } from '../services/email-service'
+import { PaymentWebhook, UpdateCheckoutSession } from '@apps/shared/schemas'
+
+import { config } from '@apps/api/config'
+import { UnexpectedError } from '@apps/api/errors/common-errors'
+import { PaymentsRepository } from '@apps/api/repositories/payments-repository'
+import { EmailService } from '@apps/api/services/email-service'
 
 export class PaymentsController {
   private stripe: Stripe

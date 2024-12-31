@@ -1,8 +1,8 @@
 import { Box, Button, Flex, Heading } from '@chakra-ui/react'
 import { Link } from 'wouter'
 
-import { Text } from 'src/components/text'
-import { routerPaths } from 'src/router'
+import { Text } from '@apps/web/components/text'
+import { routerPaths } from '@apps/web/router'
 
 export function Landing() {
   return (

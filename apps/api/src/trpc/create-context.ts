@@ -1,8 +1,8 @@
 import * as trpcExpress from '@trpc/server/adapters/express'
 
-import { getDatabase } from '../database'
-import { convertTokenToJSON } from '../helpers'
-import { UserFromToken } from '../types'
+import { getDatabase } from '@apps/api/database'
+import { convertTokenToJSON } from '@apps/api/helpers'
+import { UserFromToken } from '@apps/api/types'
 
 export function createContext(opts: trpcExpress.CreateExpressContextOptions) {
   const token = (opts.req.headers.authorization || '').split('Bearer ')[1]

@@ -1,11 +1,11 @@
-import { AuthController } from '../controllers/auth-controller'
-import { GithubAppRepository } from '../repositories/github-app-repository'
-import { GithubAuthRepository } from '../repositories/github-auth-repository'
-import { InstallationRepository } from '../repositories/installation-repository'
-import { PaymentsRepository } from '../repositories/payments-repository'
-import { ReposConfigurationsRepository } from '../repositories/repos-configurations-repository'
-import { UsersRepository } from '../repositories/users-repository'
-import { Context } from '../trpc'
+import { AuthController } from '@apps/api/controllers/auth-controller'
+import { GithubAppRepository } from '@apps/api/repositories/github-app-repository'
+import { GithubAuthRepository } from '@apps/api/repositories/github-auth-repository'
+import { InstallationRepository } from '@apps/api/repositories/installation-repository'
+import { PaymentsRepository } from '@apps/api/repositories/payments-repository'
+import { ReposConfigurationsRepository } from '@apps/api/repositories/repos-configurations-repository'
+import { UsersRepository } from '@apps/api/repositories/users-repository'
+import { Context } from '@apps/api/trpc'
 
 export function createAuthController(ctx: Context) {
   const githubAuthRepository = new GithubAuthRepository()

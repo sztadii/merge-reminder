@@ -1,10 +1,11 @@
-import { UnexpectedError } from '../errors/common-errors'
-import { ConfigurationNotFoundError } from '../errors/repos-errors'
-import { ReposConfigurationsRepository } from '../repositories/repos-configurations-repository'
 import {
   RepoConfigurationResponse,
   RepoConfigurationUpdateRequest
-} from '../schemas'
+} from '@apps/shared/schemas'
+
+import { UnexpectedError } from '@apps/api/errors/common-errors'
+import { ConfigurationNotFoundError } from '@apps/api/errors/repos-errors'
+import { ReposConfigurationsRepository } from '@apps/api/repositories/repos-configurations-repository'
 
 export class ReposConfigurationsController {
   constructor(

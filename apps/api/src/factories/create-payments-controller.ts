@@ -1,8 +1,8 @@
-import { PaymentsController } from '../controllers/payments-controller'
-import { PaymentsRepository } from '../repositories/payments-repository'
-import { UsersRepository } from '../repositories/users-repository'
-import { EmailService } from '../services/email-service'
-import { Context } from '../trpc'
+import { PaymentsController } from '@apps/api/controllers/payments-controller'
+import { PaymentsRepository } from '@apps/api/repositories/payments-repository'
+import { UsersRepository } from '@apps/api/repositories/users-repository'
+import { EmailService } from '@apps/api/services/email-service'
+import { Context } from '@apps/api/trpc'
 
 export function createPaymentsController(ctx: Context) {
   const emailService = new EmailService()

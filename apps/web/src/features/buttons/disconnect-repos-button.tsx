@@ -3,11 +3,12 @@ import { useQueryClient } from '@tanstack/react-query'
 import { getQueryKey } from '@trpc/react-query'
 import { useState } from 'react'
 
-import { Confirmation } from 'src/components/confirmation'
-import { Icon } from 'src/components/icon'
-import { UserResponse } from 'src/schemas'
-import { showErrorToast, showSuccessToast } from 'src/toasts'
-import { trpc } from 'src/trpc'
+import { UserResponse } from '@apps/shared/schemas'
+
+import { Confirmation } from '@apps/web/components/confirmation'
+import { Icon } from '@apps/web/components/icon'
+import { showErrorToast, showSuccessToast } from '@apps/web/toasts'
+import { trpc } from '@apps/web/trpc'
 
 type DisconnectReposButtonProps = {
   user?: UserResponse

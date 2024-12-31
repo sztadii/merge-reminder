@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "skipLibCheck": true,
+    "rootDir": ".",
+    "baseUrl": ".",
+    "paths": {
+      "@apps/web/*": ["apps/web/src/*"],
+      "@apps/api/*": ["apps/api/src/*"],
+      "@apps/shared/*": ["apps/shared/*"]
+    }
+  }
+}

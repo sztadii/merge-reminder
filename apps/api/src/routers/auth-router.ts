@@ -1,10 +1,15 @@
-import { createAuthController } from '../factories/create-auth-controller'
 import {
   EmptyResponseSchema,
   LoginRequestSchema,
   LoginResponseSchema
-} from '../schemas'
-import { publicProcedure, router, tokenProtectedProcedure } from '../trpc'
+} from '@apps/shared/schemas'
+
+import { createAuthController } from '@apps/api/factories/create-auth-controller'
+import {
+  publicProcedure,
+  router,
+  tokenProtectedProcedure
+} from '@apps/api/trpc'
 
 export const authRouter = router({
   login: publicProcedure

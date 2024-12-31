@@ -10,9 +10,9 @@ import { useQueryClient } from '@tanstack/react-query'
 import { getQueryKey } from '@trpc/react-query'
 import { useEffect, useState } from 'react'
 
-import { FullPage } from 'src/components/full-page'
-import { routerPaths } from 'src/router'
-import { trpc } from 'src/trpc'
+import { FullPage } from '@apps/web/components/full-page'
+import { routerPaths } from '@apps/web/router'
+import { trpc } from '@apps/web/trpc'
 
 export function EmailConfirmation() {
   const [message, setMessage] = useState<{
