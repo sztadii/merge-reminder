@@ -11,7 +11,8 @@ it can lead to merge conflicts, which are time-consuming.<br/>
 Time equals money, and that's why this project aims to streamline the development process.
 
 ## Demo
-https://github.com/user-attachments/assets/dd057f8e-3575-47de-9cef-a3037112049b
+https://github.com/user-attachments/assets/b4b96ac8-f517-439a-9dfa-6264dde6da77
+
 
 ## How to start?
 Please create .env files 
