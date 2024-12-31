@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "build": "rm -rf dist && parcel build --no-cache --no-source-maps",
-    "dev": "parcel --port 4000 --open --no-cache --watch-dir ../../",
+    "dev": "parcel --port 4000 --no-cache",
     "check-types": "tsc --noEmit"
   },
   "source": "src/index.html",
