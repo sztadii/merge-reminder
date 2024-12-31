@@ -24,7 +24,7 @@ export function WarningsSection() {
     error: errorForWarnings
   } = trpc.client.getCurrentWarnings.useQuery()
 
-  const warnings = useMemo(() => warningsData || [], [])
+  const warnings = useMemo(() => warningsData || [], [warningsData])
 
   const tableColumns: TableProps<typeof warnings>['columns'] = useMemo(() => {
     return [

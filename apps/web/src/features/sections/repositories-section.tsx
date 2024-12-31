@@ -34,7 +34,7 @@ export function RepositoriesSection() {
     error: errorForRepositories
   } = trpc.client.getCurrentRepositories.useQuery()
 
-  const repositories = useMemo(() => repositoriesData || [], [])
+  const repositories = useMemo(() => repositoriesData || [], [repositoriesData])
 
   const {
     data: configuration,
