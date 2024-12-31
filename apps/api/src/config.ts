@@ -1,34 +1,36 @@
 import * as z from 'zod'
 
+const NonEmptyStringSchema = z.string().trim().min(1)
+
 const configSchema = z.object({
   app: z.object({
-    apiKeyForPublicEndpoints: z.string(),
+    apiKeyForPublicEndpoints: NonEmptyStringSchema,
     isUnderMaintenance: z.boolean(),
-    webDomain: z.string(),
-    mode: z.string(),
+    webDomain: NonEmptyStringSchema,
+    mode: NonEmptyStringSchema,
     port: z.number(),
     freeTrialLengthInDays: z.number()
   }),
   mongo: z.object({
-    url: z.string()
+    url: NonEmptyStringSchema
   }),
   github: z.object({
-    authClientId: z.string(),
-    authClientSecret: z.string(),
-    appId: z.string(),
-    appPrivateKey: z.string()
+    authClientId: NonEmptyStringSchema,
+    authClientSecret: NonEmptyStringSchema,
+    appId: NonEmptyStringSchema,
+    appPrivateKey: NonEmptyStringSchema
   }),
   mailgun: z.object({
-    domainName: z.string(),
-    apiKey: z.string()
+    domainName: NonEmptyStringSchema,
+    apiKey: NonEmptyStringSchema
   }),
   auth: z.object({
-    encryptionKey: z.string().length(32),
-    initVector: z.string().length(16)
+    encryptionKey: NonEmptyStringSchema.length(32),
+    initVector: NonEmptyStringSchema.length(16)
   }),
   stripe: z.object({
-    apiKey: z.string(),
-    monthlyProductId: z.string()
+    apiKey: NonEmptyStringSchema,
+    monthlyProductId: NonEmptyStringSchema
   })
 })
 
