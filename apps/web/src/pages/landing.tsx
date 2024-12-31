@@ -23,7 +23,7 @@ export function Landing() {
 
       <Box position="absolute" right={4} top={4}>
         <Button as={Link} to={routerPaths.dashboard.path}>
-          Dashaboard
+          Dashboard
         </Button>
       </Box>
     </Flex>
