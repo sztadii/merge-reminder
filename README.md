@@ -10,6 +10,9 @@ If fixes are not merged back into develop,<br/>
 it can lead to merge conflicts, which are time-consuming.<br/>
 Time equals money, and that's why this project aims to streamline the development process.
 
+## Demo
+https://github.com/user-attachments/assets/dd057f8e-3575-47de-9cef-a3037112049b
+
 ## How to start?
 Please create .env files 
 ```
@@ -35,9 +38,6 @@ Some of these info could be more secure, but since it is pet project I do not mi
 * [deployment dashboard](https://dashboard.render.com)
 * [mail provider](https://app.mailgun.com)
 * [database dashboard](https://cloud.mongodb.com)
-
-## Demo
-https://github.com/user-attachments/assets/dd057f8e-3575-47de-9cef-a3037112049b
 
 
 
