@@ -1,8 +1,3 @@
-import { createInstallationController } from '../factories/create-installation-controller'
-import { createReposConfigurationsController } from '../factories/create-repos-configurations-controller'
-import { createRepositoriesController } from '../factories/create-repositories-controller'
-import { createUsersController } from '../factories/create-users-controller'
-import { createWarningsController } from '../factories/create-warnings-controller'
 import {
   ConnectRepositoriesRequestSchema,
   EmailConfirmRequestSchema,
@@ -14,8 +9,18 @@ import {
   SendEmailConfirmationRequestSchema,
   UserResponseSchema,
   WarningsResponseSchema
-} from '../schemas'
-import { publicProcedure, router, tokenProtectedProcedure } from '../trpc'
+} from '@apps/shared/schemas'
+
+import { createInstallationController } from '@apps/api/factories/create-installation-controller'
+import { createReposConfigurationsController } from '@apps/api/factories/create-repos-configurations-controller'
+import { createRepositoriesController } from '@apps/api/factories/create-repositories-controller'
+import { createUsersController } from '@apps/api/factories/create-users-controller'
+import { createWarningsController } from '@apps/api/factories/create-warnings-controller'
+import {
+  publicProcedure,
+  router,
+  tokenProtectedProcedure
+} from '@apps/api/trpc'
 
 export const clientRouter = router({
   getCurrentUser: tokenProtectedProcedure

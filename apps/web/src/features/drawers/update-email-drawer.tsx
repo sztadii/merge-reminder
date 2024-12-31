@@ -3,11 +3,12 @@ import { useQueryClient } from '@tanstack/react-query'
 import { getQueryKey } from '@trpc/react-query'
 import { useEffect, useState } from 'react'
 
-import { Drawer } from 'src/components/drawer'
-import { isValidEmail, trimObjectValues } from 'src/helpers'
-import { UserResponse } from 'src/schemas'
-import { showErrorToast } from 'src/toasts'
-import { trpc } from 'src/trpc'
+import { UserResponse } from '@apps/shared/schemas'
+
+import { Drawer } from '@apps/web/components/drawer'
+import { isValidEmail, trimObjectValues } from '@apps/web/helpers'
+import { showErrorToast } from '@apps/web/toasts'
+import { trpc } from '@apps/web/trpc'
 
 type UpdateUserDrawerProps = {
   user?: UserResponse

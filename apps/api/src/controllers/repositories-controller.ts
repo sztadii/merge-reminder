@@ -1,7 +1,8 @@
-import { UserNoRepoAccessError } from '../errors/user-errors'
-import { GithubKitRepository } from '../repositories/github-kit-repository'
-import { UsersRepository } from '../repositories/users-repository'
-import { RepositoryResponse } from '../schemas'
+import { RepositoryResponse } from '@apps/shared/schemas'
+
+import { UserNoRepoAccessError } from '@apps/api/errors/user-errors'
+import { GithubKitRepository } from '@apps/api/repositories/github-kit-repository'
+import { UsersRepository } from '@apps/api/repositories/users-repository'
 
 export class RepositoriesController {
   constructor(

@@ -1,5 +1,5 @@
-import { routerPaths } from 'src/router'
-import { storage } from 'src/storage'
+import { routerPaths } from '@apps/web/router'
+import { storage } from '@apps/web/storage'
 
 export function logout(): void {
   storage.auth.removeToken()

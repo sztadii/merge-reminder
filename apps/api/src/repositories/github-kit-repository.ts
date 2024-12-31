@@ -2,7 +2,7 @@ import { createAppAuth } from '@octokit/auth-app'
 import { RestEndpointMethodTypes } from '@octokit/rest'
 import { Octokit } from 'octokit'
 
-import { config } from '../config'
+import { config } from '@apps/api/config'
 
 export class GithubKitRepository {
   async listBranches(

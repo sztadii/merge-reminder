@@ -1,9 +1,12 @@
 import { Card, CardBody } from '@chakra-ui/react'
 
-import { DetailsGrid, DetailsGridProps } from 'src/components/details-grid'
-import { SubscribeButton } from 'src/features/buttons/subscribe-button'
-import { UnsubscribeButton } from 'src/features/buttons/unsubscribe-button'
-import { trpc } from 'src/trpc'
+import {
+  DetailsGrid,
+  DetailsGridProps
+} from '@apps/web/components/details-grid'
+import { SubscribeButton } from '@apps/web/features/buttons/subscribe-button'
+import { UnsubscribeButton } from '@apps/web/features/buttons/unsubscribe-button'
+import { trpc } from '@apps/web/trpc'
 
 export function PaymentSettingsSection() {
   const { data: user, isLoading, error } = trpc.client.getCurrentUser.useQuery()

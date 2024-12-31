@@ -2,9 +2,9 @@ import { Button, Tooltip } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { getQueryKey } from '@trpc/react-query'
 
-import { Icon } from 'src/components/icon'
-import { showErrorToast, showSuccessToast } from 'src/toasts'
-import { trpc } from 'src/trpc'
+import { Icon } from '@apps/web/components/icon'
+import { showErrorToast, showSuccessToast } from '@apps/web/toasts'
+import { trpc } from '@apps/web/trpc'
 
 export function UnsubscribeButton() {
   const queryClient = useQueryClient()

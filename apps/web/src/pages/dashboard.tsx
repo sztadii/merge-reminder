@@ -1,10 +1,10 @@
 import { Alert, AlertIcon, Box, Flex } from '@chakra-ui/react'
 
-import { SpinnerWithLabel } from 'src/components/spinner-with-label'
-import { ConnectReposButton } from 'src/features/buttons/connect-repos-button'
-import { RepositoriesSection } from 'src/features/sections/repositories-section'
-import { WarningsSection } from 'src/features/sections/warnings-section'
-import { trpc } from 'src/trpc'
+import { SpinnerWithLabel } from '@apps/web/components/spinner-with-label'
+import { ConnectReposButton } from '@apps/web/features/buttons/connect-repos-button'
+import { RepositoriesSection } from '@apps/web/features/sections/repositories-section'
+import { WarningsSection } from '@apps/web/features/sections/warnings-section'
+import { trpc } from '@apps/web/trpc'
 
 export function Dashboard() {
   const { data: user, isLoading, error } = trpc.client.getCurrentUser.useQuery()

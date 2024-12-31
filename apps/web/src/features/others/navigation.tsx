@@ -16,11 +16,11 @@ import {
 } from '@chakra-ui/react'
 import { Link } from 'wouter'
 
-import { Container } from 'src/components/container'
-import { Icon } from 'src/components/icon'
-import { logout } from 'src/helpers'
-import { routerPaths } from 'src/router'
-import { trpc } from 'src/trpc'
+import { Container } from '@apps/web/components/container'
+import { Icon } from '@apps/web/components/icon'
+import { logout } from '@apps/web/helpers'
+import { routerPaths } from '@apps/web/router'
+import { trpc } from '@apps/web/trpc'
 
 export function Navigation() {
   const { data: user, isLoading } = trpc.client.getCurrentUser.useQuery()

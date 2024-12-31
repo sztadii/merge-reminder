@@ -1,11 +1,12 @@
 import { differenceInHours } from 'date-fns'
 
-import { MissingBranchError } from '../errors/other-errors'
+import { MissingBranchError } from '@apps/api/errors/other-errors'
 import {
   convertHoursToReadableFormat,
   handlePromise,
   isTruthy
-} from '../helpers'
+} from '@apps/api/helpers'
+
 import { Repo } from './github-app-repository'
 import { GithubKitRepository } from './github-kit-repository'
 

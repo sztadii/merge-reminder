@@ -3,7 +3,8 @@ import {
   DatabaseId,
   ReposConfigurationDatabaseValues,
   ReposConfigurationRecord
-} from '../database'
+} from '@apps/api/database'
+
 import { DatabaseRepository } from './database-repository'
 
 export class ReposConfigurationsRepository extends DatabaseRepository<ReposConfigurationRecord> {

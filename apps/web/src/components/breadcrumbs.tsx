@@ -1,7 +1,7 @@
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/react'
 import { Link } from 'wouter'
 
-import { routerPaths } from 'src/router'
+import { routerPaths } from '@apps/web/router'
 
 type BreadcrumbsProps = {
   currentPage: string

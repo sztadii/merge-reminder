@@ -1,6 +1,6 @@
 import { Flex, Spinner, SpinnerProps } from '@chakra-ui/react'
 
-import { Text } from 'src/components/text'
+import { Text } from '@apps/web/components/text'
 
 type SpinnerWithLabelProps = {
   label: string

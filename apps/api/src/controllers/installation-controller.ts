@@ -1,5 +1,5 @@
-import { UnexpectedError } from '../errors/common-errors'
-import { InstallationRepository } from '../repositories/installation-repository'
+import { UnexpectedError } from '@apps/api/errors/common-errors'
+import { InstallationRepository } from '@apps/api/repositories/installation-repository'
 
 export class InstallationController {
   constructor(private installationRepository: InstallationRepository) {}

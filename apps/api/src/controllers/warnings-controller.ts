@@ -1,20 +1,21 @@
 import { TRPCError } from '@trpc/server'
 import { uniq } from 'lodash'
 
-import { UnexpectedError } from '../errors/common-errors'
-import { MissingBranchError } from '../errors/other-errors'
-import { ConfigurationNotFoundError } from '../errors/repos-errors'
+import { WarningResponse } from '@apps/shared/schemas'
+
+import { UnexpectedError } from '@apps/api/errors/common-errors'
+import { MissingBranchError } from '@apps/api/errors/other-errors'
+import { ConfigurationNotFoundError } from '@apps/api/errors/repos-errors'
 import {
   NoActiveSubscriptionError,
   UserNoRepoAccessError,
   UserNotFoundError
-} from '../errors/user-errors'
-import { getCurrentFormattedDate } from '../helpers'
-import { ReposConfigurationsRepository } from '../repositories/repos-configurations-repository'
-import { UsersRepository } from '../repositories/users-repository'
-import { WarningsRepository } from '../repositories/warnings-repository'
-import { WarningResponse } from '../schemas'
-import { EmailService } from '../services/email-service'
+} from '@apps/api/errors/user-errors'
+import { getCurrentFormattedDate } from '@apps/api/helpers'
+import { ReposConfigurationsRepository } from '@apps/api/repositories/repos-configurations-repository'
+import { UsersRepository } from '@apps/api/repositories/users-repository'
+import { WarningsRepository } from '@apps/api/repositories/warnings-repository'
+import { EmailService } from '@apps/api/services/email-service'
 
 export class WarningsController {
   constructor(

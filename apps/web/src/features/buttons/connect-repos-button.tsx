@@ -3,11 +3,11 @@ import { useQueryClient } from '@tanstack/react-query'
 import { getQueryKey } from '@trpc/react-query'
 import { useEffect, useState } from 'react'
 
-import { Icon } from 'src/components/icon'
-import { config } from 'src/config'
-import { getSearchParams, removeSearchParamsFromURL } from 'src/helpers'
-import { showErrorToast } from 'src/toasts'
-import { TRPCError, trpc } from 'src/trpc'
+import { Icon } from '@apps/web/components/icon'
+import { config } from '@apps/web/config'
+import { getSearchParams, removeSearchParamsFromURL } from '@apps/web/helpers'
+import { showErrorToast } from '@apps/web/toasts'
+import { TRPCError, trpc } from '@apps/web/trpc'
 
 export function ConnectReposButton() {
   const params = getSearchParams()

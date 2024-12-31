@@ -1,9 +1,9 @@
-import { InstallationController } from '../controllers/installation-controller'
-import { GithubAppRepository } from '../repositories/github-app-repository'
-import { InstallationRepository } from '../repositories/installation-repository'
-import { ReposConfigurationsRepository } from '../repositories/repos-configurations-repository'
-import { UsersRepository } from '../repositories/users-repository'
-import { Context } from '../trpc'
+import { InstallationController } from '@apps/api/controllers/installation-controller'
+import { GithubAppRepository } from '@apps/api/repositories/github-app-repository'
+import { InstallationRepository } from '@apps/api/repositories/installation-repository'
+import { ReposConfigurationsRepository } from '@apps/api/repositories/repos-configurations-repository'
+import { UsersRepository } from '@apps/api/repositories/users-repository'
+import { Context } from '@apps/api/trpc'
 
 export function createInstallationController(ctx: Context) {
   const usersRepository = new UsersRepository(ctx.database)

@@ -40,6 +40,8 @@
       "@trivago/prettier-plugin-sort-imports"
     ],
     "importOrder": [
+      "^@apps/shared/(.*)$",
+      "^@apps/(.*)$",
       "^src/(.*)$",
       "^[./]"
     ],

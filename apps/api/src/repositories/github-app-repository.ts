@@ -1,7 +1,7 @@
 import { RestEndpointMethodTypes } from '@octokit/rest'
 import { App } from 'octokit'
 
-import { config } from '../config'
+import { config } from '@apps/api/config'
 
 export class GithubAppRepository {
   async deleteApp(installationId: number): Promise<void> {

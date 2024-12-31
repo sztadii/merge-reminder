@@ -1,9 +1,9 @@
 import { Box } from '@chakra-ui/react'
 
-import { Breadcrumbs } from 'src/components/breadcrumbs'
-import { BasicSettingsSection } from 'src/features/sections/basic-settings-section'
-import { EmailSection } from 'src/features/sections/email-section'
-import { PaymentSettingsSection } from 'src/features/sections/payment-settings-section'
+import { Breadcrumbs } from '@apps/web/components/breadcrumbs'
+import { BasicSettingsSection } from '@apps/web/features/sections/basic-settings-section'
+import { EmailSection } from '@apps/web/features/sections/email-section'
+import { PaymentSettingsSection } from '@apps/web/features/sections/payment-settings-section'
 
 export function Settings() {
   return (

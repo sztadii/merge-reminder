@@ -1,15 +1,19 @@
-import { config } from '../config'
-import { UnexpectedError } from '../errors/common-errors'
-import { UserNotFoundError, WrongUserTokenError } from '../errors/user-errors'
-import { convertJSONToToken, convertTokenToJSON } from '../helpers'
-import { UsersRepository } from '../repositories/users-repository'
 import {
   EmailConfirmRequest,
   EmailUpdateRequest,
   SendEmailConfirmationRequest,
   UserResponse
-} from '../schemas'
-import { EmailService } from '../services/email-service'
+} from '@apps/shared/schemas'
+
+import { config } from '@apps/api/config'
+import { UnexpectedError } from '@apps/api/errors/common-errors'
+import {
+  UserNotFoundError,
+  WrongUserTokenError
+} from '@apps/api/errors/user-errors'
+import { convertJSONToToken, convertTokenToJSON } from '@apps/api/helpers'
+import { UsersRepository } from '@apps/api/repositories/users-repository'
+import { EmailService } from '@apps/api/services/email-service'
 
 export class UsersController {
   constructor(

@@ -1,9 +1,9 @@
 import { IconButton, useDisclosure } from '@chakra-ui/react'
 
-import { Confirmation } from 'src/components/confirmation'
-import { Icon } from 'src/components/icon'
-import { showErrorToast, showSuccessToast } from 'src/toasts'
-import { trpc } from 'src/trpc'
+import { Confirmation } from '@apps/web/components/confirmation'
+import { Icon } from '@apps/web/components/icon'
+import { showErrorToast, showSuccessToast } from '@apps/web/toasts'
+import { trpc } from '@apps/web/trpc'
 
 export function SendWarningsButton() {
   const { isOpen, onOpen, onClose } = useDisclosure()

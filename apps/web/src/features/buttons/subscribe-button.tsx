@@ -3,10 +3,10 @@ import { useQueryClient } from '@tanstack/react-query'
 import { getQueryKey } from '@trpc/react-query'
 import { useEffect } from 'react'
 
-import { Icon } from 'src/components/icon'
-import { getSearchParams, removeSearchParamsFromURL } from 'src/helpers'
-import { showErrorToast, showSuccessToast } from 'src/toasts'
-import { trpc } from 'src/trpc'
+import { Icon } from '@apps/web/components/icon'
+import { getSearchParams, removeSearchParamsFromURL } from '@apps/web/helpers'
+import { showErrorToast, showSuccessToast } from '@apps/web/toasts'
+import { trpc } from '@apps/web/trpc'
 
 export function SubscribeButton() {
   const params = getSearchParams()

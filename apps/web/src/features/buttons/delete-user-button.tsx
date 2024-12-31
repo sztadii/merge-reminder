@@ -1,11 +1,12 @@
 import { Button, useDisclosure } from '@chakra-ui/react'
 
-import { Confirmation } from 'src/components/confirmation'
-import { Icon } from 'src/components/icon'
-import { logout } from 'src/helpers'
-import { UserResponse } from 'src/schemas'
-import { showErrorToast } from 'src/toasts'
-import { trpc } from 'src/trpc'
+import { UserResponse } from '@apps/shared/schemas'
+
+import { Confirmation } from '@apps/web/components/confirmation'
+import { Icon } from '@apps/web/components/icon'
+import { logout } from '@apps/web/helpers'
+import { showErrorToast } from '@apps/web/toasts'
+import { trpc } from '@apps/web/trpc'
 
 type DeleteUserButtonProps = {
   user?: UserResponse

@@ -1,25 +1,26 @@
 import { addHours } from 'date-fns'
 
-import { UserDatabaseRecord } from '../database'
-import { UnauthorizedError } from '../errors/auth-errors'
-import { UnexpectedError } from '../errors/common-errors'
-import {
-  UserMissingAccessTokenError,
-  UserNotFoundError
-} from '../errors/user-errors'
-import { convertJSONToToken } from '../helpers'
-import { GithubAuthRepository } from '../repositories/github-auth-repository'
-import { InstallationRepository } from '../repositories/installation-repository'
-import { PaymentsRepository } from '../repositories/payments-repository'
-import { ReposConfigurationsRepository } from '../repositories/repos-configurations-repository'
-import { UsersRepository } from '../repositories/users-repository'
 import {
   LoginRequest,
   LoginResponse,
   UserCreateRequest,
   UserCreateRequestSchema
-} from '../schemas'
-import { UserFromToken } from '../types'
+} from '@apps/shared/schemas'
+
+import { UserDatabaseRecord } from '@apps/api/database'
+import { UnauthorizedError } from '@apps/api/errors/auth-errors'
+import { UnexpectedError } from '@apps/api/errors/common-errors'
+import {
+  UserMissingAccessTokenError,
+  UserNotFoundError
+} from '@apps/api/errors/user-errors'
+import { convertJSONToToken } from '@apps/api/helpers'
+import { GithubAuthRepository } from '@apps/api/repositories/github-auth-repository'
+import { InstallationRepository } from '@apps/api/repositories/installation-repository'
+import { PaymentsRepository } from '@apps/api/repositories/payments-repository'
+import { ReposConfigurationsRepository } from '@apps/api/repositories/repos-configurations-repository'
+import { UsersRepository } from '@apps/api/repositories/users-repository'
+import { UserFromToken } from '@apps/api/types'
 
 export class AuthController {
   constructor(

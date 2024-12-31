@@ -1,7 +1,7 @@
 import { RestEndpointMethodTypes } from '@octokit/rest'
 import { OAuthApp, Octokit } from 'octokit'
 
-import { config } from '../config'
+import { config } from '@apps/api/config'
 
 export class GithubAuthRepository {
   private oAuthApp: OAuthApp

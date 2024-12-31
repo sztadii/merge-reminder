@@ -1,11 +1,16 @@
-import { createPaymentsController } from '../factories/create-payments-controller'
 import {
   EmptyResponseSchema,
   PaymentWebhookSchema,
   StringResponseSchema,
   UpdateCheckoutSessionSchema
-} from '../schemas'
-import { publicProcedure, router, tokenProtectedProcedure } from '../trpc'
+} from '@apps/shared/schemas'
+
+import { createPaymentsController } from '@apps/api/factories/create-payments-controller'
+import {
+  publicProcedure,
+  router,
+  tokenProtectedProcedure
+} from '@apps/api/trpc'
 
 export const paymentsRouter = router({
   webhook: publicProcedure

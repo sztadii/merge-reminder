@@ -1,4 +1,8 @@
-import { Database, DatabaseCollection, DatabaseRecord } from '../database'
+import {
+  Database,
+  DatabaseCollection,
+  DatabaseRecord
+} from '@apps/api/database'
 
 export class DatabaseRepository<T extends DatabaseRecord> {
   protected collection: DatabaseCollection<T>

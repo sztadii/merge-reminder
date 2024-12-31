@@ -1,7 +1,7 @@
 import { IconButton } from '@chakra-ui/react'
 
-import { Icon } from 'src/components/icon'
-import { trpc } from 'src/trpc'
+import { Icon } from '@apps/web/components/icon'
+import { trpc } from '@apps/web/trpc'
 
 export function RefreshWarningsButton() {
   const { isFetching, refetch } = trpc.client.getCurrentWarnings.useQuery(

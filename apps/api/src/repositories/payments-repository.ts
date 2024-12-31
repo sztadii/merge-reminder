@@ -1,7 +1,9 @@
 import Stripe from 'stripe'
 
-import { config } from '../config'
-import { PaymentWebhook, UpdateCheckoutSession } from '../schemas'
+import { PaymentWebhook, UpdateCheckoutSession } from '@apps/shared/schemas'
+
+import { config } from '@apps/api/config'
+
 import { UsersRepository } from './users-repository'
 
 export class PaymentsRepository {

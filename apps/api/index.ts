@@ -31,5 +31,3 @@ async function init() {
 }
 
 init()
-
-export type AppRouter = typeof appRouter

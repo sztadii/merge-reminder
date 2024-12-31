@@ -12,11 +12,15 @@ import { useQueryClient } from '@tanstack/react-query'
 import { getQueryKey } from '@trpc/react-query'
 import { useEffect, useMemo, useState } from 'react'
 
-import { Drawer } from 'src/components/drawer'
-import { trimObjectValues } from 'src/helpers'
-import { RepoConfigurationResponse, RepositoryResponse } from 'src/schemas'
-import { showErrorToast } from 'src/toasts'
-import { trpc } from 'src/trpc'
+import {
+  RepoConfigurationResponse,
+  RepositoryResponse
+} from '@apps/shared/schemas'
+
+import { Drawer } from '@apps/web/components/drawer'
+import { trimObjectValues } from '@apps/web/helpers'
+import { showErrorToast } from '@apps/web/toasts'
+import { trpc } from '@apps/web/trpc'
 
 type UpdateRepoConfigurationDrawerProps = {
   repo?: RepositoryResponse
