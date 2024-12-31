@@ -4,10 +4,15 @@
     "skipLibCheck": true,
     "rootDir": ".",
     "baseUrl": ".",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
     "paths": {
       "@apps/web/*": ["apps/web/src/*"],
       "@apps/api/*": ["apps/api/src/*"],
       "@apps/shared/*": ["apps/shared/*"]
     }
-  }
+  },
+  "exclude": ["node_modules"]
 }

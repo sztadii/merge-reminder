@@ -5,13 +5,8 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "target": "ES2020",
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
     "isolatedModules": true,
-    "jsx": "react-jsx",
-    "noFallthroughCasesInSwitch": true,
-    "resolveJsonModule": true
+    "jsx": "react-jsx"
   },
-  "include": ["src"],
-  "exclude": ["node_modules"]
+  "include": ["src"]
 }
