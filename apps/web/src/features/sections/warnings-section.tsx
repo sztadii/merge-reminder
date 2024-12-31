@@ -14,7 +14,7 @@ import { Table, TableProps } from '@apps/web/components/table'
 import { Text } from '@apps/web/components/text'
 import { RefreshWarningsButton } from '@apps/web/features/buttons/refresh-warnings-button'
 import { SendWarningsButton } from '@apps/web/features/buttons/send-warnings-button'
-import { trpc } from '@apps/web/trpc'
+import { trpc } from '@apps/web/libs/trpc'
 
 export function WarningsSection() {
   const {

@@ -4,8 +4,8 @@ import { getQueryKey } from '@trpc/react-query'
 
 import { Confirmation } from '@apps/web/components/confirmation'
 import { Icon } from '@apps/web/components/icon'
-import { showErrorToast, showSuccessToast } from '@apps/web/toasts'
-import { trpc } from '@apps/web/trpc'
+import { showErrorToast, showSuccessToast } from '@apps/web/libs/toasts'
+import { trpc } from '@apps/web/libs/trpc'
 
 export function ResetReposConfigurationsButton() {
   const { isOpen, onOpen, onClose } = useDisclosure()

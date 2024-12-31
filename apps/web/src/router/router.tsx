@@ -4,6 +4,7 @@ import { Redirect, Route, Switch } from 'wouter'
 
 import { Container } from '@apps/web/components/container'
 import { Navigation } from '@apps/web/features/others/navigation'
+import { trpc } from '@apps/web/libs/trpc'
 import { Dashboard } from '@apps/web/pages/dashboard'
 import { EmailConfirmation } from '@apps/web/pages/email-confirmation'
 import { Landing } from '@apps/web/pages/landing'
@@ -12,7 +13,6 @@ import { Onboarding } from '@apps/web/pages/onboarding'
 import { Settings } from '@apps/web/pages/settings'
 import { StopDeletion } from '@apps/web/pages/stop-deletion'
 import { storage } from '@apps/web/storage'
-import { trpc } from '@apps/web/trpc'
 
 import { routerPaths } from './router-paths'
 

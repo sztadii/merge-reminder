@@ -7,8 +7,8 @@ import {
 import { ReactNode } from 'react'
 
 import { logout } from '@apps/web/helpers'
-import { showErrorToast } from '@apps/web/toasts'
-import { TRPCError } from '@apps/web/trpc'
+import { showErrorToast } from '@apps/web/libs/toasts'
+import { TRPCError } from '@apps/web/libs/trpc'
 
 const fiveMinutes = 1000 * 60 * 5
 

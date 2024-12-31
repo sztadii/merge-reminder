@@ -3,8 +3,8 @@ import { useQueryClient } from '@tanstack/react-query'
 import { getQueryKey } from '@trpc/react-query'
 
 import { Icon } from '@apps/web/components/icon'
-import { showErrorToast, showSuccessToast } from '@apps/web/toasts'
-import { trpc } from '@apps/web/trpc'
+import { showErrorToast, showSuccessToast } from '@apps/web/libs/toasts'
+import { trpc } from '@apps/web/libs/trpc'
 
 export function UnsubscribeButton() {
   const queryClient = useQueryClient()

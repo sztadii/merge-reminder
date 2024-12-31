@@ -4,7 +4,7 @@ import { SpinnerWithLabel } from '@apps/web/components/spinner-with-label'
 import { ConnectReposButton } from '@apps/web/features/buttons/connect-repos-button'
 import { RepositoriesSection } from '@apps/web/features/sections/repositories-section'
 import { WarningsSection } from '@apps/web/features/sections/warnings-section'
-import { trpc } from '@apps/web/trpc'
+import { trpc } from '@apps/web/libs/trpc'
 
 export function Dashboard() {
   const { data: user, isLoading, error } = trpc.client.getCurrentUser.useQuery()

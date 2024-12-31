@@ -5,8 +5,8 @@ import { UserResponse } from '@apps/shared/schemas'
 import { Confirmation } from '@apps/web/components/confirmation'
 import { Icon } from '@apps/web/components/icon'
 import { logout } from '@apps/web/helpers'
-import { showErrorToast } from '@apps/web/toasts'
-import { trpc } from '@apps/web/trpc'
+import { showErrorToast } from '@apps/web/libs/toasts'
+import { trpc } from '@apps/web/libs/trpc'
 
 type DeleteUserButtonProps = {
   user?: UserResponse

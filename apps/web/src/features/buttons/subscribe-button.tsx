@@ -5,8 +5,8 @@ import { useEffect } from 'react'
 
 import { Icon } from '@apps/web/components/icon'
 import { getSearchParams, removeSearchParamsFromURL } from '@apps/web/helpers'
-import { showErrorToast, showSuccessToast } from '@apps/web/toasts'
-import { trpc } from '@apps/web/trpc'
+import { showErrorToast, showSuccessToast } from '@apps/web/libs/toasts'
+import { trpc } from '@apps/web/libs/trpc'
 
 export function SubscribeButton() {
   const params = getSearchParams()

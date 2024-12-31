@@ -11,8 +11,8 @@ import { getQueryKey } from '@trpc/react-query'
 import { useEffect, useState } from 'react'
 
 import { FullPage } from '@apps/web/components/full-page'
+import { trpc } from '@apps/web/libs/trpc'
 import { routerPaths } from '@apps/web/router'
-import { trpc } from '@apps/web/trpc'
 
 export function EmailConfirmation() {
   const [message, setMessage] = useState<{

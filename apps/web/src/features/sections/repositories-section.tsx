@@ -25,7 +25,7 @@ import { Table, TableProps } from '@apps/web/components/table'
 import { ResetReposConfigurationsButton } from '@apps/web/features/buttons/reset-repos-configurations-button'
 import { UpdateRepoConfigurationDrawer } from '@apps/web/features/drawers/update-repo-configuration-drawer'
 import { UpdateReposConfigurationDrawer } from '@apps/web/features/drawers/update-repos-configuration-drawer'
-import { trpc } from '@apps/web/trpc'
+import { trpc } from '@apps/web/libs/trpc'
 
 export function RepositoriesSection() {
   const {

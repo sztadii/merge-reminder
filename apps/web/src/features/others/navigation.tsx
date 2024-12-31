@@ -19,8 +19,8 @@ import { Link } from 'wouter'
 import { Container } from '@apps/web/components/container'
 import { Icon } from '@apps/web/components/icon'
 import { logout } from '@apps/web/helpers'
+import { trpc } from '@apps/web/libs/trpc'
 import { routerPaths } from '@apps/web/router'
-import { trpc } from '@apps/web/trpc'
 
 export function Navigation() {
   const { data: user, isLoading } = trpc.client.getCurrentUser.useQuery()

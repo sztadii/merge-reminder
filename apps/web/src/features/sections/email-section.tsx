@@ -16,8 +16,8 @@ import {
 } from '@apps/web/components/details-grid'
 import { Icon } from '@apps/web/components/icon'
 import { UpdateEmailDrawer } from '@apps/web/features/drawers/update-email-drawer'
-import { showErrorToast, showSuccessToast } from '@apps/web/toasts'
-import { trpc } from '@apps/web/trpc'
+import { showErrorToast, showSuccessToast } from '@apps/web/libs/toasts'
+import { trpc } from '@apps/web/libs/trpc'
 
 export function EmailSection() {
   const [isResendVisible, setIsResendVisible] = useState(false)

@@ -3,10 +3,9 @@ import { createTRPCReact } from '@trpc/react-query'
 import { ReactNode } from 'react'
 
 import type { AppRouter } from '@apps/api/routers'
-import { queryClient } from '@apps/web/react-query'
+import { config } from '@apps/web/config'
+import { queryClient } from '@apps/web/libs/react-query'
 import { storage } from '@apps/web/storage'
-
-import { config } from './config'
 
 export type TRPCError = TRPCClientErrorLike<AppRouter>
 

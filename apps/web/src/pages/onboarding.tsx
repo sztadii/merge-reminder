@@ -14,9 +14,9 @@ import { useState } from 'react'
 import { FullPage } from '@apps/web/components/full-page'
 import { Text } from '@apps/web/components/text'
 import { isValidEmail, trimObjectValues } from '@apps/web/helpers'
+import { showErrorToast } from '@apps/web/libs/toasts'
+import { trpc } from '@apps/web/libs/trpc'
 import { routerPaths } from '@apps/web/router'
-import { showErrorToast } from '@apps/web/toasts'
-import { trpc } from '@apps/web/trpc'
 
 export function Onboarding() {
   const [isPending, setIsPending] = useState(false)

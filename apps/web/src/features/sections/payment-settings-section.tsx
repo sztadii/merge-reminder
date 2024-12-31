@@ -6,7 +6,7 @@ import {
 } from '@apps/web/components/details-grid'
 import { SubscribeButton } from '@apps/web/features/buttons/subscribe-button'
 import { UnsubscribeButton } from '@apps/web/features/buttons/unsubscribe-button'
-import { trpc } from '@apps/web/trpc'
+import { trpc } from '@apps/web/libs/trpc'
 
 export function PaymentSettingsSection() {
   const { data: user, isLoading, error } = trpc.client.getCurrentUser.useQuery()

@@ -19,8 +19,8 @@ import {
 
 import { Drawer } from '@apps/web/components/drawer'
 import { trimObjectValues } from '@apps/web/helpers'
-import { showErrorToast } from '@apps/web/toasts'
-import { trpc } from '@apps/web/trpc'
+import { showErrorToast } from '@apps/web/libs/toasts'
+import { trpc } from '@apps/web/libs/trpc'
 
 type UpdateRepoConfigurationDrawerProps = {
   repo?: RepositoryResponse

@@ -1,8 +1,8 @@
-import { ChakraUIProvider } from '@apps/web/chakra-ui'
-import { ReactQueryProvider } from '@apps/web/react-query'
+import { ChakraUIProvider } from '@apps/web/libs/chakra-ui'
+import { ReactQueryProvider } from '@apps/web/libs/react-query'
+import { ToastProvider } from '@apps/web/libs/toasts'
+import { TRPCProvider } from '@apps/web/libs/trpc'
 import { Router } from '@apps/web/router'
-import { ToastProvider } from '@apps/web/toasts'
-import { TRPCProvider } from '@apps/web/trpc'
 
 export function App() {
   return (

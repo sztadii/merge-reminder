@@ -4,10 +4,10 @@ import { useEffect, useState } from 'react'
 import { Icon } from '@apps/web/components/icon'
 import { config } from '@apps/web/config'
 import { getSearchParams, removeSearchParamsFromURL } from '@apps/web/helpers'
+import { showErrorToast } from '@apps/web/libs/toasts'
+import { TRPCError, trpc } from '@apps/web/libs/trpc'
 import { routerPaths } from '@apps/web/router'
 import { storage } from '@apps/web/storage'
-import { showErrorToast } from '@apps/web/toasts'
-import { TRPCError, trpc } from '@apps/web/trpc'
 
 export function LoginGithubButton() {
   const params = getSearchParams()

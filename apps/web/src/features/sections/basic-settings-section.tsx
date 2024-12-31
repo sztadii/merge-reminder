@@ -6,7 +6,7 @@ import {
 } from '@apps/web/components/details-grid'
 import { DeleteUserButton } from '@apps/web/features/buttons/delete-user-button'
 import { DisconnectReposButton } from '@apps/web/features/buttons/disconnect-repos-button'
-import { trpc } from '@apps/web/trpc'
+import { trpc } from '@apps/web/libs/trpc'
 
 export function BasicSettingsSection() {
   const { data: user, isLoading, error } = trpc.client.getCurrentUser.useQuery()
