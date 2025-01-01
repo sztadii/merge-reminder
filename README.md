@@ -13,7 +13,16 @@ Time equals money, and that's why this project aims to streamline the developmen
 ## Demo
 https://github.com/user-attachments/assets/ec0472da-58fb-4aef-8d92-9acdcf8f0561
 
+## Requirements
+```
+docker --version
+```
+Docker version 27.4.0
 
+```
+node --version
+```
+v18.19.1
 
 
 ## How to start?
