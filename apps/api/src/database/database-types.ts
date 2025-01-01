@@ -9,7 +9,7 @@ export type DatabaseRecord = {
 export type UserDatabaseValues = {
   githubId: number
   githubLogin: string
-  githubAccessToken: string
+  githubAccessToken?: string | null
   avatarUrl: string
   role: 'admin' | 'client'
   email?: string

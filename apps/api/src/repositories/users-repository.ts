@@ -65,6 +65,7 @@ export class UsersRepository extends DatabaseRepository<UserDatabaseRecord> {
 
   async deleteById(userId: string): Promise<void> {
     await this.updateById(userId, {
+      githubAccessToken: null,
       deletedDate: new Date()
     })
   }
