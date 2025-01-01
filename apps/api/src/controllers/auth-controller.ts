@@ -96,10 +96,13 @@ export class AuthController {
     if (!githubAccessToken) throw new UserMissingAccessTokenError()
 
     try {
-      await this.paymentsRepository.unsubscribe(userId)
-      await this.installationRepository.disconnectRepositories(userId)
-      await this.githubAuthRepository.removeAccess(githubAccessToken)
-      await this.reposConfigurationsRepository.deleteByUserId(userId)
+      await Promise.all([
+        this.paymentsRepository.unsubscribe(userId),
+        this.installationRepository.disconnectRepositories(userId),
+        this.githubAuthRepository.removeAccess(githubAccessToken),
+        this.reposConfigurationsRepository.deleteByUserId(userId)
+      ])
+
       await this.usersRepository.deleteById(userId)
     } catch {
       throw new UnexpectedError('An error occurred while deleting the user.')
