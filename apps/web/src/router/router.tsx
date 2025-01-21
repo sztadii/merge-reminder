@@ -102,14 +102,13 @@ export function Router() {
 }
 
 function PublicLayout({ children }: { children: ReactNode }) {
-  useLayoutEffect(() => {
-    const isLoginPage = routerPaths.login.isCurrentPage()
-    const token = storage.auth.getToken()
+  const isLoginPage = routerPaths.login.isCurrentPage()
+  const token = storage.auth.getToken()
 
-    if (isLoginPage && token) {
-      routerPaths.dashboard.navigate()
-    }
-  }, [])
+  if (isLoginPage && token) {
+    routerPaths.dashboard.navigate()
+    return
+  }
 
   return <>{children}</>
 }
@@ -121,21 +120,21 @@ function PrivateLayout({
   children: ReactNode
   hasCustomLayout?: boolean
 }) {
-  const { data: user } = trpc.client.getCurrentUser.useQuery()
+  const token = storage.auth.getToken()
 
-  useLayoutEffect(() => {
-    const token = storage.auth.getToken()
+  const { data: user } = trpc.client.getCurrentUser.useQuery(undefined, {
+    enabled: !!token
+  })
 
-    if (!token) {
-      routerPaths.login.navigate()
-    }
-  }, [])
+  if (!token) {
+    routerPaths.login.navigate()
+    return
+  }
 
-  useEffect(() => {
-    if (user?.isDeleted) {
-      routerPaths.stopDeletion.navigate()
-    }
-  }, [user])
+  if (user?.isDeleted) {
+    routerPaths.stopDeletion.navigate()
+    return
+  }
 
   if (hasCustomLayout) return children
 
