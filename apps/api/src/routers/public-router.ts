@@ -1,6 +1,6 @@
 import { EmptyResponseSchema } from '@apps/shared/schemas'
 
-import { createWarningsController } from '@apps/api/factories/create-warnings-controller'
+import { createWarningsController } from '@apps/api/controllers/warnings-controller/warnings-controller.factory'
 import { apiKeyProtectedProcedure, router } from '@apps/api/trpc'
 
 export const publicRouter = router({

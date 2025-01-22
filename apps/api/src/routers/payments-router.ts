@@ -5,7 +5,7 @@ import {
   UpdateCheckoutSessionSchema
 } from '@apps/shared/schemas'
 
-import { createPaymentsController } from '@apps/api/factories/create-payments-controller'
+import { createPaymentsController } from '@apps/api/controllers/payments-controller/payments-controller.factory'
 import {
   publicProcedure,
   router,

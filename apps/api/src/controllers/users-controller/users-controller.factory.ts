@@ -1,4 +1,4 @@
-import { UsersController } from '@apps/api/controllers/users-controller'
+import { UsersController } from '@apps/api/controllers/users-controller/users-controller'
 import { UsersRepository } from '@apps/api/repositories/users-repository'
 import { EmailService } from '@apps/api/services/email-service'
 import { Context } from '@apps/api/trpc'

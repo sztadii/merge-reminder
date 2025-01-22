@@ -4,7 +4,7 @@ import {
   LoginResponseSchema
 } from '@apps/shared/schemas'
 
-import { createAuthController } from '@apps/api/factories/create-auth-controller'
+import { createAuthController } from '@apps/api/controllers/auth-controller/auth-controller.factory'
 import {
   publicProcedure,
   router,

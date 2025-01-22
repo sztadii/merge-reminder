@@ -1,4 +1,4 @@
-import { ReposConfigurationsController } from '@apps/api/controllers/repos-configurations-controller'
+import { ReposConfigurationsController } from '@apps/api/controllers/repos-configurations-controller/repos-configurations-controller'
 import { ReposConfigurationsRepository } from '@apps/api/repositories/repos-configurations-repository'
 import { Context } from '@apps/api/trpc'
 

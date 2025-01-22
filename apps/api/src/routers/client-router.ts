@@ -11,11 +11,11 @@ import {
   WarningsResponseSchema
 } from '@apps/shared/schemas'
 
-import { createInstallationController } from '@apps/api/factories/create-installation-controller'
-import { createReposConfigurationsController } from '@apps/api/factories/create-repos-configurations-controller'
-import { createRepositoriesController } from '@apps/api/factories/create-repositories-controller'
-import { createUsersController } from '@apps/api/factories/create-users-controller'
-import { createWarningsController } from '@apps/api/factories/create-warnings-controller'
+import { createInstallationController } from '@apps/api/controllers/installation-controller/installation-controller.factory'
+import { createReposConfigurationsController } from '@apps/api/controllers/repos-configurations-controller/repos-configurations-controller.factory'
+import { createRepositoriesController } from '@apps/api/controllers/repositories-controller/repositories-controller.factory'
+import { createUsersController } from '@apps/api/controllers/users-controller/users-controller.factory'
+import { createWarningsController } from '@apps/api/controllers/warnings-controller/warnings-controller.factory'
 import {
   publicProcedure,
   router,

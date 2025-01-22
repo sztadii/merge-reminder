@@ -1,4 +1,4 @@
-import { WarningsController } from '@apps/api/controllers/warnings-controller'
+import { WarningsController } from '@apps/api/controllers/warnings-controller/warnings-controller'
 import { GithubKitRepository } from '@apps/api/repositories/github-kit-repository'
 import { ReposConfigurationsRepository } from '@apps/api/repositories/repos-configurations-repository'
 import { UsersRepository } from '@apps/api/repositories/users-repository'
