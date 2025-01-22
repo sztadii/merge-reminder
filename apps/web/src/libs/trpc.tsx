@@ -29,7 +29,7 @@ const trpcClient = trpc.createClient({
         const token = storage.auth.getToken()
 
         if (token) {
-          headers.authorization = `Bearer ${token}`
+          headers.authorization = token
         }
 
         return headers
