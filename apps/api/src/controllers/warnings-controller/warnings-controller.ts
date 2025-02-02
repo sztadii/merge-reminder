@@ -73,20 +73,24 @@ export class WarningsController {
       throw new UserNotFoundError()
     }
 
-    const warnings = await this.getWarnings(userId).catch(e => {
+    const warnings = await this.getWarnings(userId).catch(async e => {
       const isNoActiveSubscriptionError = e instanceof NoActiveSubscriptionError
 
       if (user.email && isNoActiveSubscriptionError) {
         const currentFormattedDate = getCurrentFormattedDate()
 
-        this.emailService.sendEmail({
+        await this.emailService.sendEmail({
           to: user.email,
           subject: `Subscription in ${currentFormattedDate}`,
           text: e.message
         })
       }
 
-      throw e
+      if (!isNoActiveSubscriptionError) {
+        throw e
+      }
+
+      return []
     })
 
     const allAuthors = uniq(warnings.flatMap(warning => warning.authors))
