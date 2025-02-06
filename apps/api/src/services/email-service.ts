@@ -4,13 +4,11 @@ import { config } from '@apps/api/config'
 
 export class EmailService {
   async sendEmail(mail: Mail): Promise<void> {
-    const { apiKey } = config.mail
-
     await axios({
       method: 'post',
       url: 'https://api.resend.com/emails',
       headers: {
-        Authorization: `Bearer ${apiKey}`
+        Authorization: `Bearer ${config.mail.apiKey}`
       },
       data: {
         from: 'Merge Reminder <notifications@resend.dev>',
