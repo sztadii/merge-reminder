@@ -20,8 +20,7 @@ const configSchema = z.object({
     appId: NonEmptyStringSchema,
     appPrivateKey: NonEmptyStringSchema
   }),
-  mailgun: z.object({
-    domainName: NonEmptyStringSchema,
+  mail: z.object({
     apiKey: NonEmptyStringSchema
   }),
   auth: z.object({
@@ -52,9 +51,8 @@ export const config = configSchema.parse({
     appId: process.env.GITHUB_APP_ID,
     appPrivateKey: process.env.GITHUB_APP_PRIVATE_KEY
   },
-  mailgun: {
-    domainName: process.env.MAILGUN_DOMAIN_NAME,
-    apiKey: process.env.MAILGUN_API_KEY
+  mail: {
+    apiKey: process.env.MAIL_API_KEY
   },
   auth: {
     encryptionKey: process.env.AUTH_ENCRIPTION_KEY,

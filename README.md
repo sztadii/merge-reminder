@@ -49,7 +49,7 @@ Some of this information could be more secure, but since it is a pet project, I 
 This information is more like a collection of project URL bookmarks.
 * [production url](https://merge-reminder.onrender.com)
 * [deployment dashboard](https://dashboard.render.com)
-* [mail provider](https://app.mailgun.com)
+* [mail provider](https://resend.com/emails)
 * [database dashboard](https://cloud.mongodb.com)
 * [analytics dashboard](https://plausible.io)
 

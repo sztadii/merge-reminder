@@ -4,17 +4,16 @@ import { config } from '@apps/api/config'
 
 export class EmailService {
   async sendEmail(mail: Mail): Promise<void> {
-    const { domainName } = config.mailgun
+    const { apiKey } = config.mail
 
     await axios({
       method: 'post',
-      url: `https://api.mailgun.net/v3/${domainName}/messages`,
-      auth: {
-        username: 'api',
-        password: config.mailgun.apiKey
+      url: 'https://api.resend.com/emails',
+      headers: {
+        Authorization: `Bearer ${apiKey}`
       },
-      params: {
-        from: `Merge Reminder <notifications@${domainName}>`,
+      data: {
+        from: 'Merge Reminder <notifications@resend.dev>',
         to: mail.to,
         subject: mail.subject,
         text: mail.text
