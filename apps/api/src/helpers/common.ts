@@ -30,33 +30,22 @@ export function isTruthy<T>(value?: T | undefined | null | false): value is T {
 }
 
 export function convertHoursToReadableFormat(timeInHours: number) {
-  if (timeInHours < 24) {
-    return `${timeInHours}h`
-  } else if (timeInHours < 24 * 7) {
-    const days = Math.floor(timeInHours / 24)
-    const hours = timeInHours % 24
-    if (hours === 0) {
-      return `${days}d`
-    } else {
-      return `${days}d ${hours}h`
-    }
-  } else if (timeInHours < 24 * 7 * 4) {
-    const weeks = Math.floor(timeInHours / (24 * 7))
-    const days = Math.floor((timeInHours % (24 * 7)) / 24)
-    if (days === 0) {
-      return `${weeks}w`
-    } else {
-      return `${weeks}w ${days}d`
-    }
-  } else {
-    const months = Math.floor(timeInHours / (24 * 7 * 4))
-    const weeks = Math.floor((timeInHours % (24 * 7 * 4)) / (24 * 7))
-    if (weeks === 0) {
-      return `${months}m`
-    } else {
-      return `${months}m ${weeks}w`
-    }
-  }
+  const hoursInDay = 24
+  const hoursInWeek = hoursInDay * 7
+  const hoursInMonth = hoursInWeek * 4
+
+  const months = Math.floor(timeInHours / hoursInMonth)
+  const weeks = Math.floor((timeInHours % hoursInMonth) / hoursInWeek)
+  const days = Math.floor((timeInHours % hoursInWeek) / hoursInDay)
+  const hours = timeInHours % hoursInDay
+
+  const parts = []
+  if (months) parts.push(`${months}m`)
+  if (weeks) parts.push(`${weeks}w`)
+  if (days) parts.push(`${days}d`)
+  if (hours) parts.push(`${hours}h`)
+
+  return parts.slice(0, 2).join(' ') || '0h'
 }
 
 export function getCurrentFormattedDate() {
