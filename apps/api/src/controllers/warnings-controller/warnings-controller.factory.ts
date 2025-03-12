@@ -19,6 +19,7 @@ export function createWarningsController(ctx: Context) {
     usersRepository,
     warningsRepository,
     reposConfigurationsRepository,
-    emailService
+    emailService,
+    ctx.logger
   )
 }

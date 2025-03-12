@@ -12,6 +12,7 @@ import {
   UserNotFoundError
 } from '@apps/api/errors/user-errors'
 import { getCurrentFormattedDate } from '@apps/api/helpers'
+import { Logger } from '@apps/api/logger'
 import { ReposConfigurationsRepository } from '@apps/api/repositories/repos-configurations-repository'
 import { UsersRepository } from '@apps/api/repositories/users-repository'
 import { WarningsRepository } from '@apps/api/repositories/warnings-repository'
@@ -22,7 +23,8 @@ export class WarningsController {
     private usersRepository: UsersRepository,
     private warningsRepository: WarningsRepository,
     private reposConfigurationsRepository: ReposConfigurationsRepository,
-    private emailService: EmailService
+    private emailService: EmailService,
+    private logger: Logger
   ) {}
 
   async getWarnings(userId: string): Promise<WarningResponse[]> {
@@ -70,10 +72,14 @@ export class WarningsController {
     const user = await this.usersRepository.getById(userId)
 
     if (!user) {
+      this.logger.error(`User with ID ${userId} not found`)
       throw new UserNotFoundError()
     }
 
     const warnings = await this.getWarnings(userId).catch(async e => {
+      this.logger.error(`getWarnings throw error for user ${userId}`)
+      this.logger.error(e)
+
       const isNoActiveSubscriptionError = e instanceof NoActiveSubscriptionError
 
       if (user.email && isNoActiveSubscriptionError) {
@@ -125,6 +131,8 @@ export class WarningsController {
   }
 
   async sendWarningsForAllUsers(): Promise<void> {
+    this.logger.log('sendWarningsForAllUsers started')
+
     const users = await this.usersRepository.findAll().catch(() => {
       throw new UnexpectedError('We could not fetch users list.')
     })
@@ -134,5 +142,7 @@ export class WarningsController {
     ).catch(() => {
       throw new UnexpectedError('We could not send warnings to all users.')
     })
+
+    this.logger.log('sendWarningsForAllUsers finished')
   }
 }
