@@ -77,12 +77,11 @@ export class WarningsController {
     }
 
     const warnings = await this.getWarnings(userId).catch(async e => {
-      this.logger.error(`getWarnings throw error for user ${userId}`)
-      this.logger.error(e)
-
       const isNoActiveSubscriptionError = e instanceof NoActiveSubscriptionError
 
-      if (user.email && isNoActiveSubscriptionError) {
+      if (!isNoActiveSubscriptionError) throw e
+
+      if (user.email) {
         const currentFormattedDate = getCurrentFormattedDate()
 
         await this.emailService.sendEmail({
@@ -90,10 +89,12 @@ export class WarningsController {
           subject: `Subscription in ${currentFormattedDate}`,
           text: e.message
         })
-      }
 
-      if (!isNoActiveSubscriptionError) {
-        throw e
+        this.logger.log(`No active subscription email sent to ${userId}`)
+      } else {
+        this.logger.log(
+          `User ${userId} has no active subscription and no email too.`
+        )
       }
 
       return []
