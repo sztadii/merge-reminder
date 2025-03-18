@@ -2,28 +2,22 @@ import { useParams } from 'wouter'
 import { navigate as wouterNavigate } from 'wouter/use-browser-location'
 
 export const routerPaths = {
-  landing: createPage('/'),
-  login: createPage('/login'),
-  onboarding: createPage('/onboarding'),
-  stopDeletion: createPage('/stop-deletion'),
-  dashboard: createPage('/dashboard'),
-  settings: createPage('/settings'),
-  emailConfirmation: {
-    path: '/email-confirmation/:token',
-    useParams() {
-      return useParams<{ token: string }>()
-    }
-  }
+  landing: createPathObject('/'),
+  login: createPathObject('/login'),
+  onboarding: createPathObject('/onboarding'),
+  stopDeletion: createPathObject('/stop-deletion'),
+  dashboard: createPathObject('/dashboard'),
+  settings: createPathObject('/settings'),
+  emailConfirmation: createPathObject<{ token: string }>(
+    '/email-confirmation/:token'
+  )
 }
 
-function createPage(path: string) {
+function createPathObject<T = undefined>(path: string) {
   return {
     path,
-    navigate() {
-      wouterNavigate(this.path)
-    },
-    isCurrentPage() {
-      return window.location.pathname === this.path
-    }
+    navigate: () => wouterNavigate(path),
+    isCurrentPage: () => window.location.pathname === path,
+    useParams: () => useParams<T>()
   }
 }
